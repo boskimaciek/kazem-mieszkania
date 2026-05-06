@@ -20,7 +20,7 @@ html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--dark);overflow-x:hidden;font-size:16px;line-height:1.6}
 
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;background:rgba(253,252,249,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
-.logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--dark);text-decoration:none}
+.logo{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--dark);text-decoration:none}
 .logo span{color:var(--accent)}
 .nav-links{display:flex;gap:1.8rem;list-style:none;align-items:center}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:.85rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;transition:color .2s}
@@ -75,8 +75,12 @@ section{padding:5.5rem 2.5rem}
 .gallery-header{max-width:1100px;margin:0 auto 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:end}
 .gallery-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:240px 240px;gap:10px}
 .gphoto{overflow:hidden;border-radius:14px;position:relative}
-.gphoto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
-.gphoto:hover img{transform:scale(1.06)}
+.gphoto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease,filter .4s ease}
+.gphoto:hover img{transform:scale(1.08);filter:brightness(1.08) saturate(1.1)}
+.gphoto::after{content:'';position:absolute;inset:0;background:rgba(196,151,90,0);transition:background .4s ease;border-radius:14px;pointer-events:none}
+.gphoto:hover::after{background:rgba(196,151,90,0.12)}
+.gphoto-label{transform:translateY(4px);transition:transform .3s ease}
+.gphoto:hover .gphoto-label{transform:translateY(0)}
 .gphoto.tall{grid-row:span 2}
 .gphoto-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,26,24,.75));padding:.9rem 1rem .75rem;color:var(--white);font-size:.8rem;font-weight:500;letter-spacing:.03em}
 
@@ -193,6 +197,7 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
     <li><a href="#uslugi">Usługi</a></li>
     <li><a href="#o-mnie">O mnie</a></li>
     <li><a href="#homestaging">Homestaging</a></li>
+    <li><a href="#mapa">Mapa</a></li>
     <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
   </ul>
 </nav>
@@ -200,7 +205,7 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
 <section class="hero">
   <div class="hero-left">
     <div class="pill">★ Zarządzanie najmem · Warszawa</div>
-    <h1>Twoje mieszkanie<br>zarabia. Ty<br><em>odpoczywasz.</em></h1>
+    <h1>Twoje mieszkanie<br>zarabia. Ja<br><em>jestem na miejscu.</em></h1>
     <p class="hero-sub">Jestem Kasia — zajmuję się kompleksową obsługą mieszkań na wynajem w Warszawie. Podpisuję umowy, pilnuję ciągłości najmu, reaguję na usterki. Właściciel nie musi robić dosłownie nic.</p>
     <p class="hero-kasia">— Katarzyna Zemlik, KaZem Mieszkania</p>
     <div class="btn-row">
@@ -217,19 +222,20 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
     </div>
   </div>
   <div class="hero-right">
-    <img class="hero-photo" src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80" alt="mieszkanie studenckie Warszawa wynajem">
-    <img class="hero-photo" src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80" alt="pokój studencki wynajem Warszawa">
-    <img class="hero-photo" src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80" alt="wynajem mieszkania Warszawa zarządzanie">
-    <img class="hero-photo" src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80" alt="najem studencki Mokotów pokój">
+    <img class="hero-photo" src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80" alt="mieszkanie studenckie Warszawa wynajem">
+    <img class="hero-photo" src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80" alt="pokój studencki wynajem Warszawa">
+    <img class="hero-photo" src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80" alt="wynajem mieszkania Warszawa zarządzanie">
+    <img class="hero-photo" src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80" alt="najem studencki Mokotów pokój">
     <div class="hero-overlay"></div>
     <div class="hero-badge"><strong>№1</strong>najem<br>studencki</div>
-    <div class="hero-review">
+    <div class="hero-review" id="reviewCarousel">
       <div class="stars">★★★★★</div>
-      <blockquote>„Kasia zajmuje się moimi trzema mieszkaniami od lat. Nigdy nie musiałem jechać na miejsce — czynsz wpływa co miesiąc."</blockquote>
+      <blockquote id="rev-quote"></blockquote>
       <div class="rev-auth">
-        <div class="av">MK</div>
-        <div><strong>Marek K.</strong><small>właściciel · Mokotów, Warszawa</small></div>
+        <div class="av" id="rev-av"></div>
+        <div><strong id="rev-name"></strong><small id="rev-loc"></small></div>
       </div>
+      <div class="rev-dots" id="rev-dots"></div>
     </div>
   </div>
 </section>
@@ -256,23 +262,23 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
   </div>
   <div class="gallery-grid">
     <div class="gphoto tall">
-      <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=900&q=85" alt="przestronne mieszkanie studenckie Warszawa wynajem pokoi" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=85" alt="przestronne mieszkanie studenckie Warszawa wynajem pokoi" loading="lazy">
       <div class="gphoto-label">Pokój studencki · Mokotów</div>
     </div>
     <div class="gphoto">
-      <img src="https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&q=85" alt="kuchnia mieszkanie studenckie wynajem Warszawa" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=600&q=85" alt="kuchnia mieszkanie studenckie wynajem Warszawa" loading="lazy">
       <div class="gphoto-label">Kuchnia wspólna · Wola</div>
     </div>
     <div class="gphoto">
-      <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=600&q=85" alt="salon mieszkanie wynajem Warszawa" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=85" alt="salon mieszkanie wynajem Warszawa" loading="lazy">
       <div class="gphoto-label">Salon · Śródmieście</div>
     </div>
     <div class="gphoto">
-      <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=85" alt="pokój umeblowany wynajem student Warszawa" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=85" alt="pokój umeblowany wynajem student Warszawa" loading="lazy">
       <div class="gphoto-label">Pokój umeblowany · Ochota</div>
     </div>
     <div class="gphoto">
-      <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=85" alt="łazienka mieszkanie studenckie Żoliborz" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=600&q=85" alt="łazienka mieszkanie studenckie Żoliborz" loading="lazy">
       <div class="gphoto-label">Łazienka · Żoliborz</div>
     </div>
   </div>
@@ -344,7 +350,7 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
     <div class="about-inner">
       <div class="about-photo-wrap">
         <img class="about-photo-main"
-          src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=700&q=85"
+          src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=700&q=85"
           alt="Katarzyna Zemlik KaZem Mieszkania zarządzanie najmem Warszawa"
           loading="lazy">
         <div class="about-photo-badge">
@@ -419,6 +425,167 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
   </div>
 </section>
 
+
+<!-- MAPA UCZELNI -->
+<section style="background:var(--dark);padding:5rem 2.5rem" id="mapa">
+  <div class="inner">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start">
+      <div>
+        <div class="slabel" style="color:var(--accent)">Zasięg działania</div>
+        <div class="stitle" style="color:#fff">Blisko każdej warszawskiej uczelni</div>
+        <p class="sdesc" style="color:rgba(255,255,255,.6);margin-bottom:2rem">Działam w dzielnicach skupionych wokół największych uczelni w Warszawie — tam, gdzie studenci szukają pokoi najbardziej.</p>
+        <div style="display:flex;flex-direction:column;gap:.75rem">
+          <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1.1rem">
+            <span style="font-size:1.2rem">🎓</span>
+            <div><strong style="color:#fff;font-size:.92rem;display:block">Politechnika Warszawska</strong><small style="color:rgba(255,255,255,.5);font-size:.78rem">Śródmieście · ok. 36 000 studentów</small></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1.1rem">
+            <span style="font-size:1.2rem">🎓</span>
+            <div><strong style="color:#fff;font-size:.92rem;display:block">Uniwersytet Warszawski</strong><small style="color:rgba(255,255,255,.5);font-size:.78rem">Śródmieście / Ochota · ok. 40 000 studentów</small></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1.1rem">
+            <span style="font-size:1.2rem">🎓</span>
+            <div><strong style="color:#fff;font-size:.92rem;display:block">SGH – Szkoła Główna Handlowa</strong><small style="color:rgba(255,255,255,.5);font-size:.78rem">Mokotów · ok. 10 000 studentów</small></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1.1rem">
+            <span style="font-size:1.2rem">🎓</span>
+            <div><strong style="color:#fff;font-size:.92rem;display:block">Akademia Koźmińskiego</strong><small style="color:rgba(255,255,255,.5);font-size:.78rem">Praga Północ · ok. 8 000 studentów</small></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1.1rem">
+            <span style="font-size:1.2rem">🎓</span>
+            <div><strong style="color:#fff;font-size:.92rem;display:block">Warszawski Uniwersytet Medyczny</strong><small style="color:rgba(255,255,255,.5);font-size:.78rem">Ochota · ok. 8 000 studentów</small></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;background:rgba(255,255,255,.07);border-radius:12px;padding:.85rem 1.1rem">
+            <span style="font-size:1.2rem">🎓</span>
+            <div><strong style="color:#fff;font-size:.92rem;display:block">UKSW – Uniwersytet Kardynała Wyszyńskiego</strong><small style="color:rgba(255,255,255,.5);font-size:.78rem">Bielany · ok. 12 000 studentów</small></div>
+          </div>
+        </div>
+      </div>
+      <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.1)">
+        <svg viewBox="0 0 520 540" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;background:#1A1A18">
+          <defs>
+            <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="softglow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          </defs>
+
+          <!-- Wisła river -->
+          <path d="M 295 30 C 300 80 310 120 308 160 C 306 200 295 230 290 270 C 285 310 288 350 282 390 C 276 430 268 470 260 510" stroke="#2A3A4A" stroke-width="22" fill="none" opacity="0.9"/>
+          <path d="M 295 30 C 300 80 310 120 308 160 C 306 200 295 230 290 270 C 285 310 288 350 282 390 C 276 430 268 470 260 510" stroke="#3A5060" stroke-width="14" fill="none" opacity="0.7"/>
+          <path d="M 295 30 C 300 80 310 120 308 160 C 306 200 295 230 290 270 C 285 310 288 350 282 390 C 276 430 268 470 260 510" stroke="#4A6070" stroke-width="6" fill="none" opacity="0.5"/>
+
+          <!-- Dzielnice — lewa strona Wisły (zachodnia) -->
+          <!-- Bielany -->
+          <path d="M 80 30 L 200 30 L 210 60 L 240 80 L 230 130 L 190 140 L 150 130 L 100 120 L 70 90 Z" fill="#2A2820" stroke="#C4975A" stroke-width="1" opacity="0.8"/>
+          <text x="155" y="88" font-family="DM Sans,sans-serif" font-size="11" fill="#C4975A" opacity="0.7" text-anchor="middle">Bielany</text>
+
+          <!-- Żoliborz -->
+          <path d="M 190 140 L 230 130 L 260 145 L 280 160 L 265 185 L 240 190 L 210 185 L 185 175 Z" fill="#2A2820" stroke="#C4975A" stroke-width="1" opacity="0.8"/>
+          <text x="232" y="168" font-family="DM Sans,sans-serif" font-size="10" fill="#E8D5B4" opacity="0.8" text-anchor="middle">Żoliborz</text>
+
+          <!-- Wola -->
+          <path d="M 130 185 L 210 185 L 240 190 L 255 215 L 250 255 L 220 265 L 180 260 L 145 245 L 120 220 Z" fill="#262420" stroke="#C4975A" stroke-width="1" opacity="0.9"/>
+          <text x="188" y="228" font-family="DM Sans,sans-serif" font-size="11" fill="#E8D5B4" opacity="0.9" text-anchor="middle" font-weight="600">Wola</text>
+
+          <!-- Śródmieście -->
+          <path d="M 210 185 L 265 185 L 285 200 L 295 230 L 290 265 L 270 270 L 250 255 L 240 190 Z" fill="#2E2820" stroke="#C4975A" stroke-width="1.5" opacity="0.95"/>
+          <text x="255" y="232" font-family="DM Sans,sans-serif" font-size="10" fill="#E8D5B4" opacity="0.95" text-anchor="middle" font-weight="600">Śród-</text>
+          <text x="255" y="244" font-family="DM Sans,sans-serif" font-size="10" fill="#E8D5B4" opacity="0.95" text-anchor="middle" font-weight="600">mieście</text>
+
+          <!-- Ochota -->
+          <path d="M 145 245 L 220 265 L 225 295 L 210 320 L 175 325 L 140 310 L 125 280 Z" fill="#262420" stroke="#C4975A" stroke-width="1" opacity="0.9"/>
+          <text x="178" y="292" font-family="DM Sans,sans-serif" font-size="11" fill="#E8D5B4" opacity="0.9" text-anchor="middle" font-weight="600">Ochota</text>
+
+          <!-- Mokotów -->
+          <path d="M 175 325 L 250 320 L 280 340 L 285 380 L 265 410 L 230 420 L 195 410 L 165 385 L 155 355 Z" fill="#2E2820" stroke="#C4975A" stroke-width="1.5" opacity="0.95"/>
+          <text x="222" y="375" font-family="DM Sans,sans-serif" font-size="12" fill="#E8D5B4" opacity="0.95" text-anchor="middle" font-weight="700">Mokotów</text>
+
+          <!-- Ursynów -->
+          <path d="M 155 355 L 195 410 L 200 460 L 165 480 L 130 460 L 120 415 L 130 380 Z" fill="#222020" stroke="#C4975A" stroke-width="1" opacity="0.8"/>
+          <text x="163" y="438" font-family="DM Sans,sans-serif" font-size="10" fill="#C4975A" opacity="0.8" text-anchor="middle">Ursynów</text>
+
+          <!-- Prawa strona Wisły (wschodnia) -->
+          <!-- Praga Północ -->
+          <path d="M 300 155 L 380 150 L 400 180 L 390 220 L 355 235 L 310 230 L 295 210 L 295 175 Z" fill="#222020" stroke="#C4975A" stroke-width="1" opacity="0.7"/>
+          <text x="348" y="195" font-family="DM Sans,sans-serif" font-size="9.5" fill="#C4975A" opacity="0.7" text-anchor="middle">Praga Płn.</text>
+
+          <!-- Praga Południe -->
+          <path d="M 295 230 L 355 235 L 380 260 L 370 310 L 330 325 L 295 315 L 282 290 Z" fill="#222020" stroke="#C4975A" stroke-width="1" opacity="0.7"/>
+          <text x="332" y="280" font-family="DM Sans,sans-serif" font-size="9.5" fill="#C4975A" opacity="0.7" text-anchor="middle">Praga Płd.</text>
+
+          <!-- Strefa zewnętrzna lewa -->
+          <path d="M 30 200 L 130 185 L 120 220 L 145 245 L 125 280 L 100 300 L 60 280 L 30 250 Z" fill="#1E1C18" stroke="#3A3428" stroke-width="1" opacity="0.6"/>
+          <path d="M 30 300 L 100 300 L 120 415 L 90 450 L 40 430 L 20 380 Z" fill="#1E1C18" stroke="#3A3428" stroke-width="1" opacity="0.6"/>
+
+          <!-- Strefa zewnętrzna prawa -->
+          <path d="M 300 80 L 420 75 L 460 120 L 450 160 L 400 180 L 380 150 L 300 155 Z" fill="#1E1C18" stroke="#3A3428" stroke-width="1" opacity="0.5"/>
+          <path d="M 370 310 L 420 320 L 450 380 L 410 430 L 360 420 L 330 325 Z" fill="#1E1C18" stroke="#3A3428" stroke-width="1" opacity="0.5"/>
+
+          <!-- Kompas -->
+          <circle cx="468" cy="48" r="18" fill="#2A2820" stroke="#C4975A" stroke-width="1"/>
+          <text x="468" y="44" font-family="DM Sans,sans-serif" font-size="10" fill="#C4975A" text-anchor="middle" font-weight="700">N</text>
+          <line x1="468" y1="33" x2="468" y2="38" stroke="#C4975A" stroke-width="1.5"/>
+          <text x="468" y="60" font-family="DM Sans,sans-serif" font-size="8" fill="rgba(196,151,90,0.5)" text-anchor="middle">S</text>
+
+          <!-- Tytuł -->
+          <text x="26" y="520" font-family="Playfair Display,serif" font-size="12" fill="rgba(196,151,90,0.5)" font-style="italic">Warszawa — obszar działania KaZem</text>
+
+          <!-- ===== UCZELNIE ===== -->
+
+          <!-- Politechnika Warszawska — Śródmieście ~(248,218) -->
+          <circle cx="248" cy="218" r="10" fill="#C4975A" filter="url(#softglow)" opacity="0.3"/>
+          <circle cx="248" cy="218" r="6" fill="#C4975A" filter="url(#glow)"/>
+          <circle cx="248" cy="218" r="3" fill="#fff"/>
+          <rect x="258" y="208" width="108" height="22" rx="4" fill="#1A1A18" opacity="0.85"/>
+          <text x="263" y="223" font-family="DM Sans,sans-serif" font-size="10.5" fill="#F5F0E8" font-weight="600">Politechnika Warszawska</text>
+
+          <!-- Uniwersytet Warszawski — Śródmieście/Ochota ~(238,255) -->
+          <circle cx="238" cy="255" r="10" fill="#C4975A" filter="url(#softglow)" opacity="0.3"/>
+          <circle cx="238" cy="255" r="6" fill="#C4975A" filter="url(#glow)"/>
+          <circle cx="238" cy="255" r="3" fill="#fff"/>
+          <rect x="115" y="245" width="118" height="22" rx="4" fill="#1A1A18" opacity="0.85"/>
+          <text x="120" y="260" font-family="DM Sans,sans-serif" font-size="10.5" fill="#F5F0E8" font-weight="600">Uniwersytet Warszawski</text>
+
+          <!-- SGH — Mokotów ~(240,345) -->
+          <circle cx="240" cy="345" r="10" fill="#C4975A" filter="url(#softglow)" opacity="0.3"/>
+          <circle cx="240" cy="345" r="6" fill="#C4975A" filter="url(#glow)"/>
+          <circle cx="240" cy="345" r="3" fill="#fff"/>
+          <rect x="250" y="335" width="152" height="22" rx="4" fill="#1A1A18" opacity="0.85"/>
+          <text x="255" y="350" font-family="DM Sans,sans-serif" font-size="10.5" fill="#F5F0E8" font-weight="600">SGH – Szkoła Gł. Handlowa</text>
+
+          <!-- WUM — Ochota ~(200,285) -->
+          <circle cx="200" cy="285" r="10" fill="#C4975A" filter="url(#softglow)" opacity="0.3"/>
+          <circle cx="200" cy="285" r="6" fill="#C4975A" filter="url(#glow)"/>
+          <circle cx="200" cy="285" r="3" fill="#fff"/>
+          <rect x="60" y="275" width="134" height="22" rx="4" fill="#1A1A18" opacity="0.85"/>
+          <text x="65" y="290" font-family="DM Sans,sans-serif" font-size="10.5" fill="#F5F0E8" font-weight="600">Warszawski Uni. Medyczny</text>
+
+          <!-- Akademia Koźmińskiego — Praga ~(330,195) -->
+          <circle cx="338" cy="195" r="10" fill="#C4975A" filter="url(#softglow)" opacity="0.3"/>
+          <circle cx="338" cy="195" r="6" fill="#C4975A" filter="url(#glow)"/>
+          <circle cx="338" cy="195" r="3" fill="#fff"/>
+          <rect x="348" y="185" width="138" height="22" rx="4" fill="#1A1A18" opacity="0.85"/>
+          <text x="353" y="200" font-family="DM Sans,sans-serif" font-size="10.5" fill="#F5F0E8" font-weight="600">Akademia Koźmińskiego</text>
+
+          <!-- UKSW — Bielany ~(165,95) -->
+          <circle cx="165" cy="95" r="10" fill="#C4975A" filter="url(#softglow)" opacity="0.3"/>
+          <circle cx="165" cy="95" r="6" fill="#C4975A" filter="url(#glow)"/>
+          <circle cx="165" cy="95" r="3" fill="#fff"/>
+          <rect x="175" y="85" width="48" height="22" rx="4" fill="#1A1A18" opacity="0.85"/>
+          <text x="180" y="100" font-family="DM Sans,sans-serif" font-size="10.5" fill="#F5F0E8" font-weight="600">UKSW</text>
+
+          <!-- Legenda -->
+          <rect x="26" y="464" width="180" height="44" rx="8" fill="#2A2820" stroke="#C4975A" stroke-width="0.8" opacity="0.9"/>
+          <circle cx="42" cy="480" r="5" fill="#C4975A"/>
+          <circle cx="42" cy="480" r="2.5" fill="#fff"/>
+          <text x="52" y="484" font-family="DM Sans,sans-serif" font-size="10" fill="#E8D5B4">Ośrodek akademicki</text>
+          <rect x="36" y="491" width="20" height="8" rx="2" fill="#2E2820" stroke="#C4975A" stroke-width="0.8"/>
+          <text x="62" y="499" font-family="DM Sans,sans-serif" font-size="10" fill="#E8D5B4">Dzielnica w zasięgu</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="faq" id="faq">
   <div class="inner">
     <div class="faq-inner">
@@ -468,6 +635,7 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
     <li><a href="#uslugi">Usługi</a></li>
     <li><a href="#o-mnie">O mnie</a></li>
     <li><a href="#homestaging">Homestaging</a></li>
+    <li><a href="#mapa">Mapa</a></li>
     <li><a href="#kontakt">Kontakt</a></li>
   </ul>
 </footer>
@@ -481,6 +649,48 @@ document.querySelectorAll('.faq-q').forEach(q=>{
     if(!wasOpen) item.classList.add('open');
   });
 });
+</script>
+<style>
+.rev-dots{display:flex;gap:.5rem;margin-top:1rem;justify-content:center}
+.rev-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:background .3s,transform .3s}
+.rev-dot.active{background:var(--accent);transform:scale(1.3)}
+#reviewCarousel blockquote{transition:opacity .4s ease}
+</style>
+<script>
+const reviews = [
+  {quote:'„Kasia zajmuje się moimi trzema mieszkaniami od lat. Nigdy nie musiałem jechać na miejsce — czynsz wpływa co miesiąc."',initials:'MK',name:'Marek K.',loc:'właściciel · Mokotów, Warszawa'},
+  {quote:'„Wreszcie mogę spać spokojnie. Kasia znalazła studentów, podpisała umowy i zajęła się usterką — wszystko bez mojego udziału."',initials:'AW',name:'Anna W.',loc:'właścicielka · Wola, Warszawa'},
+  {quote:'„Polecam każdemu, kto ma mieszkanie i nie chce się nim zajmować. Profesjonalizm i ludzkie podejście w jednym."',initials:'PT',name:'Piotr T.',loc:'właściciel · Śródmieście, Warszawa'},
+  {quote:'„Mieszkanie stało puste miesiącami, zanim trafiłam do Kasi. Po homestagingu wynajęła je w dwa tygodnie za wyższy czynsz niż zakładałam."',initials:'MN',name:'Monika N.',loc:'właścicielka · Ursynów, Warszawa'},
+  {quote:'„Szczera, konkretna i naprawdę zaangażowana. Czuć, że jej zależy na mieszkaniu tak jak właścicielowi."',initials:'RB',name:'Robert B.',loc:'właściciel · Ochota, Warszawa'}
+];
+let current=0;
+function renderDots(){
+  const dots=document.getElementById('rev-dots');
+  dots.innerHTML='';
+  reviews.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='rev-dot'+(i===current?' active':'');
+    d.addEventListener('click',()=>showReview(i));
+    dots.appendChild(d);
+  });
+}
+function showReview(idx){
+  current=idx;
+  const q=document.getElementById('rev-quote');
+  q.style.opacity='0';
+  setTimeout(()=>{
+    const r=reviews[idx];
+    q.textContent=r.quote;
+    document.getElementById('rev-av').textContent=r.initials;
+    document.getElementById('rev-name').textContent=r.name;
+    document.getElementById('rev-loc').textContent=r.loc;
+    q.style.opacity='1';
+    renderDots();
+  },400);
+}
+showReview(0);
+setInterval(()=>showReview((current+1)%reviews.length),5000);
 </script>
 </body>
 </html>
