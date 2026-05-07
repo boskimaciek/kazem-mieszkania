@@ -1,0 +1,6 @@
+include:
+  - sitemap.xml
+  - robots.txt
+
+plugins:
+  - jekyll-sitemap
