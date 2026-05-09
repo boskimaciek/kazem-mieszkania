@@ -719,6 +719,28 @@ function dotIcon(status) {
          ';border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 6px rgba(0,0,0,.5)"></div></div>'});
 }
 
+function makeOv(eps, p, big) {
+  // Wspólny overlay na zdjęcie — czytelny na każdym tle
+  var grad = 'linear-gradient(transparent,rgba(0,0,0,.82) 55%,rgba(0,0,0,.95))';
+  var sh   = 'text-shadow:0 1px 4px rgba(0,0,0,.9),0 0 12px rgba(0,0,0,.7)';
+  var pad  = big ? '14px 12px 10px' : '6px 4px 4px';
+  var fs   = big ? '13px' : '10px';
+  var fs2  = big ? '11px' : '9px';
+  var txt  = '', col = '#fff';
+  if(eps === 'available') {
+    txt = p.price ? p.price + ' zł<span style="font-size:'+fs2+';opacity:.8">/mies.</span>' : 'Wolne';
+    col = '#fff';
+  } else if(eps === 'soon') {
+    txt = 'Wolne od ' + (shortDt(p.dateFrom) || '—');
+    col = '#fde68a';
+  } else {
+    txt = 'Zajęte do ' + (shortDt(p.dateTo) || '—');
+    col = '#f3f4f6';
+  }
+  return '<div style="position:absolute;bottom:0;left:0;right:0;background:'+grad+';padding:'+pad+';text-align:center">'+
+         '<span style="color:'+col+';font-weight:700;font-size:'+fs+';letter-spacing:.01em;'+sh+'">'+txt+'</span></div>';
+}
+
 function buildPopup(o) {
   var ms  = mainStatus(o), pp = o.pokoje||[];
   var slM = {available:{cls:'av',txt:'Dostępne'},soon:{cls:'so',txt:'Wkrótce'},taken:{cls:'tk',txt:'Zajęte'}};
@@ -732,11 +754,8 @@ function buildPopup(o) {
       var p=pp[i],src=getImg(p,o);
       var photo=src?'<img src="'+src+'" style="width:'+sz+'px;height:'+sz+'px;object-fit:cover;display:block" loading="lazy">'
                    :'<div style="width:'+sz+'px;height:'+sz+'px;background:#d0c8be;display:flex;align-items:center;justify-content:center;font-size:'+(sz*.3)+'px">🏠</div>';
-      var ov='';
       var eps2=effectiveStatus(p);
-      if(eps2==='available') ov='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:4px 3px;text-align:center"><span style="color:#fff;font-weight:700;font-size:11px">'+p.price+' zł</span></div>';
-      else if(eps2==='soon') ov='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:4px 3px;text-align:center"><span style="color:#fde68a;font-weight:700;font-size:10px">Wkrótce'+(p.dateFrom?' od '+shortDt(p.dateFrom):'')+'</span></div>';
-      else ov='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:4px 3px;text-align:center"><span style="color:#f3f4f6;font-size:10px">Zajęte</span></div>';
+      var ov=makeOv(eps2, p, false);
       cells+='<div style="position:relative;overflow:hidden">'+photo+ov+'<div style="position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:'+dc[eps2]+';border:1.5px solid #fff"></div></div>';
     }
     var avN=pp.filter(function(x){return effectiveStatus(x)==='available';}).length;
@@ -753,11 +772,8 @@ function buildPopup(o) {
       '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">Zobacz szczegóły →</a></div>';
   } else {
     var p0=pp[0]||{},src0=getImg(p0,o);
-    var ov0='';
     var eps0=effectiveStatus(p0);
-    if(eps0==='available') ov0='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:10px;text-align:center"><span style="color:#fff;font-weight:700;font-size:14px">'+p0.price+' zł/mies.</span></div>';
-    else if(eps0==='soon') ov0='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:10px;text-align:center"><span style="color:#fde68a;font-weight:700;font-size:12px">Wkrótce'+(p0.dateFrom?' · od '+shortDt(p0.dateFrom):'')+'</span></div>';
-    else ov0='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:10px;text-align:center"><span style="color:#f3f4f6;font-size:12px">Zajęte</span></div>';
+    var ov0=makeOv(eps0, p0, true);
     return '<div class="kpi" onclick="openById('+o.id+',\''+(p0.id||'')+'\')" >'+
       '<div style="position:relative;height:110px;overflow:hidden;border-radius:10px 10px 0 0">'+
         (src0?'<img src="'+src0+'" style="width:100%;height:110px;object-fit:cover;display:block">':'<div style="width:100%;height:110px;background:#d0c8be;display:flex;align-items:center;justify-content:center;font-size:2.5rem">🏠</div>')+
