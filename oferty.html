@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oferty — KaZem Mieszkania | Pokoje i mieszkania Warszawa</title>
+<meta property="og:title" content="Aktualne oferty — KaZem Mieszkania">
+<meta property="og:description" content="Pokoje studenckie i mieszkania na wynajem w Warszawie. Sprawdź dostępność i ceny.">
+<meta property="og:url" content="https://kazemmieszkania.github.io/oferty.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://kazemmieszkania.github.io/oferty.html">
+<meta name="description" content="Aktualne oferty pokoi i mieszkań na wynajem w Warszawie. Zarządzane przez KaZem Mieszkania — Katarzyna Zemlik.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#F5F0E8;--dark:#1A1A18;--accent:#C4975A;--al:#E8D5B4;
+  --muted:#6B6459;--white:#FDFCF9;--border:#E2DAC8;--red:#dc2626;--green:#15803d
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(253,252,249,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--dark);text-decoration:none}
+.logo span{color:var(--accent)}
+.nav-back{font-size:.85rem;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.nav-cta{background:var(--dark);color:var(--white);padding:.5rem 1.3rem;border-radius:100px;font-size:.85rem;font-weight:500;text-decoration:none;transition:background .2s}
+.nav-cta:hover{background:var(--accent)}
+#btnAdminLogin{display:inline-flex;background:none;border:1px solid var(--border);color:var(--muted);padding:.42rem .9rem;border-radius:100px;font-size:.78rem;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s}
+#btnAdminLogin:hover{border-color:var(--accent);color:var(--accent)}
+#btnAdminPanel{display:none;background:var(--accent);color:#fff;padding:.42rem .9rem;border-radius:100px;font-size:.78rem;font-weight:600;font-family:'DM Sans',sans-serif;border:none;cursor:pointer;transition:background .2s}
+#btnAdminPanel:hover{background:var(--dark)}
+#btnAdminLogout{display:none;background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.2);padding:.42rem .9rem;border-radius:100px;font-size:.78rem;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s}
+#btnAdminLogout:hover{background:var(--red);color:#fff}
+
+/* HERO */
+.hero{padding:8rem 2.5rem 4rem;text-align:center;background:var(--dark);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(196,151,90,.04) 40px,rgba(196,151,90,.04) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(196,151,90,.04) 40px,rgba(196,151,90,.04) 41px)}
+.hlabel{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:1rem;position:relative}
+.hero h1{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--white);line-height:1.1;margin-bottom:1rem;position:relative}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero p{font-size:1rem;color:rgba(255,255,255,.55);max-width:480px;margin:0 auto 2rem;position:relative;line-height:1.75}
+.hstats{display:flex;gap:0;justify-content:center;position:relative;max-width:380px;margin:0 auto}
+.hstat{flex:1;text-align:center;padding:.5rem;border-right:1px solid rgba(255,255,255,.1)}
+.hstat:last-child{border-right:none}
+.hstat-n{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--accent)}
+.hstat-l{font-size:.7rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em}
+
+/* MAP */
+.mapsec{background:var(--dark);padding:3rem 2.5rem}
+.maphdr{max-width:1100px;margin:0 auto 1.2rem;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.maphdr h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--white)}
+.maphdr p{font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.6}
+.mapwrap{max-width:1100px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.1);height:440px;position:relative}
+#map{height:100%;width:100%}
+.maplegend{position:absolute;bottom:.75rem;left:.75rem;z-index:500;background:rgba(253,252,249,.95);border-radius:8px;padding:.55rem .9rem;border:1px solid var(--border);display:flex;gap:.85rem;font-size:.73rem}
+.legitem{display:flex;align-items:center;gap:.35rem;color:var(--dark);font-weight:500}
+.legdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.legdot.av{background:#22c55e}.legdot.so{background:#f59e0b}.legdot.tk{background:#9ca3af}
+.leaflet-popup-content-wrapper{background:var(--white);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.25);padding:0;overflow:hidden;border:none}
+.leaflet-popup-content{margin:0;width:auto!important}
+.leaflet-popup-tip-container{display:none}
+.leaflet-popup-close-button{top:6px!important;right:6px!important;color:var(--muted)!important;z-index:10}
+.kpi{display:block;cursor:pointer}
+.kpi-img{height:100px;overflow:hidden}
+.kpi-img img{width:100%;height:100%;object-fit:cover;display:block}
+.kpi-body{padding:.7rem .9rem .4rem}
+.kpi-status{font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.2rem}
+.kpi-status.av{color:#15803d}.kpi-status.so{color:#b45309}.kpi-status.tk{color:#6b7280}
+.kpi-title{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:var(--dark);line-height:1.25;margin-bottom:.15rem}
+.kpi-meta{font-size:.7rem;color:var(--muted);margin-bottom:.3rem}
+.kpi-cta{display:block;text-align:center;padding:.4rem;background:var(--dark);color:var(--white);font-size:.72rem;font-weight:600;text-decoration:none;transition:background .2s}
+.kpi-cta:hover{background:var(--accent)}
+
+/* FILTERS */
+.filtwrap{background:var(--white);border-bottom:1px solid var(--border);padding:1.1rem 2.5rem;position:sticky;top:64px;z-index:50}
+.filters{max-width:1100px;margin:0 auto;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.fbtn{padding:.42rem 1rem;border-radius:100px;font-size:.81rem;font-weight:500;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.fbtn:hover,.fbtn.active{background:var(--dark);color:var(--white);border-color:var(--dark)}
+.fsep{width:1px;height:18px;background:var(--border);flex-shrink:0}
+.flabel{font-size:.73rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0}
+.fcount{margin-left:auto;font-size:.8rem;color:var(--muted)}
+
+/* GRID & CARDS */
+.listings{padding:2.5rem 2.5rem 2rem;max-width:1100px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+#pagination{max-width:1100px;margin:0 auto;padding:0 2.5rem 4rem;text-align:center}
+.pgwrap{display:inline-flex;gap:.4rem;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:100px;padding:.4rem .6rem}
+.pgbtn{padding:.4rem .85rem;border-radius:100px;border:none;background:transparent;color:var(--muted);font-size:.85rem;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;transition:all .18s;min-width:36px}
+.pgbtn:hover:not(.pgdis):not(.pgact){background:var(--cream);color:var(--dark)}
+.pgbtn.pgact{background:var(--dark);color:var(--white)}
+.pgbtn.pgdis{opacity:.35;cursor:default}
+.pgdots{color:var(--muted);font-size:.85rem;padding:0 .2rem}
+.card{background:var(--white);border-radius:16px;border:1px solid var(--border);overflow:hidden;transition:transform .22s,box-shadow .22s;cursor:pointer;position:relative}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 44px rgba(0,0,0,.09)}
+.card.taken{opacity:.55;filter:grayscale(.35)}
+.card.taken:hover{transform:none;box-shadow:none}
+.cimg{height:190px;position:relative;overflow:hidden;background:#e5e0d8}
+.cimg img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.card:hover .cimg img{transform:scale(1.04)}
+.cimg-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg,#e8e0d0,#d8d0c0)}
+.cstatus{position:absolute;top:10px;left:10px;padding:.28rem .8rem;border-radius:100px;font-size:.7rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;backdrop-filter:blur(8px)}
+.s-av{background:rgba(34,197,94,.15);color:#14532d;border:1px solid rgba(34,197,94,.3)}
+.s-so{background:rgba(245,158,11,.15);color:#78350f;border:1px solid rgba(245,158,11,.3)}
+.s-tk{background:rgba(156,163,175,.15);color:#374151;border:1px solid rgba(156,163,175,.3)}
+.ctype{position:absolute;top:10px;right:10px;background:rgba(26,26,24,.75);color:var(--white);padding:.26rem .72rem;border-radius:100px;font-size:.68rem;font-weight:500;backdrop-filter:blur(8px)}
+.cbody{padding:1.3rem}
+.cbadge{font-size:.68rem;color:var(--accent);font-weight:600;letter-spacing:.04em;margin-bottom:.2rem}
+.cdistrict{font-size:.7rem;color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem}
+.ctitle{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:.45rem;line-height:1.3}
+.cdesc{font-size:.81rem;color:var(--muted);line-height:1.65;margin-bottom:.9rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cdetails{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem}
+.cdet{background:var(--cream);border-radius:6px;padding:.22rem .6rem;font-size:.73rem;color:var(--muted)}
+.cfooter{display:flex;align-items:center;justify-content:space-between;padding-top:.9rem;border-top:1px solid var(--border)}
+.cprice{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--dark)}
+.cprice small{font-family:'DM Sans',sans-serif;font-size:.7rem;color:var(--muted);font-weight:400}
+.ccta{background:var(--dark);color:var(--white);padding:.48rem 1.05rem;border-radius:100px;font-size:.78rem;font-weight:500;border:none;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif}
+.ccta:hover{background:var(--accent)}
+.card.taken .ccta{background:var(--muted);pointer-events:none}
+.tbanner{background:var(--dark);color:rgba(255,255,255,.6);text-align:center;padding:.55rem;font-size:.76rem}
+.tbanner strong{color:var(--accent)}
+.sbanner{background:#fff7ed;color:#92400e;text-align:center;padding:.55rem;font-size:.76rem}
+.sbanner strong{color:#b45309}
+.card-admin-btns{position:absolute;bottom:.6rem;right:.6rem;display:none;gap:.35rem;z-index:10}
+body.is-admin .card-admin-btns{display:flex}
+.cab{padding:.3rem .75rem;border-radius:100px;font-size:.7rem;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.cab-edit{background:rgba(196,151,90,.9);color:#fff}
+.cab-edit:hover{background:var(--accent)}
+.cab-del{background:rgba(220,38,38,.85);color:#fff}
+.cab-del:hover{background:var(--red)}
+
+/* OFFER DETAIL MODAL */
+.moverlay{position:fixed;inset:0;background:rgba(26,26,24,.75);z-index:2000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.moverlay.open{display:flex}
+.modal{background:var(--white);border-radius:20px;width:min(860px,95vw);max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 40px 80px rgba(0,0,0,.5);position:relative;animation:mopen .25s ease}
+@keyframes mopen{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.mclose{position:absolute;top:.9rem;right:.9rem;z-index:10;background:rgba(26,26,24,.55);color:#fff;border:none;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:background .2s}
+.mclose:hover{background:var(--accent)}
+.mbody{overflow-y:auto;flex:1}
+.mgal{position:relative;height:300px;background:#1a1a18;flex-shrink:0}
+.mgal img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .25s}
+.mgal-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#2a2520,#1a1a18)}
+.gnav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);backdrop-filter:blur(4px);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.gnav:hover{background:rgba(196,151,90,.8)}
+.gprev{left:.9rem}.gnext{right:.9rem}
+.gdots{position:absolute;bottom:.65rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem}
+.gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);border:none;cursor:pointer;transition:all .2s;padding:0}
+.gdot.active{background:#fff;transform:scale(1.3)}
+.gcnt{position:absolute;top:.65rem;left:.65rem;background:rgba(26,26,24,.55);color:#fff;font-size:.73rem;padding:.22rem .65rem;border-radius:100px;backdrop-filter:blur(4px)}
+.mcontent{padding:1.6rem 2rem 2rem}
+.mtop{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;margin-bottom:.9rem}
+.mstat{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem}
+.mstat.av{color:#15803d}.mstat.so{color:#b45309}.mstat.tk{color:#6b7280}
+.mtitle{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--dark);line-height:1.2;margin-bottom:.25rem}
+.mloc{font-size:.83rem;color:var(--muted)}
+.mpricebox{text-align:right;flex-shrink:0}
+.mprice{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--dark);line-height:1}
+.mprice small{font-family:'DM Sans',sans-serif;font-size:.72rem;color:var(--muted);font-weight:400}
+.mdeposit{font-size:.76rem;color:var(--muted);margin-top:.2rem}
+.mchips{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.mchip{background:var(--cream);border-radius:8px;padding:.38rem .8rem;font-size:.8rem;color:var(--muted)}
+.mchip strong{color:var(--dark);font-weight:600}
+.mlabel{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:600;margin-bottom:.45rem}
+.mdesc{font-size:.9rem;color:var(--muted);line-height:1.78;margin-bottom:1.3rem}
+.mfeats{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.4rem}
+.mfeat{background:var(--cream);border:1px solid var(--border);border-radius:100px;padding:.28rem .8rem;font-size:.78rem;color:var(--dark)}
+.mcontact{background:var(--cream);border-radius:14px;padding:1.3rem;border:1px solid var(--border)}
+.mcontact h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:.9rem}
+.mform{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.mfg{display:flex;flex-direction:column;gap:.3rem}
+.mfg.full{grid-column:1/-1}
+.mfg label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:500}
+.mfg input,.mfg textarea{background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:.62rem .88rem;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--dark);outline:none;transition:border-color .2s;width:100%}
+.mfg input:focus,.mfg textarea:focus{border-color:var(--accent)}
+.mfg textarea{resize:vertical;min-height:78px}
+.msend{grid-column:1/-1;background:var(--dark);color:var(--white);border:none;border-radius:100px;padding:.82rem;font-size:.88rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:background .2s;width:100%}
+.msend:hover{background:var(--accent)}
+.mdirect{display:flex;gap:.75rem;margin-top:.85rem;flex-wrap:wrap}
+.mdirectbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem .9rem;border-radius:100px;font-size:.82rem;font-weight:500;text-decoration:none;transition:all .2s;border:1.5px solid var(--border);color:var(--dark);white-space:nowrap}
+.mdirectbtn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ADMIN LOGIN MODAL */
+.login-overlay{position:fixed;inset:0;background:rgba(26,26,24,.85);z-index:5000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.login-overlay.open{display:flex}
+.login-box{background:var(--white);border-radius:20px;padding:2.2rem;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.login-logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--dark);margin-bottom:.25rem}
+.login-logo span{color:var(--accent)}
+.login-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.6rem}
+.login-box input{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:.72rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--dark);outline:none;margin-bottom:.85rem;transition:border-color .2s}
+.login-box input:focus{border-color:var(--accent)}
+.login-btn{width:100%;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.8rem;font-size:.92rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:background .2s}
+.login-btn:hover{background:var(--accent)}
+.login-err{color:var(--red);font-size:.8rem;margin-top:.6rem;display:none}
+.login-cancel{background:none;border:none;font-size:.78rem;color:var(--muted);cursor:pointer;margin-top:.75rem;font-family:'DM Sans',sans-serif;text-decoration:underline}
+
+/* ADMIN PANEL DRAWER */
+.panel-overlay{position:fixed;inset:0;background:rgba(26,26,24,.8);z-index:3000;display:none;align-items:flex-start;justify-content:flex-end;backdrop-filter:blur(6px)}
+.panel-overlay.open{display:flex}
+.panel-drawer{background:var(--white);width:min(600px,100vw);height:100vh;overflow-y:auto;box-shadow:-20px 0 60px rgba(0,0,0,.3);animation:drawerIn .3s ease}
+@keyframes drawerIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.panel-hdr{background:var(--dark);padding:1.2rem 1.6rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.panel-hdr-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white)}
+.panel-hdr-title span{color:var(--accent)}
+.pclose{background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.pclose:hover{background:rgba(196,151,90,.6)}
+.panel-body{padding:1.4rem 1.6rem}
+.ptabs{display:flex;gap:.4rem;margin-bottom:1.5rem;border-bottom:2px solid var(--border)}
+.ptab{padding:.55rem 1.1rem;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.ptab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.ptabpanel{display:none}
+.ptabpanel.active{display:block}
+.pol{display:flex;flex-direction:column;gap:.75rem}
+.poi{background:var(--cream);border-radius:12px;border:1px solid var(--border);padding:.9rem 1rem;display:flex;align-items:center;gap:.9rem}
+.poi.taken{opacity:.6}
+.poi-thumb{width:56px;height:56px;border-radius:8px;overflow:hidden;background:#e0d8cc;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+.poi-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.poi-info{flex:1;min-width:0}
+.poi-title{font-size:.88rem;font-weight:700;color:var(--dark);margin-bottom:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.poi-meta{font-size:.72rem;color:var(--muted)}
+.poi-badges{display:flex;gap:.3rem;margin-top:.25rem;flex-wrap:wrap}
+.pb{font-size:.62rem;padding:.12rem .5rem;border-radius:100px;font-weight:600}
+.pb-av{background:#dcfce7;color:#15803d}
+.pb-so{background:#fef3c7;color:#b45309}
+.pb-tk{background:#f3f4f6;color:#6b7280}
+.poi-actions{display:flex;gap:.4rem;flex-shrink:0}
+.pab{padding:.35rem .8rem;border-radius:100px;font-size:.72rem;font-weight:500;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.pab:hover{border-color:var(--accent);color:var(--accent)}
+.pab.del:hover{border-color:var(--red);color:var(--red)}
+.add-offer-btn{width:100%;margin-top:1rem;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.75rem;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:background .2s}
+.add-offer-btn:hover{background:var(--accent)}
+.fg{display:flex;flex-direction:column;gap:.32rem;margin-bottom:.85rem}
+.fg label{font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.fg input,.fg select,.fg textarea{background:var(--cream);border:1.5px solid var(--border);border-radius:9px;padding:.68rem .95rem;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--dark);outline:none;transition:border-color .2s;width:100%}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent)}
+.fg textarea{resize:vertical;min-height:70px}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.fsect{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:600;margin:.3rem 0 .8rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+.form-hint{font-size:.73rem;color:var(--muted);margin-top:-.4rem;margin-bottom:.85rem;line-height:1.5}
+.rlist{display:flex;flex-direction:column;gap:.9rem;margin-bottom:.75rem}
+.rform{background:var(--cream);border-radius:10px;padding:1rem;border:1px solid var(--border)}
+.rform-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.rform-title{font-size:.85rem;font-weight:700;color:var(--dark)}
+.rdel{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.95rem;transition:color .2s;padding:.2rem .4rem;border-radius:4px}
+.rdel:hover{color:var(--red)}
+.add-room{width:100%;background:transparent;border:1.5px dashed var(--border);border-radius:9px;padding:.65rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--muted);cursor:pointer;transition:all .2s;margin-bottom:.9rem}
+.add-room:hover{border-color:var(--accent);color:var(--accent)}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:.5rem}
+.pphoto{position:relative;aspect-ratio:1;border-radius:7px;overflow:hidden;background:#e0d8cc;cursor:grab}
+.pphoto img{width:100%;height:100%;object-fit:cover;display:block}
+.pphoto.main-p::after{content:'★';position:absolute;top:3px;left:3px;background:rgba(196,151,90,.9);color:#fff;font-size:.65rem;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:16px;text-align:center}
+.ppdel{position:absolute;top:3px;right:3px;background:rgba(220,38,38,.85);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ppsetmain{position:absolute;bottom:3px;left:3px;background:rgba(196,151,90,.85);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.photo-add-tile{aspect-ratio:1;border-radius:7px;border:1.5px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s;font-size:1.2rem;color:var(--muted);gap:.25rem}
+.photo-add-tile:hover{border-color:var(--accent);color:var(--accent)}
+.photo-add-tile small{font-size:.6rem}
+.purl{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:.52rem .8rem;font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--dark);outline:none;margin-top:.3rem}
+.purl:focus{border-color:var(--accent)}
+.puprog{font-size:.72rem;color:var(--accent);margin-top:.25rem;display:none}
+.fact{display:flex;gap:.65rem;justify-content:flex-end;margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--border)}
+.btn-c{background:transparent;border:1.5px solid var(--border);border-radius:100px;padding:.65rem 1.4rem;font-size:.85rem;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--muted);transition:all .2s}
+.btn-c:hover{border-color:var(--muted);color:var(--dark)}
+.btn-s{background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.65rem 1.8rem;font-size:.85rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:background .2s}
+.btn-s:hover{background:var(--accent)}
+
+/* CONFIRM */
+.conf-overlay{position:fixed;inset:0;background:rgba(26,26,24,.7);z-index:6000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.conf-overlay.open{display:flex}
+.conf-box{background:var(--white);border-radius:16px;padding:2rem;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.conf-box h3{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.65rem}
+.conf-box p{font-size:.85rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.6}
+.conf-btns{display:flex;gap:.65rem}
+.conf-no{flex:1;background:var(--cream);border:1.5px solid var(--border);border-radius:100px;padding:.68rem;font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;color:var(--dark)}
+.conf-yes{flex:1;background:var(--red);color:#fff;border:none;border-radius:100px;padding:.68rem;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--dark);color:#fff;padding:.7rem 1.3rem;border-radius:100px;font-size:.83rem;font-weight:500;z-index:9999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.ok{background:var(--green)}
+.toast.err{background:var(--red)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:.85rem 1.2rem}
+  .hero{padding:5.5rem 1.4rem 3rem}
+  .hero h1{font-size:2.1rem}
+  .mapsec{padding:2rem 1.2rem}
+  .mapwrap{height:300px;border-radius:10px}
+  .filtwrap{padding:.9rem 1.2rem;top:55px}
+  .listings{padding:2rem 1.2rem 2rem}
+  .grid{grid-template-columns:1fr}
+  #pagination{padding:0 1.2rem 3rem}
+  .panel-drawer{width:100vw}
+  .fg-row{grid-template-columns:1fr}
+  .modal{width:100vw;max-height:100vh;border-radius:0}
+  .moverlay{align-items:flex-end}
+  .mcontent{padding:1.2rem 1.2rem 1.5rem}
+  .mtop{grid-template-columns:1fr}
+  .mpricebox{text-align:left}
+  .mform{grid-template-columns:1fr}
+  .mfg.full{grid-column:1}
+}
+@keyframes pulsering{0%,100%{transform:scale(1);opacity:.25}50%{transform:scale(1.7);opacity:0}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">Ka<span>Zem</span> Mieszkania</a>
+  <a href="index.html" class="nav-back">← Strona główna</a>
+  <div class="nav-right">
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+    <button id="btnAdminLogin"  onclick="showLoginModal()" title="Panel Kasi">⚙</button>
+    <button id="btnAdminPanel"  onclick="openPanel()">⚙ Zarządzaj</button>
+    <button id="btnAdminLogout" onclick="adminLogout()">Wyloguj</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hlabel">Aktualne oferty · Warszawa</div>
+  <h1>Pokoje i mieszkania<br>w <em>dobrych rękach</em></h1>
+  <p>Wszystkie oferty prowadzone przez KaZem Mieszkania — z pełną obsługą najmu.</p>
+  <div class="hstats">
+    <div class="hstat"><div class="hstat-n" id="cntAv">0</div><div class="hstat-l">Dostępne</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntSo">0</div><div class="hstat-l">Wkrótce</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntAll">0</div><div class="hstat-l">Wszystkich</div></div>
+  </div>
+</div>
+
+<section class="mapsec">
+  <div class="maphdr">
+    <div>
+      <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.4rem">Mapa ofert</div>
+      <h2>Znajdź ofertę na mapie</h2>
+    </div>
+    <p>Najedź na kropkę aby zobaczyć szczegóły.<br>Kliknij aby przejść do oferty.</p>
+  </div>
+  <div class="mapwrap">
+    <div id="map"></div>
+    <div class="maplegend">
+      <div class="legitem"><div class="legdot av"></div>Dostępne</div>
+      <div class="legitem"><div class="legdot so"></div>Wkrótce</div>
+      <div class="legitem"><div class="legdot tk"></div>Zajęte</div>
+    </div>
+  </div>
+</section>
+
+<div class="filtwrap">
+  <div class="filters">
+    <span class="flabel">Typ:</span>
+    <button class="fbtn active" data-ft="type"   data-fv="all">Wszystkie</button>
+    <button class="fbtn"        data-ft="type"   data-fv="pokoj">🛏 Pokój</button>
+    <button class="fbtn"        data-ft="type"   data-fv="mieszkanie">🏠 Mieszkanie</button>
+    <div class="fsep"></div>
+    <span class="flabel">Status:</span>
+    <button class="fbtn active" data-ft="status" data-fv="all">Wszystkie</button>
+    <button class="fbtn"        data-ft="status" data-fv="available">Dostępne</button>
+    <button class="fbtn"        data-ft="status" data-fv="soon">Wkrótce</button>
+    <button class="fbtn"        data-ft="status" data-fv="taken">Zajęte</button>
+    <span class="fcount" id="fcount"></span>
+  </div>
+</div>
+
+<div class="listings"><div class="grid" id="grid"></div></div>
+<div id="pagination"></div>
+
+<!-- OFFER DETAIL MODAL -->
+<div class="moverlay" id="moverlay">
+  <div class="modal">
+    <button class="mclose" id="mclose">✕</button>
+    <div class="mgal" id="mgal">
+      <img id="mgalimg" src="" alt="" style="display:none">
+      <div class="mgal-ph" id="mgalph">🏠</div>
+      <button class="gnav gprev" id="gprev">‹</button>
+      <button class="gnav gnext" id="gnext">›</button>
+      <div class="gdots" id="gdots"></div>
+      <div class="gcnt"  id="gcnt"></div>
+    </div>
+    <div class="mbody">
+      <div class="mcontent">
+        <div class="mtop">
+          <div>
+            <div class="mstat" id="mstat"></div>
+            <div class="mtitle" id="mtitle"></div>
+            <div class="mloc"   id="mloc"></div>
+          </div>
+          <div class="mpricebox">
+            <div class="mprice"   id="mprice"></div>
+            <div class="mdeposit" id="mdeposit"></div>
+          </div>
+        </div>
+        <div class="mchips" id="mchips"></div>
+        <div class="mlabel">Opis</div>
+        <div class="mdesc"  id="mdesc"></div>
+        <div class="mfeats" id="mfeats"></div>
+        <div class="mcontact">
+          <h3>📞 Zapytaj o tę ofertę</h3>
+          <div class="mform">
+            <div class="mfg"><label>Imię</label><input type="text" id="mfname"  placeholder="Jan Kowalski"></div>
+            <div class="mfg"><label>Telefon</label><input type="tel" id="mfphone" placeholder="+48 600 000 000"></div>
+            <div class="mfg full"><label>Wiadomość</label><textarea id="mfmsg" rows="3"></textarea></div>
+            <button class="msend" id="msend">Wyślij zapytanie →</button>
+          </div>
+          <div class="mdirect">
+            <a href="tel:+48723168200"              class="mdirectbtn">📞 723 168 200</a>
+            <a href="mailto:kasia@kazemmieszkania.pl" class="mdirectbtn">✉️ E-mail</a>
+            <a href="https://wa.me/48723168200" target="_blank" class="mdirectbtn">💬 WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">Ka<span>Zem</span></div>
+    <div class="login-sub">Panel Kasi · zarządzanie ofertami</div>
+    <input type="password" id="pwdInput" placeholder="Hasło" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Zaloguj się</button>
+    <div class="login-err" id="loginErr">Nieprawidłowe hasło</div>
+    <button class="login-cancel" onclick="hideLoginModal()">Anuluj</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL DRAWER -->
+<div class="panel-overlay" id="panelOverlay" onclick="if(event.target===this)closePanel()">
+  <div class="panel-drawer">
+    <div class="panel-hdr">
+      <div class="panel-hdr-title">Ka<span>Zem</span> Panel</div>
+      <button class="pclose" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="ptabs">
+        <button class="ptab active" id="ptab-lista-btn" onclick="switchPTab('lista')">📋 Oferty</button>
+        <button class="ptab"        id="ptab-nowa-btn"  onclick="switchPTab('nowa')">➕ Nowa oferta</button>
+      </div>
+
+      <!-- Lista -->
+      <div class="ptabpanel active" id="ptab-lista">
+        <div class="pol" id="panelOfferList"></div>
+        <button class="add-offer-btn" onclick="startNewOffer()">+ Dodaj nową ofertę</button>
+      </div>
+
+      <!-- Formularz -->
+      <div class="ptabpanel" id="ptab-nowa">
+        <input type="hidden" id="editId">
+        <div class="fsect">Podstawowe informacje</div>
+        <div class="fg-row">
+          <div class="fg"><label>Typ</label>
+            <select id="fType" onchange="onTypeChange(this.value)">
+              <option value="pokoj">🛏 Pokoje studenckie</option>
+              <option value="mieszkanie">🏠 Całe mieszkanie</option>
+            </select>
+          </div>
+          <div class="fg"><label>Dzielnica</label>
+            <select id="fDistrict">
+              <option>Mokotów</option><option>Wola</option><option>Śródmieście</option>
+              <option>Ochota</option><option>Żoliborz</option><option>Ursynów</option>
+              <option>Praga Północ</option><option>Praga Południe</option>
+              <option>Bielany</option><option>Bemowo</option><option>Inne</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg"><label>Tytuł oferty</label><input type="text" id="fTitle" placeholder="np. Mieszkanie studenckie przy PW"></div>
+        <div class="fg-row">
+          <div class="fg"><label>Ulica i numer</label><input type="text" id="fStreet" placeholder="ul. Noakowskiego 12"></div>
+          <div class="fg"><label>Piętro</label><input type="text" id="fFloor" placeholder="3/5"></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label>Pokoi w mieszkaniu</label><input type="number" id="fTotalRooms" placeholder="3" min="1"></div>
+          <div class="fg"><label>Wyposażenie (po przecinku)</label><input type="text" id="fFeatures" placeholder="Umeblowany, Internet, Pralka"></div>
+        </div>
+        <div class="fg"><label>Opis ogólny</label><textarea id="fDesc" placeholder="Opis mieszkania..."></textarea></div>
+        <input type="hidden" id="fLat">
+        <input type="hidden" id="fLng">
+        <div style="display:flex;gap:.6rem;align-items:center;margin-bottom:.85rem">
+          <button type="button" id="geocodeBtn" onclick="geocodeAddress()" style="flex-shrink:0;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.6rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--dark)'">📍 Znajdź na mapie</button>
+          <span id="geocodeStatus" style="font-size:.75rem;color:var(--muted)">Uzupełnij ulicę i dzielnicę, potem kliknij.</span>
+        </div>
+
+        <!-- Sekcja pokoi — widoczna tylko dla typu "pokoj" -->
+        <div id="sectionPokoje">
+          <div class="fsect">Pokoje / jednostki</div>
+          <div class="rlist" id="rlist"></div>
+          <button class="add-room" onclick="addRoom()">+ Dodaj pokój / jednostkę</button>
+        </div>
+
+        <!-- Sekcja dla całego mieszkania -->
+        <div id="sectionMieszkanie" style="display:none">
+          <div class="fsect">Szczegóły mieszkania</div>
+          <div class="fg-row">
+            <div class="fg"><label>Status</label>
+              <select id="mStatus" onchange="toggleMDate(this)">
+                <option value="available">✅ Dostępne</option>
+                <option value="soon">🕐 Wkrótce</option>
+                <option value="taken">🔒 Zajęte</option>
+              </select>
+            </div>
+            <div class="fg"><label>Metraż (m²)</label>
+              <input type="number" id="mArea" placeholder="62">
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Cena (zł/mies.)</label>
+              <input type="number" id="mPrice" placeholder="3800">
+            </div>
+            <div class="fg"><label>Kaucja (zł)</label>
+              <input type="number" id="mDeposit" placeholder="3800">
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg m-datefrom-wrap" style="display:none"><label>Dostępne od</label>
+              <input type="date" id="mDateFrom">
+            </div>
+            <div class="fg m-dateto-wrap" style="display:none"><label>Koniec umowy (zajęte do)</label>
+              <input type="date" id="mDateTo">
+            </div>
+          </div>
+          <div class="fg"><label>Opis</label>
+            <textarea id="mDesc" placeholder="Opis mieszkania..."></textarea>
+          </div>
+          <div class="fg"><label>Zdjęcia (max 10) — ★ = główne — przeciągnij aby zmienić kolejność</label>
+            <div class="pgrid" id="pg-mieszkanie"></div>
+            <div class="fg-row" style="margin-top:.4rem">
+              <input type="url" class="purl" id="purl-mieszkanie" placeholder="Wklej URL + Enter"
+                onkeydown="if(event.key==='Enter'){addUrl('mieszkanie',this.value);this.value='';}">
+              <div>
+                <input type="file" id="pfile-mieszkanie" accept="image/*" multiple style="display:none"
+                  onchange="uploadFiles('mieszkanie',this)">
+                <button class="btn-s" onclick="document.getElementById('pfile-mieszkanie').click()"
+                  style="width:100%;padding:.5rem;font-size:.78rem">📁 Wgraj z dysku</button>
+                <div class="puprog" id="pprog-mieszkanie">Wgrywanie…</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fact">
+          <button class="btn-c" onclick="cancelForm()">Anuluj</button>
+          <button class="btn-s" onclick="saveOffer()">Zapisz ofertę</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="conf-overlay" id="confOverlay">
+  <div class="conf-box">
+    <h3>Usunąć ofertę?</h3>
+    <p id="confMsg">Tej operacji nie można cofnąć.</p>
+    <div class="conf-btns">
+      <button class="conf-no"              onclick="closeConf()">Anuluj</button>
+      <button class="conf-yes" id="confYes">Usuń</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ── CONFIG ─────────────────────────────────────────────────────
+var PASS        = 'KaZem2025!';
+var CLOUD       = 'dlo3ipbs8';
+var PRESET      = 'kazemmieszkania';
+var STORAGE_KEY = 'kazem_offers_v3';
+var SB_URL      = 'https://ubwtihenkxobchdzafls.supabase.co';
+var SB_KEY      = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVid3RpaGVua3hvYmNoZHphZmxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNDk4MDEsImV4cCI6MjA5MzkyNTgwMX0.evLJqhSvN_bAtp7IhGlpg7LTwBLQjiDuBIlv6_9VKr8';
+var sb          = supabase.createClient(SB_URL, SB_KEY);
+
+// ── STATE ──────────────────────────────────────────────────────
+var OFFERS       = [];
+var IS_ADMIN     = false;
+var activeType   = 'all';
+var activeStatus = 'all';
+var PAGE_SIZE    = 9;
+var currentPage  = 1;
+var roomCount    = 0;
+var imgs_data    = {};
+var deleteId     = null;
+var gImgs        = [];
+var gIdx         = 0;
+
+// ── DATA ───────────────────────────────────────────────────────
+function loadOffers(callback) {
+  sb.from('offers').select('id, data').order('id')
+    .then(function(res) {
+      if(res.error) {
+        console.warn('[KaZem] Supabase load error:', res.error.message);
+        loadOffersLocal(); if(callback) callback(); return;
+      }
+      OFFERS = (res.data||[]).map(function(row){ return row.data; });
+      console.log('[KaZem] Loaded ' + OFFERS.length + ' offers from Supabase');
+      if(callback) callback();
+    })
+    .catch(function(e) {
+      console.warn('[KaZem] Supabase unreachable, using local:', e);
+      loadOffersLocal(); if(callback) callback();
+    });
+}
+
+function loadOffersLocal() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    OFFERS = raw ? JSON.parse(raw) : [];
+  } catch(e) { OFFERS = []; }
+}
+
+function saveOffers() {
+  // Zawsze zapisz lokalnie jako fallback
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(OFFERS));
+  // Zapisz do Supabase — upsert każdej oferty osobno
+  var rows = OFFERS.map(function(o){ return {id: o.id, data: o}; });
+  sb.from('offers').upsert(rows)
+    .then(function(res){
+      if(res.error) console.warn('[KaZem] Supabase save error:', res.error.message);
+      else console.log('[KaZem] Saved ' + rows.length + ' offers to Supabase');
+    })
+    .catch(function(e){ console.warn('[KaZem] Supabase save failed:', e); });
+}
+
+function deleteOfferFromDB(id) {
+  sb.from('offers').delete().eq('id', id)
+    .then(function(res){
+      if(res.error) console.warn('[KaZem] Supabase delete error:', res.error.message);
+    })
+    .catch(function(e){ console.warn('[KaZem] Supabase delete failed:', e); });
+}
+
+// ── AUTH ───────────────────────────────────────────────────────
+function showLoginModal() {
+  document.getElementById('loginOverlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('pwdInput').focus(); }, 100);
+}
+function hideLoginModal() {
+  document.getElementById('loginOverlay').classList.remove('open');
+  document.getElementById('pwdInput').value = '';
+  document.getElementById('loginErr').style.display = 'none';
+}
+function doLogin() {
+  if(document.getElementById('pwdInput').value === PASS) {
+    IS_ADMIN = true;
+    localStorage.setItem('kazem_auth', '1');
+    hideLoginModal();
+    applyAdminUI();
+    openPanel();
+    toast('Zalogowano jako Kasia 👋', 'ok');
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+    document.getElementById('pwdInput').value = '';
+    document.getElementById('pwdInput').focus();
+  }
+}
+function adminLogout() {
+  IS_ADMIN = false;
+  localStorage.removeItem('kazem_auth');
+  closePanel();
+  applyAdminUI();
+  renderGrid();
+  toast('Wylogowano');
+}
+function checkAuth() {
+  if(localStorage.getItem('kazem_auth') === '1') { IS_ADMIN = true; applyAdminUI(); }
+  else { document.getElementById('btnAdminLogin').style.display = 'inline-flex'; }
+}
+function applyAdminUI() {
+  document.getElementById('btnAdminLogin').style.display  = IS_ADMIN ? 'none'        : 'inline-flex';
+  document.getElementById('btnAdminPanel').style.display  = IS_ADMIN ? 'inline-flex' : 'none';
+  document.getElementById('btnAdminLogout').style.display = IS_ADMIN ? 'inline-flex' : 'none';
+  document.body.classList.toggle('is-admin', IS_ADMIN);
+}
+
+// ── HELPERS ────────────────────────────────────────────────────
+function effectiveStatus(p) {
+  // If taken but dateTo is within 14 days → auto-promote to 'soon'
+  if(p.status === 'taken' && p.dateTo) {
+    var daysLeft = (new Date(p.dateTo) - new Date()) / 86400000;
+    if(daysLeft >= 0 && daysLeft <= 14) return 'soon';
+  }
+  return p.status;
+}
+function mainStatus(o) {
+  var statuses = (o.pokoje||[]).map(effectiveStatus);
+  if(statuses.indexOf('available') >= 0) return 'available';
+  if(statuses.indexOf('soon')      >= 0) return 'soon';
+  return 'taken';
+}
+function fmtDate(d) {
+  if(!d) return '—';
+  return new Date(d).toLocaleDateString('pl-PL',{day:'numeric',month:'short',year:'numeric'});
+}
+function shortDt(d) {
+  if(!d) return '';
+  return new Date(d).toLocaleDateString('pl-PL',{day:'numeric',month:'short'});
+}
+function getImg(p, o) {
+  var imgs = p.imgs||[], mi = p.mainImg||0;
+  return imgs[mi] || imgs[0] || o.img || '';
+}
+
+// ── MAP ────────────────────────────────────────────────────────
+var map = L.map('map',{center:[52.225,21.010],zoom:12,zoomControl:true,attributionControl:false,zoomSnap:.5});
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd'}).addTo(map);
+
+function dotIcon(status) {
+  var c = {available:'#22c55e',soon:'#f59e0b',taken:'#9ca3af'}[status]||'#9ca3af';
+  var pulse = status==='available'
+    ? '<div style="position:absolute;inset:-3px;border-radius:50%;background:'+c+';opacity:.25;animation:pulsering 2s infinite"></div>' : '';
+  return L.divIcon({className:'',iconSize:[14,14],iconAnchor:[7,7],popupAnchor:[0,-9],
+    html:'<div style="position:relative;width:14px;height:14px">'+pulse+
+         '<div style="position:relative;z-index:1;width:14px;height:14px;border-radius:50%;background:'+c+
+         ';border:2px solid rgba(255,255,255,.9);box-shadow:0 2px 6px rgba(0,0,0,.5)"></div></div>'});
+}
+
+function buildPopup(o) {
+  var ms  = mainStatus(o), pp = o.pokoje||[];
+  var slM = {available:{cls:'av',txt:'Dostępne'},soon:{cls:'so',txt:'Wkrótce'},taken:{cls:'tk',txt:'Zajęte'}};
+  var sl  = slM[ms];
+  var dc  = {available:'#22c55e',soon:'#f59e0b',taken:'#9ca3af'};
+  if(pp.length > 1) {
+    var cols = Math.ceil(Math.sqrt(pp.length)), sz = cols<=2?90:70;
+    var popW = cols*sz+(cols-1)*2;
+    var cells = '';
+    for(var i=0;i<pp.length;i++){
+      var p=pp[i],src=getImg(p,o);
+      var photo=src?'<img src="'+src+'" style="width:'+sz+'px;height:'+sz+'px;object-fit:cover;display:block" loading="lazy">'
+                   :'<div style="width:'+sz+'px;height:'+sz+'px;background:#d0c8be;display:flex;align-items:center;justify-content:center;font-size:'+(sz*.3)+'px">🏠</div>';
+      var ov='';
+      var eps2=effectiveStatus(p);
+      if(eps2==='available') ov='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:4px 3px;text-align:center"><span style="color:#fff;font-weight:700;font-size:11px">'+p.price+' zł</span></div>';
+      else if(eps2==='soon') ov='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:4px 3px;text-align:center"><span style="color:#fde68a;font-weight:700;font-size:10px">Wkrótce'+(p.dateFrom?' od '+shortDt(p.dateFrom):'')+'</span></div>';
+      else ov='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:4px 3px;text-align:center"><span style="color:#f3f4f6;font-size:10px">Zajęte</span></div>';
+      cells+='<div style="position:relative;overflow:hidden">'+photo+ov+'<div style="position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:'+dc[eps2]+';border:1.5px solid #fff"></div></div>';
+    }
+    var avN=pp.filter(function(x){return effectiveStatus(x)==='available';}).length;
+    var soN=pp.filter(function(x){return effectiveStatus(x)==='soon';}).length;
+    var tkN=pp.filter(function(x){return effectiveStatus(x)==='taken';}).length;
+    var parts=[];
+    if(avN) parts.push('<span style="color:#15803d;font-weight:700">'+avN+' wolne</span>');
+    if(soN) parts.push('<span style="color:#b45309;font-weight:700">'+soN+' wkrótce</span>');
+    if(tkN) parts.push('<span style="color:#9ca3af">'+tkN+' zajęte</span>');
+    return '<div class="kpi" onclick="openById('+o.id+',null)" style="width:'+popW+'px">'+
+      '<div style="display:grid;grid-template-columns:repeat('+cols+','+sz+'px);gap:2px;border-radius:10px 10px 0 0;overflow:hidden">'+cells+'</div>'+
+      '<div class="kpi-body"><div class="kpi-status '+sl.cls+'" style="font-size:.67rem">'+parts.join(' · ')+'</div>'+
+      '<div class="kpi-title">'+o.title+'</div><div class="kpi-meta">'+o.district+(o.floor?' · p.'+o.floor:'')+'</div></div>'+
+      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">Zobacz szczegóły →</a></div>';
+  } else {
+    var p0=pp[0]||{},src0=getImg(p0,o);
+    var ov0='';
+    var eps0=effectiveStatus(p0);
+    if(eps0==='available') ov0='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:10px;text-align:center"><span style="color:#fff;font-weight:700;font-size:14px">'+p0.price+' zł/mies.</span></div>';
+    else if(eps0==='soon') ov0='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:10px;text-align:center"><span style="color:#fde68a;font-weight:700;font-size:12px">Wkrótce'+(p0.dateFrom?' · od '+shortDt(p0.dateFrom):'')+'</span></div>';
+    else ov0='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.88));padding:10px;text-align:center"><span style="color:#f3f4f6;font-size:12px">Zajęte</span></div>';
+    return '<div class="kpi" onclick="openById('+o.id+',\''+(p0.id||'')+'\')" >'+
+      '<div style="position:relative;height:110px;overflow:hidden;border-radius:10px 10px 0 0">'+
+        (src0?'<img src="'+src0+'" style="width:100%;height:110px;object-fit:cover;display:block">':'<div style="width:100%;height:110px;background:#d0c8be;display:flex;align-items:center;justify-content:center;font-size:2.5rem">🏠</div>')+
+        ov0+'<div style="position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;background:'+dc[eps0||ms]+';border:2px solid #fff"></div></div>'+
+      '<div class="kpi-body"><div class="kpi-status '+sl.cls+'">'+sl.txt+'</div>'+
+      '<div class="kpi-title">'+o.title+'</div><div class="kpi-meta">'+o.district+(o.floor?' · p.'+o.floor:'')+'</div></div>'+
+      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">Zobacz szczegóły →</a></div>';
+  }
+}
+
+var mapMarkers=[];
+function renderMap(list){
+  mapMarkers.forEach(function(m){m.remove();}); mapMarkers=[];
+  (list||OFFERS).forEach(function(o){
+    var lat=parseFloat(o.lat),lng=parseFloat(o.lng); if(isNaN(lat)||isNaN(lng)) return;
+    var pp2=o.pokoje||[],cols2=Math.ceil(Math.sqrt(pp2.length)),sz2=cols2<=2?90:70;
+    var pw=pp2.length>1?cols2*sz2+(cols2-1)*2+4:224;
+    var m=L.marker([lat,lng],{icon:dotIcon(mainStatus(o))}).addTo(map);
+    m.bindPopup(buildPopup(o),{maxWidth:pw+20,minWidth:pw,autoPan:true,autoPanPaddingTopLeft:L.point(20,80),autoPanPaddingBottomRight:L.point(20,20)});
+    m.on('mouseover',function(){this.openPopup();});
+    m.on('mouseout',function(){var self=this;setTimeout(function(){var el=self.getPopup()&&self.getPopup().getElement();if(!el||!el.matches(':hover'))self.closePopup();else el.addEventListener('mouseleave',function(){self.closePopup();},{once:true});},120);});
+    mapMarkers.push(m);
+  });
+}
+function resetView(list){
+  if(!list||!list.length){map.setView([52.225,21.010],12,{animate:true});return;}
+  if(list.length===1){map.setView([list[0].lat,list[0].lng],14,{animate:true});return;}
+  var lats=list.map(function(o){return parseFloat(o.lat);}),lngs=list.map(function(o){return parseFloat(o.lng);});
+  map.fitBounds([[Math.min.apply(null,lats)-.012,Math.min.apply(null,lngs)-.02],[Math.max.apply(null,lats)+.012,Math.max.apply(null,lngs)+.02]],{animate:true,padding:[30,30]});
+}
+
+// ── GRID ───────────────────────────────────────────────────────
+function renderGrid(){
+  var ord={available:0,soon:1,taken:2};
+  var filtered=OFFERS.filter(function(o){
+    if(activeType!=='all'&&o.type!==activeType) return false;
+    if(activeStatus!=='all'&&mainStatus(o)!==activeStatus) return false;
+    return true;
+  });
+  document.getElementById('cntAv').textContent =OFFERS.filter(function(o){return mainStatus(o)==='available';}).length;
+  document.getElementById('cntSo').textContent =OFFERS.filter(function(o){return mainStatus(o)==='soon';}).length;
+  document.getElementById('cntAll').textContent=OFFERS.length;
+
+  var expanded=[];
+  filtered.forEach(function(o){(o.pokoje||[]).forEach(function(p){expanded.push({o:o,p:p});});});
+  expanded.sort(function(a,b){
+    var sa=ord[effectiveStatus(a.p)]!==undefined?ord[effectiveStatus(a.p)]:2, sb=ord[effectiveStatus(b.p)]!==undefined?ord[effectiveStatus(b.p)]:2;
+    if(sa!==sb) return sa-sb;
+    return (ord[mainStatus(a.o)]||2)-(ord[mainStatus(b.o)]||2);
+  });
+
+  var total=expanded.length, totalPages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+  if(currentPage>totalPages) currentPage=1;
+  var pageItems=expanded.slice((currentPage-1)*PAGE_SIZE,currentPage*PAGE_SIZE);
+  document.getElementById('fcount').textContent=total?'Wyników: '+total+(totalPages>1?' (str. '+currentPage+'/'+totalPages+')':''):'Brak wyników';
+
+  var grid=document.getElementById('grid');
+  if(!expanded.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted)">'+
+      '<div style="font-size:3rem;margin-bottom:1rem">🏠</div>'+
+      '<div style="font-family:\'Playfair Display\',serif;font-size:1.4rem;margin-bottom:.5rem">Brak ofert</div>'+
+      '<p>Zmień filtry lub wróć później.</p></div>';
+    document.getElementById('pagination').innerHTML='';
+    renderMap(filtered); resetView(filtered); return;
+  }
+
+  var html='';
+  for(var ii=0;ii<pageItems.length;ii++){
+    var item=pageItems[ii], o=item.o, p=item.p, ps=p.status;
+    var multi=(o.pokoje||[]).length>1;
+    var tl=o.type==='pokoj'?'Pokój':'Mieszkanie';
+    var eps=effectiveStatus(p);
+    var sc={available:'s-av',soon:'s-so',taken:'s-tk'}[eps]||'s-tk';
+    var st={available:'Dostępne',soon:'Wkrótce',taken:'Zajęte'}[eps]||'Zajęte';
+    var img=getImg(p,o);
+    var imgH=img?'<img src="'+img+'" alt="'+o.title+'" loading="lazy">':'<div class="cimg-ph">🏠</div>';
+    var banner='';
+    if(eps==='soon')  banner='<div class="sbanner">Wkrótce dostępne'+(p.dateFrom?' · od <strong>'+fmtDate(p.dateFrom)+'</strong>':'')+'</div>';
+    if(eps==='taken') banner='<div class="tbanner">Zajęte</div>';
+    var title=multi?o.title+' — '+(p.nazwa||'Pokój'):o.title;
+    var badge=multi?'<div class="cbadge">'+o.street+(o.floor?' · p.'+o.floor:'')+'</div>':'';
+    var details='';
+    if(p.area) details+='<div class="cdet">'+p.area+' m²</div>';
+    if(o.totalRooms&&multi) details+='<div class="cdet">'+o.totalRooms+'-pok.</div>';
+    if(o.floor&&!multi) details+='<div class="cdet">p. '+o.floor+'</div>';
+    var feats=o.features||[];
+    for(var fi=0;fi<Math.min(2,feats.length);fi++) details+='<div class="cdet">'+feats[fi]+'</div>';
+    var adminBtns=IS_ADMIN
+      ?'<div class="card-admin-btns">'+
+         '<button class="cab cab-edit" onclick="event.stopPropagation();editOffer('+o.id+')">✏ Edytuj</button>'+
+         '<button class="cab cab-del"  onclick="event.stopPropagation();confirmDel('+o.id+')">✕ Usuń</button>'+
+       '</div>':'';
+    html+='<div class="card'+(eps==='taken'?' taken':'')+'" data-oid="'+o.id+'" data-pid="'+p.id+'">'+
+      banner+
+      '<div class="cimg">'+imgH+'<div class="cstatus '+sc+'">'+st+'</div><div class="ctype">'+tl+'</div></div>'+
+      '<div class="cbody">'+badge+
+        '<div class="cdistrict">'+o.district+(o.street&&!multi?' · '+o.street:'')+'</div>'+
+        '<div class="ctitle">'+title+'</div>'+
+        '<div class="cdesc">'+(p.desc||o.desc||'')+'</div>'+
+        '<div class="cdetails">'+details+'</div>'+
+        '<div class="cfooter">'+
+        (eps==='available'?'<div class="cprice">'+(p.price||0)+' zł<small>/mies.</small></div>':
+         eps==='soon'?'<div style="font-size:.78rem;color:#b45309;font-weight:600">Wkrótce wolne</div>':
+         '<div style="font-size:.78rem;color:var(--muted)">Zajęte</div>')+
+        '<button class="ccta">'+(eps==='taken'?'Zajęte':'Szczegóły')+'</button></div>'+
+      '</div>'+adminBtns+'</div>';
+  }
+  grid.innerHTML=html;
+
+  var pg=document.getElementById('pagination');
+  if(totalPages<=1){pg.innerHTML='';}else{
+    var ph='<div class="pgwrap">';
+    ph+='<button class="pgbtn'+(currentPage===1?' pgdis':'')+'" onclick="goPage('+(currentPage-1)+')">‹</button>';
+    for(var i=1;i<=totalPages;i++){
+      if(i===1||i===totalPages||Math.abs(i-currentPage)<=1) ph+='<button class="pgbtn'+(i===currentPage?' pgact':'')+'" onclick="goPage('+i+')">'+i+'</button>';
+      else if(Math.abs(i-currentPage)===2) ph+='<span class="pgdots">…</span>';
+    }
+    ph+='<button class="pgbtn'+(currentPage===totalPages?' pgdis':'')+'" onclick="goPage('+(currentPage+1)+')">›</button></div>';
+    pg.innerHTML=ph;
+  }
+  renderMap(filtered); resetView(filtered);
+}
+
+function goPage(n){
+  var f=OFFERS.filter(function(o){if(activeType!=='all'&&o.type!==activeType)return false;if(activeStatus!=='all'&&mainStatus(o)!==activeStatus)return false;return true;});
+  var tot=Math.ceil(f.reduce(function(a,o){return a+(o.pokoje||[]).length;},0)/PAGE_SIZE);
+  if(n<1||n>tot) return; currentPage=n; renderGrid();
+  document.querySelector('.filtwrap').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('grid').addEventListener('click',function(e){
+  var card=e.target.closest('.card[data-oid]'); if(!card) return;
+  if(e.target.closest('.card-admin-btns')) return;
+  openById(card.getAttribute('data-oid'),card.getAttribute('data-pid'));
+});
+document.querySelectorAll('[data-ft]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var ft=btn.getAttribute('data-ft');
+    document.querySelectorAll('[data-ft="'+ft+'"]').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    if(ft==='type') activeType=btn.getAttribute('data-fv'); else activeStatus=btn.getAttribute('data-fv');
+    currentPage=1; renderGrid();
+  });
+});
+
+// ── OFFER DETAIL MODAL ─────────────────────────────────────────
+function showImg(idx){
+  gIdx=(idx+gImgs.length)%gImgs.length;
+  var el=document.getElementById('mgalimg'); el.style.opacity='0';
+  setTimeout(function(){el.src=gImgs[gIdx];el.style.opacity='1';},150);
+  document.getElementById('gcnt').textContent=gImgs.length>1?(gIdx+1)+' / '+gImgs.length:'';
+  document.querySelectorAll('.gdot').forEach(function(d,i){d.classList.toggle('active',i===gIdx);});
+}
+document.getElementById('gprev').addEventListener('click',function(){showImg(gIdx-1);});
+document.getElementById('gnext').addEventListener('click',function(){showImg(gIdx+1);});
+document.getElementById('gdots').addEventListener('click',function(e){var d=e.target.closest('.gdot');if(d)showImg(parseInt(d.getAttribute('data-i')));});
+
+function openById(oid,pid){
+  var offer=null; for(var i=0;i<OFFERS.length;i++){if(OFFERS[i].id==oid){offer=OFFERS[i];break;}} if(!offer) return;
+  var pp=offer.pokoje||[], pokoj=null;
+  for(var j=0;j<pp.length;j++){if(String(pp[j].id)===String(pid)){pokoj=pp[j];break;}}
+  if(!pokoj) pokoj=pp[0]||{};
+  openModal(offer,pokoj);
+}
+
+function openModal(offer,p){
+  var ps=effectiveStatus(p)||mainStatus(offer), multi=(offer.pokoje||[]).length>1;
+  var stMap={available:{cls:'av',txt:'Dostępne teraz'},soon:{cls:'so',txt:'Wkrótce'+(p.dateFrom?' · dostępne od '+fmtDate(p.dateFrom):'')},taken:{cls:'tk',txt:'Zajęte'}};
+  var sl=stMap[ps]||stMap.taken;
+  var sEl=document.getElementById('mstat'); sEl.textContent=sl.txt; sEl.className='mstat '+sl.cls;
+  document.getElementById('mtitle').textContent=multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title;
+  document.getElementById('mloc').textContent=offer.district+(offer.street?' · '+offer.street:'')+(offer.floor?' · piętro '+offer.floor:'');
+  if(ps==='available'){
+    document.getElementById('mprice').innerHTML=(p.price||0)+' zł<small>/mies.</small>';
+    document.getElementById('mdeposit').textContent=p.deposit?'Kaucja: '+p.deposit+' zł':'';
+  } else if(ps==='soon'){
+    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:#b45309;font-weight:600">Wkrótce wolne</span>';
+    document.getElementById('mdeposit').textContent=p.dateFrom?'Dostępne od: '+fmtDate(p.dateFrom):'';
+  } else {
+    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:var(--muted)">Zajęte</span>';
+    document.getElementById('mdeposit').textContent='';
+  }
+  var chips=[];
+  if(p.area) chips.push('<div class="mchip"><strong>'+p.area+' m²</strong></div>');
+  if(offer.totalRooms) chips.push('<div class="mchip"><strong>'+offer.totalRooms+'-pokojowe</strong></div>');
+  if(offer.floor) chips.push('<div class="mchip"><strong>p. '+offer.floor+'</strong></div>');
+  document.getElementById('mchips').innerHTML=chips.join('');
+  document.getElementById('mdesc').textContent=p.desc||offer.desc||'';
+  document.getElementById('mfeats').innerHTML=(offer.features||[]).map(function(f){return '<div class="mfeat">'+f+'</div>';}).join('');
+  document.getElementById('mfmsg').value='Dzień dobry, jestem zainteresowany/a ofertą: '+(multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title)+' ('+offer.district+'). Proszę o kontakt.';
+  gImgs=[]; var pImgs=p.imgs||[], mi=p.mainImg||0;
+  if(pImgs.length){gImgs.push(pImgs[mi]);pImgs.forEach(function(img,i){if(i!==mi)gImgs.push(img);});}
+  if(offer.img&&gImgs.indexOf(offer.img)<0) gImgs.push(offer.img);
+  gIdx=0;
+  var imgEl=document.getElementById('mgalimg'),phEl=document.getElementById('mgalph');
+  if(gImgs.length){imgEl.src=gImgs[0];imgEl.style.display='block';imgEl.style.opacity='1';phEl.style.display='none';}
+  else{imgEl.style.display='none';phEl.style.display='flex';}
+  document.getElementById('gprev').style.display=gImgs.length>1?'flex':'none';
+  document.getElementById('gnext').style.display=gImgs.length>1?'flex':'none';
+  document.getElementById('gcnt').textContent=gImgs.length>1?'1 / '+gImgs.length:'';
+  document.getElementById('gdots').innerHTML=gImgs.map(function(_,i){return '<button class="gdot'+(i===0?' active':'')+'" data-i="'+i+'"></button>';}).join('');
+  document.getElementById('moverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('moverlay').classList.remove('open');document.body.style.overflow='';}
+document.getElementById('mclose').addEventListener('click',closeModal);
+document.getElementById('moverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.addEventListener('keydown',function(e){
+  if(document.getElementById('moverlay').classList.contains('open')){
+    if(e.key==='Escape') closeModal();
+    if(e.key==='ArrowLeft')  showImg(gIdx-1);
+    if(e.key==='ArrowRight') showImg(gIdx+1);
+  }
+});
+document.getElementById('msend').addEventListener('click',function(){
+  var name=document.getElementById('mfname').value.trim(),phone=document.getElementById('mfphone').value.trim(),msg=document.getElementById('mfmsg').value.trim();
+  if(!name||!phone){alert('Proszę podać imię i telefon.');return;}
+  window.location.href='mailto:kasia@kazemmieszkania.pl?subject='+encodeURIComponent('Zapytanie — KaZem Mieszkania')+'&body='+encodeURIComponent(msg+'\nImię: '+name+'\nTelefon: '+phone);
+});
+
+// ── ADMIN PANEL ────────────────────────────────────────────────
+function openPanel(){
+  document.getElementById('panelOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  switchPTab('lista'); renderPanelList();
+}
+function closePanel(){document.getElementById('panelOverlay').classList.remove('open');document.body.style.overflow='';}
+
+function switchPTab(name){
+  document.querySelectorAll('.ptab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.ptabpanel').forEach(function(p){p.classList.remove('active');});
+  document.getElementById('ptab-'+name+'-btn').classList.add('active');
+  document.getElementById('ptab-'+name).classList.add('active');
+}
+
+function renderPanelList(){
+  var list=document.getElementById('panelOfferList');
+  if(!OFFERS.length){list.innerHTML='<div style="text-align:center;padding:2rem;color:var(--muted)">Brak ofert. Dodaj pierwszą!</div>';return;}
+  var html='';
+  for(var i=0;i<OFFERS.length;i++){
+    var o=OFFERS[i],pp=o.pokoje||[];
+    var avN=pp.filter(function(p){return effectiveStatus(p)==='available';}).length;
+    var soN=pp.filter(function(p){return effectiveStatus(p)==='soon';}).length;
+    var tkN=pp.filter(function(p){return effectiveStatus(p)==='taken';}).length;
+    var thumb=getImg(pp[0]||{},o);
+    html+='<div class="poi'+(avN===0&&soN===0?' taken':'')+'">'+
+      '<div class="poi-thumb">'+(thumb?'<img src="'+thumb+'" alt="">':'🏠')+'</div>'+
+      '<div class="poi-info"><div class="poi-title">'+o.title+'</div>'+
+      '<div class="poi-meta">'+o.district+(o.street?' · '+o.street:'')+'</div>'+
+      '<div class="poi-badges">'+
+        (avN?'<span class="pb pb-av">'+avN+' wolne</span>':'')+
+        (soN?'<span class="pb pb-so">'+soN+' wkrótce</span>':'')+
+        (tkN?'<span class="pb pb-tk">'+tkN+' zajęte</span>':'')+
+      '</div></div>'+
+      '<div class="poi-actions">'+
+        '<button class="pab" onclick="editOffer('+o.id+')">✏ Edytuj</button>'+
+        '<button class="pab del" onclick="confirmDel('+o.id+')">✕ Usuń</button>'+
+      '</div></div>';
+  }
+  list.innerHTML=html;
+}
+
+// ── OFFER FORM ─────────────────────────────────────────────────
+function startNewOffer(){
+  resetForm();
+  document.getElementById('ptab-nowa-btn').textContent='➕ Nowa oferta';
+  switchPTab('nowa');
+}
+function resetForm(){
+  document.getElementById('editId').value='';
+  ['fTitle','fStreet','fFloor','fTotalRooms','fFeatures','fDesc'].forEach(function(id){document.getElementById(id).value='';}); document.getElementById('fLat').value=''; document.getElementById('fLng').value=''; document.getElementById('geocodeStatus').textContent='Uzupełnij ulicę i dzielnicę, potem kliknij.';
+  document.getElementById('rlist').innerHTML=''; roomCount=0; imgs_data={'mieszkanie':{imgs:[],mainImg:0}};
+  // Reset mieszkanie fields
+  var mFields = ['mStatus','mArea','mPrice','mDeposit','mDateFrom','mDateTo','mDesc'];
+  mFields.forEach(function(id){ var el=document.getElementById(id); if(el){ if(el.tagName==='SELECT') el.value='available'; else el.value=''; }});
+  var pgM = document.getElementById('pg-mieszkanie'); if(pgM) pgM.innerHTML='';
+  // Reset sekcja widoczność
+  document.getElementById('sectionPokoje').style.display='';
+  document.getElementById('sectionMieszkanie').style.display='none';
+  toggleMDate({value:'available'});
+}
+function cancelForm(){resetForm();switchPTab('lista');}
+
+function editOffer(id){
+  var o=null; for(var i=0;i<OFFERS.length;i++){if(OFFERS[i].id==id){o=OFFERS[i];break;}} if(!o) return;
+  resetForm();
+  document.getElementById('editId').value=o.id;
+  document.getElementById('fType').value=o.type;
+  document.getElementById('fTitle').value=o.title;
+  document.getElementById('fDistrict').value=o.district;
+  document.getElementById('fStreet').value=o.street||'';
+  document.getElementById('fFloor').value=o.floor||'';
+  document.getElementById('fTotalRooms').value=o.totalRooms||'';
+  document.getElementById('fFeatures').value=(o.features||[]).join(', ');
+  document.getElementById('fDesc').value=o.desc||'';
+  document.getElementById('fLat').value=o.lat||'';
+  document.getElementById('fLng').value=o.lng||'';
+  if(o.type === 'mieszkanie'){
+    onTypeChange('mieszkanie');
+    var unit = (o.pokoje||[])[0] || {};
+    var mStatus = document.getElementById('mStatus'); if(mStatus) mStatus.value = unit.status||'available';
+    var mArea   = document.getElementById('mArea');   if(mArea)   mArea.value   = unit.area||'';
+    var mPrice  = document.getElementById('mPrice');  if(mPrice)  mPrice.value  = unit.price||'';
+    var mDep    = document.getElementById('mDeposit');if(mDep)    mDep.value    = unit.deposit||'';
+    var mDF     = document.getElementById('mDateFrom');if(mDF)    mDF.value     = unit.dateFrom||'';
+    var mDT     = document.getElementById('mDateTo');  if(mDT)    mDT.value     = unit.dateTo||'';
+    var mDesc   = document.getElementById('mDesc');   if(mDesc)   mDesc.value   = unit.desc||'';
+    imgs_data['mieszkanie'] = {imgs: unit.imgs||[], mainImg: unit.mainImg||0};
+    renderPhotos('mieszkanie');
+    toggleMDate({value: unit.status||'available'});
+  } else {
+    (o.pokoje||[]).forEach(function(p){addRoom(p);});
+  }
+  document.getElementById('ptab-nowa-btn').textContent='✏️ Edytuj ofertę';
+  switchPTab('nowa');
+}
+
+function saveOffer(){
+  var title=document.getElementById('fTitle').value.trim();
+  if(!title){toast('Wpisz tytuł oferty','err');return;}
+  var rooms=[];
+  document.querySelectorAll('#rlist .rform').forEach(function(rf){
+    var rid=rf.getAttribute('data-rid'), d=imgs_data[rid]||{imgs:[],mainImg:0};
+    rooms.push({id:rf.querySelector('.r-id').value, nazwa:rf.querySelector('.r-nazwa').value, status:rf.querySelector('.r-status').value,
+      area:parseInt(rf.querySelector('.r-area').value)||0, dateFrom:rf.querySelector('.r-date-from').value||null, dateTo:rf.querySelector('.r-date-to').value||null,
+      price:parseInt(rf.querySelector('.r-price').value)||0, deposit:parseInt(rf.querySelector('.r-deposit').value)||0,
+      desc:rf.querySelector('.r-desc').value, imgs:d.imgs, mainImg:d.mainImg});
+  });
+  var offerType = document.getElementById('fType').value;
+  if(offerType === 'mieszkanie' && !rooms.length){
+    // Buduj automatyczny "pokój" z danych sekcji mieszkania
+    var mImgs = imgs_data['mieszkanie'] || {imgs:[], mainImg:0};
+    rooms.push({
+      id:       'unit',
+      nazwa:    'Całe mieszkanie',
+      status:   document.getElementById('mStatus').value,
+      area:     parseInt(document.getElementById('mArea').value)||0,
+      dateFrom: document.getElementById('mDateFrom').value||null,
+      dateTo:   document.getElementById('mDateTo').value||null,
+      price:    parseInt(document.getElementById('mPrice').value)||0,
+      deposit:  parseInt(document.getElementById('mDeposit').value)||0,
+      desc:     document.getElementById('mDesc').value,
+      imgs:     mImgs.imgs,
+      mainImg:  mImgs.mainImg,
+    });
+  }
+  if(!rooms.length){toast('Dodaj przynajmniej jeden pokój','err');return;}
+  var feats=document.getElementById('fFeatures').value.split(',').map(function(f){return f.trim();}).filter(Boolean);
+  var editId=document.getElementById('editId').value;
+  var offer={id:editId?parseInt(editId):Date.now(), type:document.getElementById('fType').value, title:title,
+    district:document.getElementById('fDistrict').value, street:document.getElementById('fStreet').value,
+    floor:document.getElementById('fFloor').value, totalRooms:parseInt(document.getElementById('fTotalRooms').value)||rooms.length,
+    features:feats, desc:document.getElementById('fDesc').value,
+    lat:parseFloat(document.getElementById('fLat').value)||52.23, lng:parseFloat(document.getElementById('fLng').value)||21.01,
+    pokoje:rooms};
+  if(editId){var idx=-1;for(var i=0;i<OFFERS.length;i++){if(OFFERS[i].id==editId){idx=i;break;}}if(idx>=0)OFFERS[idx]=offer;else OFFERS.push(offer);}
+  else{OFFERS.push(offer);}
+  saveOffers(); renderPanelList(); renderGrid();
+  toast('Zapisano! Oferta widoczna na stronie ✓','ok');
+  cancelForm();
+}
+
+// ── ROOM FORM ──────────────────────────────────────────────────
+function addRoom(data){
+  roomCount++; var rid='r'+roomCount; data=data||{};
+  imgs_data[rid]={imgs:data.imgs||[],mainImg:data.mainImg||0};
+  var statusOpts='<option value="available"'+(data.status==='available'?' selected':'')+'>✅ Dostępne</option>'+
+    '<option value="soon"'+(data.status==='soon'?' selected':'')+'>🕐 Wkrótce</option>'+
+    '<option value="taken"'+(data.status==='taken'?' selected':'')+'>🔒 Zajęte</option>';
+  var html='<div class="rform" data-rid="'+rid+'">'+
+    '<div class="rform-hdr"><div class="rform-title">'+(data.nazwa||'Pokój '+roomCount)+'</div>'+
+    '<button class="rdel" onclick="removeRoom(\''+rid+'\')">✕</button></div>'+
+    '<div class="fg-row">'+
+      '<div class="fg"><label>Nazwa</label><input type="text" class="r-nazwa" value="'+(data.nazwa||'')+'" placeholder="Pokój A"'+
+      ' oninput="this.closest(\'.rform\').querySelector(\'.rform-title\').textContent=this.value||\'Pokój\'"></div>'+
+      '<div class="fg"><label>Status</label><select class="r-status" onchange="toggleRDate(this)">'+statusOpts+'</select></div>'+
+    '</div>'+
+    '<div class="fg-row">'+
+      '<div class="fg"><label>Metraż (m²)</label><input type="number" class="r-area" value="'+(data.area||'')+'" placeholder="18"></div>'+
+      '<div class="fg r-datewrap"'+(data.status==='available'?' style="display:none"':'')+'>'+
+        '<label>Dostępne od</label>'+
+        '<input type="date" class="r-date-from" value="'+(data.dateFrom||data.date||'')+'"></div>'+
+      '<div class="fg r-dateto-wrap"'+(data.status!=='taken'?' style="display:none"':'')+'>'+
+        '<label>Koniec umowy (zajęte do)</label>'+
+        '<input type="date" class="r-date-to" value="'+(data.dateTo||'')+'"></div>'+
+    '</div>'+
+    '<div class="fg-row">'+
+      '<div class="fg"><label>Cena (zł/mies.)</label><input type="number" class="r-price" value="'+(data.price||'')+'" placeholder="1800"></div>'+
+      '<div class="fg"><label>Kaucja (zł)</label><input type="number" class="r-deposit" value="'+(data.deposit||'')+'" placeholder="1800"></div>'+
+    '</div>'+
+    '<div class="fg"><label>Opis pokoju</label><textarea class="r-desc" placeholder="Opis tego pokoju...">'+(data.desc||'')+'</textarea></div>'+
+    '<div class="fg"><label>Zdjęcia (max 10) — ★ = główne — przeciągnij aby zmienić kolejność</label>'+
+      '<div class="pgrid" id="pg-'+rid+'"></div>'+
+      '<div class="fg-row" style="margin-top:.4rem">'+
+        '<input type="url" class="purl" placeholder="Wklej URL + Enter" onkeydown="if(event.key===\'Enter\'){addUrl(\''+rid+'\',this.value);this.value=\'\';}">'+
+        '<div><input type="file" id="pfile-'+rid+'" accept="image/*" multiple style="display:none" onchange="uploadFiles(\''+rid+'\',this)">'+
+          '<button class="btn-s" onclick="document.getElementById(\'pfile-'+rid+'\').click()" style="width:100%;padding:.5rem;font-size:.78rem">📁 Wgraj z dysku</button>'+
+          '<div class="puprog" id="pprog-'+rid+'">Wgrywanie…</div></div>'+
+      '</div></div>'+
+    '<input type="hidden" class="r-id" value="'+(data.id||rid)+'"></div>';
+  document.getElementById('rlist').insertAdjacentHTML('beforeend',html);
+  renderPhotos(rid); initDrag(rid);
+}
+
+function removeRoom(rid){var el=document.querySelector('[data-rid="'+rid+'"]');if(el)el.remove();delete imgs_data[rid];}
+function onTypeChange(type){
+  var isM = type === 'mieszkanie';
+  document.getElementById('sectionPokoje').style.display    = isM ? 'none' : '';
+  document.getElementById('sectionMieszkanie').style.display = isM ? ''     : 'none';
+}
+
+function toggleMDate(sel){
+  var status = sel.value;
+  document.querySelector('.m-datefrom-wrap').style.display = status === 'available' ? 'none' : '';
+  document.querySelector('.m-dateto-wrap').style.display   = status === 'taken'    ? ''     : 'none';
+}
+
+function toggleRDate(sel){
+  var rf=sel.closest('.rform');
+  var status=sel.value;
+  // Dostępne → obie daty ukryte (brak umowy = brak dat)
+  // Wkrótce  → tylko dateFrom widoczne
+  // Zajęte   → dateFrom + dateTo widoczne
+  rf.querySelector('.r-datewrap').style.display   = status==='available' ? 'none' : '';
+  rf.querySelector('.r-dateto-wrap').style.display = status==='taken'    ? ''     : 'none';
+}
+
+// ── PHOTOS ─────────────────────────────────────────────────────
+function renderPhotos(rid){
+  var d=imgs_data[rid]||{imgs:[],mainImg:0}, grid=document.getElementById('pg-'+rid); if(!grid) return;
+  var h='';
+  for(var i=0;i<d.imgs.length;i++){
+    h+='<div class="pphoto'+(i===d.mainImg?' main-p':'')+'" draggable="true" data-idx="'+i+'" data-rid="'+rid+'">'+
+       '<img src="'+d.imgs[i]+'" alt="">'+
+       '<button class="ppdel" onclick="delPhoto(\''+rid+'\','+i+')">×</button>'+
+       (i!==d.mainImg?'<button class="ppsetmain" onclick="setMain(\''+rid+'\','+i+')" title="Ustaw główne">★</button>':'')+
+       '</div>';
+  }
+  if(d.imgs.length<10) h+='<div class="photo-add-tile" onclick="document.getElementById(\'pfile-'+rid+'\').click()"><span style="font-size:1.4rem">+</span><small>Dodaj</small></div>';
+  grid.innerHTML=h; initDrag(rid);
+}
+function delPhoto(rid,idx){var d=imgs_data[rid];d.imgs.splice(idx,1);if(d.mainImg>=d.imgs.length)d.mainImg=Math.max(0,d.imgs.length-1);else if(d.mainImg>idx)d.mainImg--;renderPhotos(rid);}
+function setMain(rid,idx){imgs_data[rid].mainImg=idx;renderPhotos(rid);}
+function addUrl(rid,url){
+  if(!url||!url.startsWith('http')){toast('Podaj poprawny URL','err');return;}
+  var d=imgs_data[rid]; if(d.imgs.length>=10){toast('Maksymalnie 10 zdjęć','err');return;}
+  d.imgs.push(url); renderPhotos(rid);
+}
+function uploadFiles(rid,input){
+  var files=Array.from(input.files),d=imgs_data[rid],rem=10-d.imgs.length;
+  if(!rem){toast('Maksymalnie 10 zdjęć','err');return;} files=files.slice(0,rem);
+  var prog=document.getElementById('pprog-'+rid); prog.style.display='block'; var done=0;
+  files.forEach(function(file){
+    var fd=new FormData(); fd.append('file',file); fd.append('upload_preset',PRESET);
+    fetch('https://api.cloudinary.com/v1_1/'+CLOUD+'/image/upload',{method:'POST',body:fd})
+      .then(function(r){return r.json();})
+      .then(function(res){done++;if(res.secure_url){d.imgs.push(res.secure_url);renderPhotos(rid);}prog.textContent='Wgrywanie '+done+'/'+files.length+'…';if(done===files.length){prog.style.display='none';toast('Zdjęcia wgrane!','ok');}})
+      .catch(function(){done++;prog.textContent='Błąd!';});
+  }); input.value='';
+}
+function initDrag(rid){
+  var grid=document.getElementById('pg-'+rid); if(!grid) return; var drag=null;
+  grid.querySelectorAll('.pphoto').forEach(function(item){
+    item.addEventListener('dragstart',function(){drag=this;this.style.opacity='.4';});
+    item.addEventListener('dragend',function(){this.style.opacity='1';drag=null;});
+    item.addEventListener('dragover',function(e){e.preventDefault();});
+    item.addEventListener('drop',function(e){
+      e.preventDefault(); if(!drag||drag===this) return;
+      var d=imgs_data[rid],from=parseInt(drag.dataset.idx),to=parseInt(this.dataset.idx);
+      var moved=d.imgs.splice(from,1)[0]; d.imgs.splice(to,0,moved);
+      if(d.mainImg===from) d.mainImg=to;
+      else if(from<to&&d.mainImg>from&&d.mainImg<=to) d.mainImg--;
+      else if(from>to&&d.mainImg>=to&&d.mainImg<from) d.mainImg++;
+      renderPhotos(rid);
+    });
+  });
+}
+
+// ── DELETE ─────────────────────────────────────────────────────
+function confirmDel(id){
+  var o=null; for(var i=0;i<OFFERS.length;i++){if(OFFERS[i].id==id){o=OFFERS[i];break;}}
+  deleteId=id;
+  document.getElementById('confMsg').textContent='Usunąć "'+(o?o.title:'tę ofertę')+'"? Tej operacji nie można cofnąć.';
+  document.getElementById('confOverlay').classList.add('open');
+  document.getElementById('confYes').onclick=function(){
+    var removedId = deleteId;
+    OFFERS=OFFERS.filter(function(x){return x.id!==removedId;});
+    deleteOfferFromDB(removedId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(OFFERS));
+    renderPanelList(); renderGrid(); closeConf(); toast('Oferta usunięta','ok');
+  };
+}
+function closeConf(){document.getElementById('confOverlay').classList.remove('open');deleteId=null;}
+
+// ── TOAST ──────────────────────────────────────────────────────
+function toast(msg,type){
+  var t=document.getElementById('toast'); t.textContent=msg; t.className='toast show '+(type||'');
+  setTimeout(function(){t.className='toast';},3000);
+}
+
+// ── GEOCODING ─────────────────────────────────────────────────
+function geocodeAddress() {
+  var street   = document.getElementById('fStreet').value.trim();
+  var district = document.getElementById('fDistrict').value.trim();
+  var btn      = document.getElementById('geocodeBtn');
+  var status   = document.getElementById('geocodeStatus');
+  if(!street) { status.textContent = '⚠ Najpierw wpisz ulicę i numer.'; status.style.color='var(--red)'; return; }
+  var query = street + ', ' + district + ', Warszawa, Polska';
+  btn.textContent = '⏳ Szukam…'; btn.disabled = true;
+  status.textContent = ''; status.style.color = 'var(--muted)';
+  fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query), {
+    headers: {'Accept-Language': 'pl', 'User-Agent': 'KaZem-Mieszkania/1.0'}
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    btn.textContent = '📍 Znajdź na mapie'; btn.disabled = false;
+    if(data && data.length) {
+      var lat = parseFloat(data[0].lat), lng = parseFloat(data[0].lon);
+      document.getElementById('fLat').value = lat;
+      document.getElementById('fLng').value = lng;
+      status.textContent = '✓ Znaleziono: ' + data[0].display_name.split(',').slice(0,3).join(',');
+      status.style.color = 'var(--green)';
+      // Show preview on map
+      map.setView([lat, lng], 16, {animate:true});
+      if(window._geocodeMarker) window._geocodeMarker.remove();
+      window._geocodeMarker = L.marker([lat, lng], {icon: dotIcon('available')}).addTo(map);
+    } else {
+      status.textContent = '✗ Nie znaleziono. Sprawdź adres.';
+      status.style.color = 'var(--red)';
+    }
+  })
+  .catch(function() {
+    btn.textContent = '📍 Znajdź na mapie'; btn.disabled = false;
+    status.textContent = '✗ Błąd połączenia.'; status.style.color = 'var(--red)';
+  });
+}
+
+// ── INIT ───────────────────────────────────────────────────────
+// Pokaż spinner podczas ładowania z Supabase
+document.getElementById('grid').innerHTML =
+  '<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted)">'+
+  '<div style="font-size:2rem;margin-bottom:.75rem">⏳</div>'+
+  '<div style="font-size:1.1rem">Ładowanie ofert…</div></div>';
+
+loadOffers(function(){
+  checkAuth();
+  renderGrid();
+});
+setTimeout(function(){
+  var valid=OFFERS.filter(function(o){return !isNaN(parseFloat(o.lat));});
+  if(valid.length>1){
+    var lats=valid.map(function(o){return parseFloat(o.lat);}),lngs=valid.map(function(o){return parseFloat(o.lng);});
+    map.fitBounds([[Math.min.apply(null,lats)-.012,Math.min.apply(null,lngs)-.02],[Math.max.apply(null,lats)+.012,Math.max.apply(null,lngs)+.02]],{animate:false,padding:[30,30]});
+  }
+},150);
+</script>
+</body>
+</html>

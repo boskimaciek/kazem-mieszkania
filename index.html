@@ -19,6 +19,7 @@
 <meta property="og:description" content="Kompleksowa obsługa mieszkań na wynajem w Warszawie. Specjalizacja: najem studencki, pokoje dla studentów. Podpisuję umowy w imieniu właściciela.">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pl_PL">
+<meta property="og:url" content="https://kazemmieszkania.github.io/">
 <link rel="canonical" href="https://kazem-mieszkania.github.io/">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -261,6 +262,37 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
   .staging-photos img:first-child { grid-column: 1; }
 }
 
+.mieszkania-section{background:var(--cream)}
+.mzk-inner{max-width:1100px;margin:0 auto}
+.mzk-top{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-bottom:3.5rem}
+.mzk-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:3.5rem}
+.mzk-stat{background:var(--white);border-radius:16px;padding:1.6rem;border:1px solid var(--border);text-align:center}
+.mzk-stat-n{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--accent);line-height:1}
+.mzk-stat-l{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.45rem;line-height:1.4}
+.mzk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:3rem}
+.mzk-card{border-radius:14px;overflow:hidden;position:relative;aspect-ratio:4/3;cursor:default}
+.mzk-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease,filter .4s}
+.mzk-card:hover img{transform:scale(1.06);filter:brightness(1.06)}
+.mzk-card-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(26,26,24,.78));padding:.7rem .9rem .65rem;color:#fff;font-size:.78rem;font-weight:500}
+.mzk-card-label small{display:block;font-size:.68rem;color:rgba(255,255,255,.55);margin-top:.1rem}
+.mzk-cta-wrap{background:var(--dark);border-radius:20px;padding:2.5rem 3rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
+.mzk-cta-wrap h3{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:#fff;line-height:1.3;margin-bottom:.5rem}
+.mzk-cta-wrap p{font-size:.9rem;color:rgba(255,255,255,.55);line-height:1.7;max-width:480px}
+.mzk-cta-btn{background:var(--accent);color:#fff;padding:.92rem 2rem;border-radius:100px;font-size:.92rem;font-weight:600;text-decoration:none;white-space:nowrap;transition:background .2s,transform .15s;display:inline-block;flex-shrink:0}
+.mzk-cta-btn:hover{background:#a8803f;transform:translateY(-2px)}
+.mzk-cta-sub{font-size:.78rem;color:rgba(255,255,255,.35);margin-top:.65rem}
+@media(max-width:768px){
+  .mzk-top{grid-template-columns:1fr;gap:2rem}
+  .mzk-stats{grid-template-columns:1fr 1fr}
+  .mzk-grid{grid-template-columns:1fr 1fr}
+  .mzk-cta-wrap{grid-template-columns:1fr;gap:1.2rem;padding:1.8rem}
+  .mzk-cta-btn{width:100%;text-align:center}
+}
+@media(max-width:480px){
+  .mzk-stats{grid-template-columns:1fr}
+  .mzk-grid{grid-template-columns:1fr}
+}
+
 .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: .3rem; background: none; border: none; }
 .hamburger span { display: block; width: 24px; height: 2px; background: var(--dark); border-radius: 2px; transition: all .3s; }
 .nav-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--white); z-index: 200; flex-direction: column; align-items: center; justify-content: center; gap: 2rem; }
@@ -277,6 +309,7 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
   <a href="#" class="logo">Ka<span>Zem</span> Mieszkania</a>
   <ul class="nav-links">
     <li><a href="#mieszkania">Mieszkania</a></li>
+    <li><a href="oferty.html" target="_blank" style="color:var(--accent)">Oferty najmu ↗</a></li>
     <li><a href="#uslugi">Usługi</a></li>
     <li><a href="#o-mnie">O mnie</a></li>
     <li><a href="#homestaging">Homestaging</a></li>
@@ -289,6 +322,7 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
 <div class="nav-mobile" id="mobileNav">
   <button class="close-btn" id="closeNav">✕</button>
   <a href="#mieszkania" onclick="closeMobileNav()">Mieszkania</a>
+  <a href="oferty.html" target="_blank" style="color:var(--accent)">Oferty najmu ↗</a>
   <a href="#uslugi" onclick="closeMobileNav()">Usługi</a>
   <a href="#o-mnie" onclick="closeMobileNav()">O mnie</a>
   <a href="#homestaging" onclick="closeMobileNav()">Homestaging</a>
@@ -346,34 +380,27 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
   </div>
 </div>
 
-<section class="gallery" id="mieszkania">
-  <div class="gallery-header">
-    <div>
-      <div class="slabel">Mieszkania w opiece</div>
-      <div class="stitle">Jak wyglądają mieszkania, którymi się zajmuję?</div>
-    </div>
-    <p class="sdesc">Dbam o to, żeby każde mieszkanie było zadbane, czyste i gotowe na nowych najemców — bo dobrze utrzymany lokal to spokój właściciela i zadowolenie studentów.</p>
-  </div>
-  <div class="gallery-grid">
-    <div class="gphoto tall">
-      <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=900&q=85" alt="przestronne mieszkanie studenckie Warszawa wynajem pokoi" loading="lazy">
-      <div class="gphoto-label">Pokój studencki · Mokotów</div>
-    </div>
-    <div class="gphoto">
-      <img src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=600&q=85" alt="kuchnia mieszkanie studenckie wynajem Warszawa" loading="lazy">
-      <div class="gphoto-label">Kuchnia wspólna · Wola</div>
-    </div>
-    <div class="gphoto">
-      <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=85" alt="salon mieszkanie wynajem Warszawa" loading="lazy">
-      <div class="gphoto-label">Salon · Śródmieście</div>
-    </div>
-    <div class="gphoto">
-      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=85" alt="pokój umeblowany wynajem student Warszawa" loading="lazy">
-      <div class="gphoto-label">Pokój umeblowany · Ochota</div>
-    </div>
-    <div class="gphoto">
-      <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=600&q=85" alt="łazienka mieszkanie studenckie Żoliborz" loading="lazy">
-      <div class="gphoto-label">Łazienka · Żoliborz</div>
+<section class="mieszkania-section" id="mieszkania">
+  <div class="inner" style="padding:5.5rem 2.5rem">
+    <div class="mzk-inner">
+
+      <div class="mzk-top">
+        <div>
+          <div class="slabel">Mieszkania pod opieką KaZem</div>
+          <div class="stitle">Aktualne oferty<br><em>w Twoim imieniu.</em></div>
+        </div>
+        <p class="sdesc">Każde mieszkanie które mi przekazujesz jest zadbane, wynajęte i pracuje na Twój zysk. Nie przechowuję pustych lokali — pilnuję ciągłości. Poniżej znajdziesz oferty które aktualnie prowadzę w imieniu właścicieli.</p>
+      </div>
+
+      <div class="mzk-cta-wrap">
+        <div>
+          <h3>Szukasz mieszkania<br>lub pokoju do wynajęcia?</h3>
+          <p>Wszystkie aktualne oferty — pokoje studenckie i mieszkania — znajdziesz na osobnej stronie. Tam możesz sprawdzić dostępność, ceny i umówić oglądanie.</p>
+          <div class="mzk-cta-sub">Oferty aktualizowane na bieżąco · Odpowiedź w 24h</div>
+        </div>
+        <a href="oferty.html" target="_blank" class="mzk-cta-btn">Zobacz aktualne oferty →</a>
+      </div>
+
     </div>
   </div>
 </section>

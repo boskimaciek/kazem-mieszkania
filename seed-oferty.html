@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[DEV] Seed — KaZem test data</title>
+<style>
+body{font-family:sans-serif;background:#1A1A18;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0}
+.box{background:#2a2a28;border-radius:16px;padding:2rem;max-width:480px;width:90%;text-align:center}
+h2{color:#C4975A;margin-bottom:.5rem}
+p{color:rgba(255,255,255,.55);font-size:.9rem;line-height:1.6;margin-bottom:1.5rem}
+button{background:#C4975A;color:#fff;border:none;border-radius:100px;padding:.8rem 2rem;font-size:1rem;cursor:pointer;width:100%;margin-bottom:.75rem}
+button:hover{background:#a8803f}
+.btn-clear{background:rgba(220,38,38,.3);color:#ff8080}
+.btn-clear:hover{background:rgba(220,38,38,.6)}
+.log{background:#111;border-radius:8px;padding:1rem;text-align:left;font-size:.78rem;color:#6b6459;max-height:200px;overflow-y:auto;margin-top:1rem;display:none}
+.log.visible{display:block}
+.ok{color:#22c55e}
+.err{color:#ef4444}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+<div class="box">
+  <h2>KaZem — dane testowe</h2>
+  <p>Kliknij przycisk aby załadować <strong>12 przykładowych ofert</strong> do localStorage. Plik musi być otwarty <strong>na tej samej domenie</strong> co oferty.html.</p>
+  <button onclick="seedData()">▶ Załaduj dane testowe</button>
+  <button class="btn-clear" onclick="clearData()">✕ Wyczyść localStorage</button>
+  <div class="log" id="log"></div>
+</div>
+
+<script>
+var KEY = 'kazem_offers_v3';
+
+function log(msg, ok) {
+  var el = document.getElementById('log');
+  el.classList.add('visible');
+  el.innerHTML += '<div class="'+(ok===false?'err':'ok')+'">'+msg+'</div>';
+  el.scrollTop = el.scrollHeight;
+}
+
+function clearData() {
+  localStorage.removeItem(KEY);
+  var sb = supabase.createClient('https://ubwtihenkxobchdzafls.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVid3RpaGVua3hvYmNoZHphZmxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNDk4MDEsImV4cCI6MjA5MzkyNTgwMX0.evLJqhSvN_bAtp7IhGlpg7LTwBLQjiDuBIlv6_9VKr8');
+  sb.from('offers').delete().neq('id', 0)
+    .then(function(res){
+      if(res.error) log('✗ Błąd czyszczenia Supabase: ' + res.error.message, false);
+      else log('✓ Wyczyszczono localStorage i Supabase', true);
+    });
+}
+
+function seedData() {
+  var today = new Date();
+  function dt(days) {
+    var d = new Date(today);
+    d.setDate(d.getDate() + days);
+    return d.toISOString().slice(0,10);
+  }
+
+  var offers = [
+
+    // ── 1. Noakowskiego — 3 pokoje, różne statusy
+    {id:1, type:'pokoj', title:'Mieszkanie studenckie — Noakowskiego', district:'Śródmieście',
+     street:'ul. Noakowskiego 12', floor:'3/5', totalRooms:3,
+     features:['Umeblowany','Internet','Kuchenka','Pralka'],
+     desc:'Trzypokojowe mieszkanie 5 minut od Politechniki Warszawskiej.',
+     lat:52.2198, lng:21.0078,
+     pokoje:[
+       {id:'1a', nazwa:'Pokój A (duży)', area:18, status:'available',
+        price:1900, deposit:1900, dateFrom:null, dateTo:null,
+        desc:'Duży słoneczny pokój z biurkiem i szafą.',
+        imgs:['https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
+              'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80'], mainImg:0},
+       {id:'1b', nazwa:'Pokój B (średni)', area:14, status:'soon',
+        price:1700, deposit:1700, dateFrom:dt(18), dateTo:dt(60),
+        desc:'Przytulny pokój z wyjściem na balkon.',
+        imgs:['https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80',
+              'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80'], mainImg:0},
+       {id:'1c', nazwa:'Pokój C (mały)', area:12, status:'taken',
+        price:1500, deposit:1500, dateFrom:dt(95), dateTo:dt(365),
+        desc:'Kompaktowy pokój z zabudowaną szafą.',
+        imgs:['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
+              'https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 2. Puławska — 4 pokoje
+    {id:2, type:'pokoj', title:'Mieszkanie studenckie — Puławska', district:'Mokotów',
+     street:'ul. Puławska 43', floor:'2/4', totalRooms:4,
+     features:['Umeblowany','Internet','Pralka','Lodówka','Zmywarka'],
+     desc:'Czteropokojowe mieszkanie. Blisko SGH i UW.',
+     lat:52.1985, lng:21.0215,
+     pokoje:[
+       {id:'2a', nazwa:'Pokój 1 (narożny)', area:19, status:'available',
+        price:1750, deposit:1750, dateFrom:null, dateTo:null,
+        desc:'Narożny pokój z dwoma oknami.',
+        imgs:['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
+              'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80'], mainImg:0},
+       {id:'2b', nazwa:'Pokój 2', area:15, status:'available',
+        price:1600, deposit:1600, dateFrom:null, dateTo:null,
+        desc:'Wygodny pokój z miejscem na rower.',
+        imgs:['https://images.unsplash.com/photo-1616137466211-f939a420be84?w=800&q=80',
+              'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80'], mainImg:0},
+       {id:'2c', nazwa:'Pokój 3', area:13, status:'soon',
+        price:1500, deposit:1500, dateFrom:dt(10), dateTo:dt(45),
+        desc:'Pokój z biurkiem pod oknem.',
+        imgs:['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
+              'https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80'], mainImg:0},
+       {id:'2d', nazwa:'Pokój 4 (mały)', area:11, status:'taken',
+        price:1350, deposit:1350, dateFrom:dt(120), dateTo:dt(400),
+        desc:'Najmniejszy, ale super lokalizacja.',
+        imgs:['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
+              'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 3. Żoliborz — 3 pokoje, 2 z dateTo za ~10 dni (auto-wkrótce)
+    {id:3, type:'pokoj', title:'Mieszkanie studenckie — Mickiewicza', district:'Żoliborz',
+     street:'ul. Mickiewicza 18', floor:'1/4', totalRooms:3,
+     features:['Umeblowany','Internet','Pralka'],
+     desc:'Metro Marymont 7 minut pieszo.',
+     lat:52.2742, lng:20.9812,
+     pokoje:[
+       {id:'3a', nazwa:'Pokój 1', area:16, status:'taken',
+        price:1550, deposit:1550, dateFrom:dt(9), dateTo:dt(12),
+        desc:'Pokój z wyjściem na loggie — umowa wygasa za chwilę.',
+        imgs:['https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80',
+              'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80'], mainImg:0},
+       {id:'3b', nazwa:'Pokój 2', area:14, status:'taken',
+        price:1450, deposit:1450, dateFrom:dt(11), dateTo:dt(13),
+        desc:'Pokój od ogrodu — umowa wygasa za chwilę.',
+        imgs:['https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80',
+              'https://images.unsplash.com/photo-1616137466211-f939a420be84?w=800&q=80'], mainImg:0},
+       {id:'3c', nazwa:'Pokój 3', area:18, status:'available',
+        price:1700, deposit:1700, dateFrom:null, dateTo:null,
+        desc:'Największy pokój z osobnym wejściem.',
+        imgs:['https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
+              'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 4. Wola — 2 pokoje
+    {id:4, type:'pokoj', title:'Mieszkanie studenckie — Młynarska', district:'Wola',
+     street:'ul. Młynarska 22', floor:'4/6', totalRooms:2,
+     features:['Umeblowany','Internet','Balkon','Pralka'],
+     desc:'Nowa kuchnia, balkon, blisko metro Płocka.',
+     lat:52.2312, lng:20.9698,
+     pokoje:[
+       {id:'4a', nazwa:'Pokój A', area:17, status:'available',
+        price:1850, deposit:1850, dateFrom:null, dateTo:null,
+        desc:'Pokój z balkonem i widokiem na panoramę Woli.',
+        imgs:['https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
+              'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80'], mainImg:0},
+       {id:'4b', nazwa:'Pokój B', area:15, status:'soon',
+        price:1650, deposit:1650, dateFrom:dt(25), dateTo:dt(90),
+        desc:'Wyciszony pokój od podwórza.',
+        imgs:['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
+              'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 5. Ochota — 3 pokoje
+    {id:9, type:'pokoj', title:'Mieszkanie studenckie — Grójecka', district:'Ochota',
+     street:'ul. Grójecka 67', floor:'3/5', totalRooms:3,
+     features:['Umeblowany','Internet','Pralka'],
+     desc:'Blisko WUM i AWF. Dobry dojazd do wszystkich uczelni.',
+     lat:52.2183, lng:20.9902,
+     pokoje:[
+       {id:'9a', nazwa:'Pokój 1 (master)', area:20, status:'available',
+        price:2000, deposit:2000, dateFrom:null, dateTo:null,
+        desc:'Największy pokój z własną łazienką.',
+        imgs:['https://images.unsplash.com/photo-1616137466211-f939a420be84?w=800&q=80',
+              'https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80'], mainImg:0},
+       {id:'9b', nazwa:'Pokój 2', area:15, status:'taken',
+        price:1650, deposit:1650, dateFrom:dt(60), dateTo:dt(425),
+        desc:'Słoneczny pokój z biurkiem.',
+        imgs:['https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80',
+              'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80'], mainImg:0},
+       {id:'9c', nazwa:'Pokój 3', area:13, status:'soon',
+        price:1500, deposit:1500, dateFrom:dt(20), dateTo:dt(80),
+        desc:'Spokojny pokój od strony ogrodu.',
+        imgs:['https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
+              'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 6. Bemowo — 2 pokoje, oba dostępne
+    {id:11, type:'pokoj', title:'Mieszkanie studenckie — Lazurowa', district:'Bemowo',
+     street:'ul. Lazurowa 14', floor:'2/3', totalRooms:2,
+     features:['Umeblowany','Internet','Pralka'],
+     desc:'Tramwaj do centrum pod domem.',
+     lat:52.2441, lng:20.9285,
+     pokoje:[
+       {id:'11a', nazwa:'Pokój A', area:16, status:'available',
+        price:1500, deposit:1500, dateFrom:null, dateTo:null,
+        desc:'Jasny pokój z dużą szafą i biurkiem.',
+        imgs:['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
+              'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80'], mainImg:0},
+       {id:'11b', nazwa:'Pokój B', area:14, status:'available',
+        price:1400, deposit:1400, dateFrom:null, dateTo:null,
+        desc:'Ciepły pokój na południe, dużo światła.',
+        imgs:['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
+              'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 7. Koszykowa — całe mieszkanie, dostępne
+    {id:5, type:'mieszkanie', title:'Mieszkanie 2-pok. z balkonem — Koszykowa', district:'Śródmieście',
+     street:'ul. Koszykowa 55', floor:'2/5', totalRooms:2,
+     features:['Umeblowany','Internet','Balkon','Pralka','Zmywarka','Klimatyzacja'],
+     desc:'Tuż przy Hali Koszyki. Wysoki standard, nowe AGD.',
+     lat:52.2253, lng:21.0122,
+     pokoje:[
+       {id:'5a', nazwa:'Całe mieszkanie', area:52, status:'available',
+        price:4200, deposit:4200, dateFrom:null, dateTo:null,
+        desc:'Aneks kuchenny z wyspą, osobna sypialnia, balkon.',
+        imgs:['https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80',
+              'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80',
+              'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 8. Wiśniowa — całe mieszkanie, wkrótce
+    {id:6, type:'mieszkanie', title:'Mieszkanie 3-pok. z tarasem — Wiśniowa', district:'Mokotów',
+     street:'ul. Wiśniowa 31', floor:'3/4', totalRooms:3,
+     features:['Umeblowany','Internet','Taras','Pralka','Zmywarka','Garaż'],
+     desc:'15m² taras, park Morskie Oko w zasięgu spaceru.',
+     lat:52.2051, lng:21.0081,
+     pokoje:[
+       {id:'6a', nazwa:'Całe mieszkanie', area:78, status:'soon',
+        price:5800, deposit:5800, dateFrom:dt(30), dateTo:dt(120),
+        desc:'Trzy sypialnie, gabinet, taras od południa.',
+        imgs:['https://images.unsplash.com/photo-1616137466211-f939a420be84?w=800&q=80',
+              'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
+              'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 9. Stokłosy — całe mieszkanie, zajęte
+    {id:7, type:'mieszkanie', title:'Mieszkanie 2-pok. przy metrze — Stokłosy', district:'Ursynów',
+     street:'ul. Stokłosy 3', floor:'5/10', totalRooms:2,
+     features:['Umeblowany','Internet','Pralka','Winda','Ochrona'],
+     desc:'2 minuty pieszo od stacji metro Stokłosy.',
+     lat:52.1472, lng:21.0308,
+     pokoje:[
+       {id:'7a', nazwa:'Całe mieszkanie', area:44, status:'taken',
+        price:3400, deposit:3400, dateFrom:dt(180), dateTo:dt(545),
+        desc:'Osobna kuchnia, jasny salon. Dla pary lub singla.',
+        imgs:['https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80',
+              'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 10. Ząbkowska — loft, dostępny
+    {id:8, type:'mieszkanie', title:'Klimatyczny loft — Ząbkowska', district:'Praga Północ',
+     street:'ul. Ząbkowska 14', floor:'2/3', totalRooms:2,
+     features:['Umeblowany','Internet','Pralka','Cegła','Wysokie sufity'],
+     desc:'Oryginalna cegła i wysokie sufity w sercu warszawskiej Pragi.',
+     lat:52.2530, lng:21.0468,
+     pokoje:[
+       {id:'8a', nazwa:'Całe mieszkanie', area:58, status:'available',
+        price:3900, deposit:3900, dateFrom:null, dateTo:null,
+        desc:'Salon z ceglaną ścianą, sypialnia antresola.',
+        imgs:['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80',
+              'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 11. Bielany — z ogródkiem, wkrótce
+    {id:10, type:'mieszkanie', title:'Mieszkanie z ogródkiem — Przy Agorze', district:'Bielany',
+     street:'ul. Przy Agorze 5', floor:'1/4', totalRooms:2,
+     features:['Umeblowany','Internet','Ogród','Pralka','Parking'],
+     desc:'Własny ogródek 30m². Metro Wawrzyszew 5 minut.',
+     lat:52.2901, lng:20.9671,
+     pokoje:[
+       {id:'10a', nazwa:'Całe mieszkanie', area:50, status:'soon',
+        price:3600, deposit:3600, dateFrom:dt(14), dateTo:dt(75),
+        desc:'Bezpośrednie wyjście do prywatnego ogródka.',
+        imgs:['https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80',
+              'https://images.unsplash.com/photo-1616137466211-f939a420be84?w=800&q=80'], mainImg:0},
+     ]},
+
+    // ── 12. Żoliborz — apartament, dostępny
+    {id:12, type:'mieszkanie', title:'Apartament z widokiem — Słowackiego', district:'Żoliborz',
+     street:'al. Słowackiego 58', floor:'8/9', totalRooms:3,
+     features:['Umeblowany','Internet','Taras','Klimatyzacja','Garaż','Winda','Concierge'],
+     desc:'Panoramiczny widok na Wisłę i Stare Miasto.',
+     lat:52.2681, lng:20.9901,
+     pokoje:[
+       {id:'12a', nazwa:'Całe mieszkanie', area:90, status:'available',
+        price:7500, deposit:7500, dateFrom:null, dateTo:null,
+        desc:'Trzy tarasy, widok 180°. Concierge, SPA w budynku.',
+        imgs:['https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80',
+              'https://images.unsplash.com/photo-1616137466211-f939a420be84?w=800&q=80',
+              'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80'], mainImg:0},
+     ]},
+
+  ];
+
+  var sb = supabase.createClient('https://ubwtihenkxobchdzafls.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVid3RpaGVua3hvYmNoZHphZmxzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzNDk4MDEsImV4cCI6MjA5MzkyNTgwMX0.evLJqhSvN_bAtp7IhGlpg7LTwBLQjiDuBIlv6_9VKr8');
+  var rows = offers.map(function(o){ return {id: o.id, data: o}; });
+
+  // Najpierw wyczyść stare dane
+  sb.from('offers').delete().neq('id', 0)
+    .then(function(del) {
+      if(del.error) { log('✗ Błąd czyszczenia: ' + del.error.message, false); return; }
+      log('✓ Stare oferty usunięte z Supabase', true);
+      // Wstaw nowe
+      return sb.from('offers').insert(rows);
+    })
+    .then(function(res) {
+      if(!res) return;
+      if(res.error) { log('✗ Błąd zapisu: ' + res.error.message, false); return; }
+      log('✓ Zapisano ' + offers.length + ' ofert do Supabase!', true);
+      log('Otwórz teraz oferty.html — dane są dostępne dla wszystkich.', true);
+      // Też lokalnie jako cache
+      localStorage.setItem('kazem_offers_v3', JSON.stringify(offers));
+    })
+    .catch(function(e) { log('✗ ' + e.message, false); });
+}
+</script>
+</body>
+</html>
