@@ -756,7 +756,7 @@ function buildPopup(o) {
                    :'<div style="width:'+sz+'px;height:'+sz+'px;background:#d0c8be;display:flex;align-items:center;justify-content:center;font-size:'+(sz*.3)+'px">🏠</div>';
       var eps2=effectiveStatus(p);
       var ov=makeOv(eps2, p, false);
-      cells+='<div style="position:relative;overflow:hidden">'+photo+ov+'<div style="position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:'+dc[eps2]+';border:1.5px solid #fff"></div></div>';
+      cells+='<div style="position:relative;overflow:hidden;cursor:pointer" onclick="event.stopPropagation();this.closest(\'.kpi\').dispatchEvent(new Event(\'closepopup\'));map.closePopup();openById('+o.id+',\''+p.id+'\')" title="'+p.nazwa+'">'+photo+ov+'<div style="position:absolute;top:3px;right:3px;width:8px;height:8px;border-radius:50%;background:'+dc[eps2]+';border:1.5px solid #fff"></div></div>';
     }
     var avN=pp.filter(function(x){return effectiveStatus(x)==='available';}).length;
     var soN=pp.filter(function(x){return effectiveStatus(x)==='soon';}).length;
@@ -850,9 +850,21 @@ function renderGrid(){
     var st={available:'Dostępne',soon:'Wkrótce',taken:'Zajęte'}[eps]||'Zajęte';
     var img=getImg(p,o);
     var imgH=img?'<img src="'+img+'" alt="'+o.title+'" loading="lazy">':'<div class="cimg-ph">🏠</div>';
+    // Overlay na zdjęciu karty — analogicznie jak makeOv na mapie
+    var cardOvTxt='', cardOvCol='#fff';
+    if(eps==='available'){
+      cardOvTxt=p.price?(p.price+' zł<span style="font-size:10px;opacity:.8">/mies.</span>'):'Wolne';
+      cardOvCol='#fff';
+    } else if(eps==='soon'){
+      cardOvTxt='Wolne od '+(p.dateFrom?fmtDate(p.dateFrom):'—');
+      cardOvCol='#fde68a';
+    } else {
+      cardOvTxt='Zajęte do '+(p.dateTo?fmtDate(p.dateTo):'—');
+      cardOvCol='#f3f4f6';
+    }
+    var cardOv='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.82) 55%,rgba(0,0,0,.95));padding:12px 10px 8px;text-align:center">'+
+      '<span style="color:'+cardOvCol+';font-weight:700;font-size:12px;letter-spacing:.01em;text-shadow:0 1px 4px rgba(0,0,0,.9),0 0 12px rgba(0,0,0,.7)">'+cardOvTxt+'</span></div>';
     var banner='';
-    if(eps==='soon')  banner='<div class="sbanner">Wkrótce dostępne'+(p.dateFrom?' · od <strong>'+fmtDate(p.dateFrom)+'</strong>':'')+'</div>';
-    if(eps==='taken') banner='<div class="tbanner">Zajęte</div>';
     var title=multi?o.title+' — '+(p.nazwa||'Pokój'):o.title;
     var badge=multi?'<div class="cbadge">'+o.street+(o.floor?' · p.'+o.floor:'')+'</div>':'';
     var details='';
@@ -868,7 +880,7 @@ function renderGrid(){
        '</div>':'';
     html+='<div class="card'+(eps==='taken'?' taken':'')+'" data-oid="'+o.id+'" data-pid="'+p.id+'">'+
       banner+
-      '<div class="cimg">'+imgH+'<div class="cstatus '+sc+'">'+st+'</div><div class="ctype">'+tl+'</div></div>'+
+      '<div class="cimg">'+imgH+cardOv+'<div class="cstatus '+sc+'">'+st+'</div><div class="ctype">'+tl+'</div></div>'+
       '<div class="cbody">'+badge+
         '<div class="cdistrict">'+o.district+(o.street&&!multi?' · '+o.street:'')+'</div>'+
         '<div class="ctitle">'+title+'</div>'+
@@ -934,8 +946,18 @@ document.getElementById('gdots').addEventListener('click',function(e){var d=e.ta
 function openById(oid,pid){
   var offer=null; for(var i=0;i<OFFERS.length;i++){if(OFFERS[i].id==oid){offer=OFFERS[i];break;}} if(!offer) return;
   var pp=offer.pokoje||[], pokoj=null;
-  for(var j=0;j<pp.length;j++){if(String(pp[j].id)===String(pid)){pokoj=pp[j];break;}}
-  if(!pokoj) pokoj=pp[0]||{};
+  if(pid && pid!=='null'){
+    for(var j=0;j<pp.length;j++){if(String(pp[j].id)===String(pid)){pokoj=pp[j];break;}}
+  }
+  // pid=null i wiele pokoi → pokaż pierwszy wolny/wkrótce, lub pierwszy
+  if(!pokoj){
+    var first=null;
+    for(var k=0;k<pp.length;k++){
+      var es=effectiveStatus(pp[k]);
+      if(es==='available'||es==='soon'){ first=pp[k]; break; }
+    }
+    pokoj = first || pp[0] || {};
+  }
   openModal(offer,pokoj);
 }
 
