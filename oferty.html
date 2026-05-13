@@ -3,13 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Oferty — KaZem Mieszkania | Pokoje i mieszkania Warszawa</title>
-<meta property="og:title" content="Aktualne oferty — KaZem Mieszkania">
-<meta property="og:description" content="Pokoje studenckie i mieszkania na wynajem w Warszawie. Sprawdź dostępność i ceny.">
+<title>Pokoje studenckie i mieszkania do wynajęcia Warszawa | KaZem Mieszkania</title>
+<meta property="og:title" content="Pokoje studenckie i mieszkania do wynajęcia Warszawa | KaZem">
+<meta property="og:description" content="Aktualne oferty pokoi studenckich i mieszkań w Warszawie. Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Sprawdź dostępność i ceny.">
+<meta property="og:image" content="https://kazemmieszkania.github.io/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://kazemmieszkania.github.io/oferty.html">
 <meta property="og:type" content="website">
-<link rel="canonical" href="https://kazemmieszkania.github.io/oferty.html">
-<meta name="description" content="Aktualne oferty pokoi i mieszkań na wynajem w Warszawie. Zarządzane przez KaZem Mieszkania — Katarzyna Zemlik.">
+<meta name="robots" content="index, follow">
+<meta name="keywords" content="pokój studencki Warszawa, wynajem pokoju Warszawa, mieszkanie studenckie Warszawa, wynajem mieszkania Warszawa, pokoje do wynajęcia Warszawa, najem studencki Mokotów Wola Śródmieście Żoliborz Ursynów">
+<link rel="canonical" href="https://kazemmieszkania.pl/oferty.html">
+<meta name="description" content="Aktualne oferty pokoi studenckich i mieszkań na wynajem w Warszawie. Dostępne lokale w Mokotowie, Woli, Śródmieściu, Żoliborzu i innych dzielnicach. Sprawdź dostępność i ceny – odpowiedź w 24h.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -313,6 +318,32 @@ body.is-admin .card-admin-btns{display:flex}
 }
 @keyframes pulsering{0%,100%{transform:scale(1);opacity:.25}50%{transform:scale(1.7);opacity:0}}
 </style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "KaZem Mieszkania",
+  "description": "Aktualne oferty pokoi studenckich i mieszkań na wynajem w Warszawie. Obsługa najmu bez stresu dla właściciela i najemcy.",
+  "url": "https://kazemmieszkania.pl/oferty.html",
+  "telephone": "+48723168200",
+  "email": "kasia@kazemmieszkania.pl",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Warszawa",
+    "addressCountry": "PL"
+  },
+  "areaServed": {"@type": "City", "name": "Warszawa"},
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Pokoje studenckie i mieszkania do wynajęcia Warszawa",
+    "itemListElement": [
+      {"@type": "Offer", "itemOffered": {"@type": "Accommodation", "name": "Pokój studencki do wynajęcia Warszawa", "address": {"@type": "PostalAddress", "addressLocality": "Warszawa", "addressCountry": "PL"}}},
+      {"@type": "Offer", "itemOffered": {"@type": "Accommodation", "name": "Mieszkanie do wynajęcia Warszawa", "address": {"@type": "PostalAddress", "addressLocality": "Warszawa", "addressCountry": "PL"}}}
+    ]
+  }
+}
+</script>
 </head>
 <body>
 
@@ -329,8 +360,8 @@ body.is-admin .card-admin-btns{display:flex}
 
 <div class="hero">
   <div class="hlabel">Aktualne oferty · Warszawa</div>
-  <h1>Pokoje i mieszkania<br>w <em>dobrych rękach</em></h1>
-  <p>Wszystkie oferty prowadzone przez KaZem Mieszkania — z pełną obsługą najmu.</p>
+  <h1>Pokoje i mieszkania<br>do wynajęcia w <em>Warszawie</em></h1>
+  <p>Pokoje studenckie i mieszkania na wynajem w Warszawie — Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Wszystkie lokale zarządzane przez KaZem Mieszkania.</p>
   <div class="hstats">
     <div class="hstat"><div class="hstat-n" id="cntAv">0</div><div class="hstat-l">Dostępne</div></div>
     <div class="hstat"><div class="hstat-n" id="cntSo">0</div><div class="hstat-l">Wkrótce</div></div>
