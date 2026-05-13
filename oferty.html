@@ -143,9 +143,14 @@ body.is-admin .card-admin-btns{display:flex}
 .mclose:hover{background:var(--accent)}
 .mbody{overflow-y:auto;flex:1}
 .mgal{position:relative;height:300px;background:#1a1a18;flex-shrink:0}
-.mgal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s ease}
+.mgal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s ease;z-index:1}
 .mgal img.active{opacity:1;z-index:2}
 .mgal img.behind{opacity:0;z-index:1}
+.mgal-ph{position:relative;z-index:3}
+.gnav{z-index:10}
+.gdots{z-index:10}
+.gcnt{z-index:10}
+.mclose{z-index:10}
 .mgal-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#2a2520,#1a1a18)}
 .gnav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);backdrop-filter:blur(4px);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .gnav:hover{background:rgba(196,151,90,.8)}
@@ -1001,16 +1006,15 @@ function showImg(idx){
   if(_galTimer) { clearTimeout(_galTimer); _galTimer = null; }
 
   // Jeśli src już załadowany (cached) — crossfade natychmiast
-  if(elNext.complete && elNext.src === src) {
+  if(elNext.complete && elNext.naturalWidth > 0 && elNext.src === src) {
     elNext.className = 'active';
     elCur.className  = 'behind';
     _galSlot = next;
     return;
   }
 
-  // Załaduj w tle, potem crossfade
+  // Załaduj w tle, potem crossfade — onload PRZED src!
   elNext.className = 'behind';
-  elNext.src = src;
   elNext.onload = function(){
     elNext.className = 'active';
     elCur.className  = 'behind';
@@ -1018,12 +1022,12 @@ function showImg(idx){
     elNext.onload = null;
   };
   elNext.onerror = function(){
-    // Przy błędzie ładowania — pokaż mimo wszystko
     elNext.className = 'active';
     elCur.className  = 'behind';
     _galSlot = next;
     elNext.onerror = null;
   };
+  elNext.src = src;
 }
 document.getElementById('gprev').addEventListener('click',function(){showImg(gIdx-1);});
 document.getElementById('gnext').addEventListener('click',function(){showImg(gIdx+1);});
@@ -1084,10 +1088,11 @@ function openModal(offer,p){
     elA.src=''; elA.className='behind'; elA.onload=null;
     elB.src=''; elB.className='behind'; elB.onload=null;
     // Załaduj pierwsze zdjęcie w slot A
-    elA.src=gImgs[0];
     elA.onload=function(){ elA.className='active'; elA.onload=null; };
     elA.onerror=function(){ elA.className='active'; elA.onerror=null; };
-    if(elA.complete){ elA.className='active'; }
+    elA.src=gImgs[0];
+    // Dla przeglądarek które mają obraz już w cache
+    if(elA.complete && elA.naturalWidth>0){ elA.className='active'; elA.onload=null; }
     phEl.style.display='none';
   } else {
     elA.src=''; elA.className='behind';
