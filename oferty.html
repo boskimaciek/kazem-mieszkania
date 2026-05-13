@@ -11,7 +11,7 @@
 <link rel="canonical" href="https://kazemmieszkania.github.io/oferty.html">
 <meta name="description" content="Aktualne oferty pokoi i mieszkań na wynajem w Warszawie. Zarządzane przez KaZem Mieszkania — Katarzyna Zemlik.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -143,7 +143,9 @@ body.is-admin .card-admin-btns{display:flex}
 .mclose:hover{background:var(--accent)}
 .mbody{overflow-y:auto;flex:1}
 .mgal{position:relative;height:300px;background:#1a1a18;flex-shrink:0}
-.mgal img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .25s}
+.mgal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s ease}
+.mgal img.active{opacity:1;z-index:2}
+.mgal img.behind{opacity:0;z-index:1}
 .mgal-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#2a2520,#1a1a18)}
 .gnav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);backdrop-filter:blur(4px);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .gnav:hover{background:rgba(196,151,90,.8)}
@@ -373,7 +375,8 @@ body.is-admin .card-admin-btns{display:flex}
   <div class="modal">
     <button class="mclose" id="mclose">✕</button>
     <div class="mgal" id="mgal">
-      <img id="mgalimg" src="" alt="" style="display:none">
+      <img id="mgalimg_a" src="" alt="" class="behind">
+      <img id="mgalimg_b" src="" alt="" class="behind">
       <div class="mgal-ph" id="mgalph">🏠</div>
       <button class="gnav gprev" id="gprev">‹</button>
       <button class="gnav gnext" id="gnext">›</button>
@@ -564,6 +567,7 @@ body.is-admin .card-admin-btns{display:flex}
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 // ── CONFIG ─────────────────────────────────────────────────────
@@ -614,7 +618,7 @@ function loadOffersLocal() {
 }
 
 function saveOffers() {
-  // Zawsze zapisz lokalnie jako fallback
+  mapMarkersBuilt = false; // wymusz przebudowę markerów po zapisie
   localStorage.setItem(STORAGE_KEY, JSON.stringify(OFFERS));
   // Zapisz do Supabase — upsert każdej oferty osobno
   var rows = OFFERS.map(function(o){ return {id: o.id, data: o}; });
@@ -776,7 +780,7 @@ function buildPopup(o) {
     var ov0=makeOv(eps0, p0, true);
     return '<div class="kpi" onclick="openById('+o.id+',\''+(p0.id||'')+'\')" >'+
       '<div style="position:relative;height:110px;overflow:hidden;border-radius:10px 10px 0 0">'+
-        (src0?'<img src="'+src0+'" style="width:100%;height:110px;object-fit:cover;display:block">':'<div style="width:100%;height:110px;background:#d0c8be;display:flex;align-items:center;justify-content:center;font-size:2.5rem">🏠</div>')+
+        (src0?'<img src="'+src0+'" style="width:100%;height:110px;object-fit:cover;display:block" loading="lazy">':'<div style="width:100%;height:110px;background:#d0c8be;display:flex;align-items:center;justify-content:center;font-size:2.5rem">🏠</div>')+
         ov0+'<div style="position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;background:'+dc[eps0||ms]+';border:2px solid #fff"></div></div>'+
       '<div class="kpi-body"><div class="kpi-status '+sl.cls+'">'+sl.txt+'</div>'+
       '<div class="kpi-title">'+o.title+'</div><div class="kpi-meta">'+o.district+(o.floor?' · p.'+o.floor:'')+'</div></div>'+
@@ -784,25 +788,62 @@ function buildPopup(o) {
   }
 }
 
-var mapMarkers=[];
-function renderMap(list){
-  mapMarkers.forEach(function(m){m.remove();}); mapMarkers=[];
-  (list||OFFERS).forEach(function(o){
-    var lat=parseFloat(o.lat),lng=parseFloat(o.lng); if(isNaN(lat)||isNaN(lng)) return;
-    var pp2=o.pokoje||[],cols2=Math.ceil(Math.sqrt(pp2.length)),sz2=cols2<=2?90:70;
+// Markery: tworzone raz, pokazywane/ukrywane przy filtracji
+var mapMarkers = [];      // [{id, marker}]
+var mapMarkersBuilt = false;
+
+function buildMapMarkers(){
+  mapMarkers.forEach(function(e){ try{ e.marker.remove(); }catch(ex){} });
+  mapMarkers = [];
+  OFFERS.forEach(function(o){
+    var lat=parseFloat(o.lat), lng=parseFloat(o.lng);
+    if(isNaN(lat)||isNaN(lng)) return;
+    var pp2=o.pokoje||[], cols2=Math.ceil(Math.sqrt(pp2.length)), sz2=cols2<=2?90:70;
     var pw=pp2.length>1?cols2*sz2+(cols2-1)*2+4:224;
     var m=L.marker([lat,lng],{icon:dotIcon(mainStatus(o))}).addTo(map);
-    m.bindPopup(buildPopup(o),{maxWidth:pw+20,minWidth:pw,autoPan:true,autoPanPaddingTopLeft:L.point(20,80),autoPanPaddingBottomRight:L.point(20,20)});
-    m.on('mouseover',function(){this.openPopup();});
-    m.on('mouseout',function(){var self=this;setTimeout(function(){var el=self.getPopup()&&self.getPopup().getElement();if(!el||!el.matches(':hover'))self.closePopup();else el.addEventListener('mouseleave',function(){self.closePopup();},{once:true});},120);});
-    mapMarkers.push(m);
+    m._offerData = o;
+    m.bindPopup('',{maxWidth:pw+20,minWidth:pw,autoPan:true,
+      autoPanPaddingTopLeft:L.point(20,80),autoPanPaddingBottomRight:L.point(20,20)});
+    m.on('mouseover',function(){
+      var popup=this.getPopup();
+      if(popup&&!popup._lazyLoaded){popup.setContent(buildPopup(this._offerData));popup._lazyLoaded=true;}
+      this.openPopup();
+    });
+    m.on('mouseout',function(){
+      var self=this;
+      setTimeout(function(){
+        var el=self.getPopup()&&self.getPopup().getElement();
+        if(!el||!el.matches(':hover')) self.closePopup();
+        else el.addEventListener('mouseleave',function(){self.closePopup();},{once:true});
+      },80);
+    });
+    mapMarkers.push({id:o.id, marker:m});
+  });
+  mapMarkersBuilt=true;
+}
+
+function renderMap(list){
+  var validCount = OFFERS.filter(function(o){return !isNaN(parseFloat(o.lat));}).length;
+  if(!mapMarkersBuilt || mapMarkers.length !== validCount){
+    buildMapMarkers();
+    return;
+  }
+  // Tylko pokaż/ukryj — bez tworzenia nowych markerów
+  var visIds = {};
+  (list||OFFERS).forEach(function(o){ visIds[o.id]=true; });
+  mapMarkers.forEach(function(e){
+    var visible = !!visIds[e.id];
+    var hasLayer = map.hasLayer(e.marker);
+    if(visible && !hasLayer)  e.marker.addTo(map);
+    if(!visible && hasLayer)  e.marker.remove();
   });
 }
-function resetView(list){
-  if(!list||!list.length){map.setView([52.225,21.010],12,{animate:true});return;}
-  if(list.length===1){map.setView([list[0].lat,list[0].lng],14,{animate:true});return;}
+function resetView(list, animate){
+  var anim = (animate === true); // domyślnie false — animacja tylko przy init
+  if(!list||!list.length){map.setView([52.225,21.010],12,{animate:anim});return;}
+  if(list.length===1){map.setView([list[0].lat,list[0].lng],14,{animate:anim});return;}
   var lats=list.map(function(o){return parseFloat(o.lat);}),lngs=list.map(function(o){return parseFloat(o.lng);});
-  map.fitBounds([[Math.min.apply(null,lats)-.012,Math.min.apply(null,lngs)-.02],[Math.max.apply(null,lats)+.012,Math.max.apply(null,lngs)+.02]],{animate:true,padding:[30,30]});
+  map.fitBounds([[Math.min.apply(null,lats)-.012,Math.min.apply(null,lngs)-.02],[Math.max.apply(null,lats)+.012,Math.max.apply(null,lngs)+.02]],{animate:anim,padding:[30,30]});
 }
 
 // ── GRID ───────────────────────────────────────────────────────
@@ -837,7 +878,7 @@ function renderGrid(){
       '<div style="font-family:\'Playfair Display\',serif;font-size:1.4rem;margin-bottom:.5rem">Brak ofert</div>'+
       '<p>Zmień filtry lub wróć później.</p></div>';
     document.getElementById('pagination').innerHTML='';
-    renderMap(filtered); resetView(filtered); return;
+    renderMap(filtered); return;
   }
 
   var html='';
@@ -906,7 +947,9 @@ function renderGrid(){
     ph+='<button class="pgbtn'+(currentPage===totalPages?' pgdis':'')+'" onclick="goPage('+(currentPage+1)+')">›</button></div>';
     pg.innerHTML=ph;
   }
-  renderMap(filtered); resetView(filtered);
+  renderMap(filtered);
+  // Nie resetuj widoku mapy przy paginacji — tylko przy zmianie filtrów
+  if(currentPage === 1) resetView(filtered, false);
 }
 
 function goPage(n){
@@ -921,23 +964,66 @@ document.getElementById('grid').addEventListener('click',function(e){
   if(e.target.closest('.card-admin-btns')) return;
   openById(card.getAttribute('data-oid'),card.getAttribute('data-pid'));
 });
+var _filterTimer = null;
 document.querySelectorAll('[data-ft]').forEach(function(btn){
   btn.addEventListener('click',function(){
     var ft=btn.getAttribute('data-ft');
     document.querySelectorAll('[data-ft="'+ft+'"]').forEach(function(b){b.classList.remove('active');});
     btn.classList.add('active');
     if(ft==='type') activeType=btn.getAttribute('data-fv'); else activeStatus=btn.getAttribute('data-fv');
-    currentPage=1; renderGrid();
+    currentPage=1;
+    // Debounce — poczekaj 80ms żeby nie renderować przy każdym szybkim kliknięciu
+    clearTimeout(_filterTimer);
+    _filterTimer = setTimeout(function(){ renderGrid(); }, 80);
   });
 });
 
 // ── OFFER DETAIL MODAL ─────────────────────────────────────────
+// Galeria: dwa elementy img, crossfade po załadowaniu
+var _galSlot = 'a'; // aktywny slot: 'a' lub 'b'
+var _galTimer = null;
+
 function showImg(idx){
-  gIdx=(idx+gImgs.length)%gImgs.length;
-  var el=document.getElementById('mgalimg'); el.style.opacity='0';
-  setTimeout(function(){el.src=gImgs[gIdx];el.style.opacity='1';},150);
-  document.getElementById('gcnt').textContent=gImgs.length>1?(gIdx+1)+' / '+gImgs.length:'';
-  document.querySelectorAll('.gdot').forEach(function(d,i){d.classList.toggle('active',i===gIdx);});
+  gIdx = (idx + gImgs.length) % gImgs.length;
+  var src = gImgs[gIdx];
+
+  // Aktualizuj licznik i kropki natychmiast
+  document.getElementById('gcnt').textContent = gImgs.length > 1 ? (gIdx+1)+' / '+gImgs.length : '';
+  document.querySelectorAll('.gdot').forEach(function(d,i){ d.classList.toggle('active', i===gIdx); });
+
+  var next = _galSlot === 'a' ? 'b' : 'a';
+  var elCur  = document.getElementById('mgalimg_' + _galSlot);
+  var elNext = document.getElementById('mgalimg_' + next);
+
+  if(!elNext) return;
+
+  // Anuluj poprzedni timer jeśli użytkownik klika szybko
+  if(_galTimer) { clearTimeout(_galTimer); _galTimer = null; }
+
+  // Jeśli src już załadowany (cached) — crossfade natychmiast
+  if(elNext.complete && elNext.src === src) {
+    elNext.className = 'active';
+    elCur.className  = 'behind';
+    _galSlot = next;
+    return;
+  }
+
+  // Załaduj w tle, potem crossfade
+  elNext.className = 'behind';
+  elNext.src = src;
+  elNext.onload = function(){
+    elNext.className = 'active';
+    elCur.className  = 'behind';
+    _galSlot = next;
+    elNext.onload = null;
+  };
+  elNext.onerror = function(){
+    // Przy błędzie ładowania — pokaż mimo wszystko
+    elNext.className = 'active';
+    elCur.className  = 'behind';
+    _galSlot = next;
+    elNext.onerror = null;
+  };
 }
 document.getElementById('gprev').addEventListener('click',function(){showImg(gIdx-1);});
 document.getElementById('gnext').addEventListener('click',function(){showImg(gIdx+1);});
@@ -989,10 +1075,25 @@ function openModal(offer,p){
   gImgs=[]; var pImgs=p.imgs||[], mi=p.mainImg||0;
   if(pImgs.length){gImgs.push(pImgs[mi]);pImgs.forEach(function(img,i){if(i!==mi)gImgs.push(img);});}
   if(offer.img&&gImgs.indexOf(offer.img)<0) gImgs.push(offer.img);
-  gIdx=0;
-  var imgEl=document.getElementById('mgalimg'),phEl=document.getElementById('mgalph');
-  if(gImgs.length){imgEl.src=gImgs[0];imgEl.style.display='block';imgEl.style.opacity='1';phEl.style.display='none';}
-  else{imgEl.style.display='none';phEl.style.display='flex';}
+  gIdx=0; _galSlot='a'; if(_galTimer){clearTimeout(_galTimer);_galTimer=null;}
+
+  var elA=document.getElementById('mgalimg_a'), elB=document.getElementById('mgalimg_b');
+  var phEl=document.getElementById('mgalph');
+  if(gImgs.length){
+    // Reset obu slotów
+    elA.src=''; elA.className='behind'; elA.onload=null;
+    elB.src=''; elB.className='behind'; elB.onload=null;
+    // Załaduj pierwsze zdjęcie w slot A
+    elA.src=gImgs[0];
+    elA.onload=function(){ elA.className='active'; elA.onload=null; };
+    elA.onerror=function(){ elA.className='active'; elA.onerror=null; };
+    if(elA.complete){ elA.className='active'; }
+    phEl.style.display='none';
+  } else {
+    elA.src=''; elA.className='behind';
+    elB.src=''; elB.className='behind';
+    phEl.style.display='flex';
+  }
   document.getElementById('gprev').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gnext').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gcnt').textContent=gImgs.length>1?'1 / '+gImgs.length:'';
@@ -1000,7 +1101,15 @@ function openModal(offer,p){
   document.getElementById('moverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
-function closeModal(){document.getElementById('moverlay').classList.remove('open');document.body.style.overflow='';}
+function closeModal(){
+  document.getElementById('moverlay').classList.remove('open');
+  document.body.style.overflow='';
+  // Wyczyść galerie żeby nie było flash poprzednich zdjęć
+  var elA=document.getElementById('mgalimg_a'), elB=document.getElementById('mgalimg_b');
+  if(elA){elA.onload=null;elA.onerror=null;}
+  if(elB){elB.onload=null;elB.onerror=null;}
+  if(_galTimer){clearTimeout(_galTimer);_galTimer=null;}
+}
 document.getElementById('mclose').addEventListener('click',closeModal);
 document.getElementById('moverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 document.addEventListener('keydown',function(e){
