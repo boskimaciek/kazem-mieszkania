@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" id="html-root">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES5YM8V4SF"></script>
@@ -341,6 +341,7 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
   ]
 }
 </script>
+<script src="i18n.js"></script>
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
@@ -364,12 +365,12 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
 <nav>
   <a href="#" class="logo">Ka<span>Zem</span> Mieszkania</a>
   <ul class="nav-links">
-    <li><a href="#mieszkania">Mieszkania</a></li>
-    <li><a href="oferty.html" target="_blank" style="color:var(--accent)">Oferty najmu ↗</a></li>
-    <li><a href="#uslugi">Usługi</a></li>
-    <li><a href="#o-mnie">O mnie</a></li>
-    <li><a href="#homestaging">Homestaging</a></li>
-    <li><a href="#kontakt" class="nav-cta">Kontakt</a></li>
+    <li><a href="#mieszkania" data-i18n="nav.apartments">Mieszkania</a></li>
+    <li><a href="oferty.html" target="_blank" style="color:var(--accent)" data-i18n="nav.offers">Oferty najmu ↗</a></li>
+    <li><a href="#uslugi" data-i18n="nav.services">Usługi</a></li>
+    <li><a href="#o-mnie" data-i18n="nav.about">O mnie</a></li>
+    <li><a href="#homestaging" data-i18n="nav.homestaging">Homestaging</a></li>
+    <li><a href="#kontakt" class="nav-cta" data-i18n="nav.contact">Kontakt</a></li>
   </ul>
   <button class="hamburger" id="menuBtn" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -377,29 +378,29 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
 </nav>
 <div class="nav-mobile" id="mobileNav">
   <button class="close-btn" id="closeNav">✕</button>
-  <a href="#mieszkania" onclick="closeMobileNav()">Mieszkania</a>
-  <a href="oferty.html" target="_blank" style="color:var(--accent)">Oferty najmu ↗</a>
-  <a href="#uslugi" onclick="closeMobileNav()">Usługi</a>
-  <a href="#o-mnie" onclick="closeMobileNav()">O mnie</a>
-  <a href="#homestaging" onclick="closeMobileNav()">Homestaging</a>
-  <a href="#mapa" onclick="closeMobileNav()">Zasięg</a>
-  <a href="#kontakt" onclick="closeMobileNav()" style="color:var(--accent)">Kontakt</a>
+  <a href="#mieszkania" onclick="closeMobileNav()" data-i18n="nav.apartments">Mieszkania</a>
+  <a href="oferty.html" target="_blank" style="color:var(--accent)" data-i18n="nav.offers">Oferty najmu ↗</a>
+  <a href="#uslugi" onclick="closeMobileNav()" data-i18n="nav.services">Usługi</a>
+  <a href="#o-mnie" onclick="closeMobileNav()" data-i18n="nav.about">O mnie</a>
+  <a href="#homestaging" onclick="closeMobileNav()" data-i18n="nav.homestaging">Homestaging</a>
+  <a href="#mapa" onclick="closeMobileNav()" data-i18n="nav.range">Zasięg</a>
+  <a href="#kontakt" onclick="closeMobileNav()" style="color:var(--accent)" data-i18n="nav.contact">Kontakt</a>
 </div>
 
 <section class="hero">
   <div class="hero-left">
-    <div class="pill">★ Zarządzanie najmem · Warszawa</div>
-    <h1>Twoje mieszkanie<br>zarabia. Ja<br><em>jestem na miejscu.</em></h1>
-    <p class="hero-sub">Jestem Kasia — zajmuję się kompleksową obsługą mieszkań na wynajem w Warszawie. Podpisuję umowy, pilnuję ciągłości najmu, reaguję na usterki. Właściciel nie musi robić dosłownie nic.</p>
-    <p class="hero-kasia">— Katarzyna Zemlik, KaZem Mieszkania</p>
+    <div class="pill" data-i18n="hero.pill">★ Zarządzanie najmem · Warszawa</div>
+    <h1><span data-i18n="hero.h1.line1">Twoje mieszkanie</span><br><span data-i18n="hero.h1.line2">zarabia. Ja</span><br><em data-i18n="hero.h1.em">jestem na miejscu.</em></h1>
+    <p class="hero-sub" data-i18n="hero.sub">Jestem Kasia — zajmuję się kompleksową obsługą mieszkań na wynajem w Warszawie. Podpisuję umowy, pilnuję ciągłości najmu, reaguję na usterki. Właściciel nie musi robić dosłownie nic.</p>
+    <p class="hero-kasia" data-i18n="hero.kasia">— Katarzyna Zemlik, KaZem Mieszkania</p>
     <div class="btn-row">
-      <a href="#kontakt" class="btn-p">Umów bezpłatną konsultację →</a>
-      <a href="#uslugi" class="btn-s">Sprawdź co robię</a>
+      <a href="#kontakt" class="btn-p" data-i18n="hero.cta1">Umów bezpłatną konsultację →</a>
+      <a href="#uslugi" class="btn-s" data-i18n="hero.cta2">Sprawdź co robię</a>
     </div>
     <div class="hero-stats">
-      <div><div class="stat-n">Lata</div><div class="stat-l">Doświadczenia na rynku</div></div>
-      <div><div class="stat-n">90%+</div><div class="stat-l">Ciągłość najmu</div></div>
-      <div><div class="stat-n">24h</div><div class="stat-l">Czas reakcji</div></div>
+      <div><div class="stat-n" data-i18n="hero.stat1.n">Lata</div><div class="stat-l" data-i18n="hero.stat1.l">Doświadczenia na rynku</div></div>
+      <div><div class="stat-n">90%+</div><div class="stat-l" data-i18n="hero.stat2.l">Ciągłość najmu</div></div>
+      <div><div class="stat-n">24h</div><div class="stat-l" data-i18n="hero.stat3.l">Czas reakcji</div></div>
     </div>
     <div class="dzielnice">
       <span class="dz">📍 Mokotów</span><span class="dz">📍 Ursynów</span><span class="dz">📍 Wola</span><span class="dz">📍 Ochota</span><span class="dz">📍 Śródmieście</span><span class="dz">📍 Żoliborz</span>
@@ -426,13 +427,13 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
 
 <div class="trust">
   <div class="trust-inner">
-    <div class="trust-item"><span>🔑</span> Działam na podstawie pełnomocnictwa właściciela</div>
+    <div class="trust-item"><span>🔑</span> <span data-i18n="trust.1">Działam na podstawie pełnomocnictwa właściciela</span></div>
     <div class="trust-sep"></div>
-    <div class="trust-item"><span>📋</span> Podpisuję umowy i aneksy w imieniu właściciela</div>
+    <div class="trust-item"><span>📋</span> <span data-i18n="trust.2">Podpisuję umowy i aneksy w imieniu właściciela</span></div>
     <div class="trust-sep"></div>
-    <div class="trust-item"><span>🎓</span> Specjalistka od najmu studenckiego</div>
+    <div class="trust-item"><span>🎓</span> <span data-i18n="trust.3">Specjalistka od najmu studenckiego</span></div>
     <div class="trust-sep"></div>
-    <div class="trust-item"><span>🛠️</span> Obsługa techniczna i interwencje 24h</div>
+    <div class="trust-item"><span>🛠️</span> <span data-i18n="trust.4">Obsługa techniczna i interwencje 24h</span></div>
   </div>
 </div>
 
@@ -442,19 +443,19 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
 
       <div class="mzk-top">
         <div>
-          <div class="slabel">Mieszkania pod opieką KaZem</div>
-          <div class="stitle">Aktualne oferty<br><em>w Twoim imieniu.</em></div>
+          <div class="slabel" data-i18n="mzk.label">Mieszkania pod opieką KaZem</div>
+          <div class="stitle"><span data-i18n="mzk.title">Aktualne oferty</span><br><em data-i18n="mzk.em">w Twoim imieniu.</em></div>
         </div>
-        <p class="sdesc">Każde mieszkanie które mi przekazujesz jest zadbane, wynajęte i pracuje na Twój zysk. Nie przechowuję pustych lokali — pilnuję ciągłości. Poniżej znajdziesz oferty które aktualnie prowadzę w imieniu właścicieli.</p>
+        <p class="sdesc" data-i18n="mzk.desc">Każde mieszkanie które mi przekazujesz jest zadbane, wynajęte i pracuje na Twój zysk. Nie przechowuję pustych lokali — pilnuję ciągłości. Poniżej znajdziesz oferty które aktualnie prowadzę w imieniu właścicieli.</p>
       </div>
 
       <div class="mzk-cta-wrap">
         <div>
-          <h3>Szukasz mieszkania<br>lub pokoju do wynajęcia?</h3>
-          <p>Wszystkie aktualne oferty — pokoje studenckie i mieszkania — znajdziesz na osobnej stronie. Tam możesz sprawdzić dostępność, ceny i umówić oglądanie.</p>
-          <div class="mzk-cta-sub">Oferty aktualizowane na bieżąco · Odpowiedź w 24h</div>
+          <h3 data-i18n="mzk.cta.h3">Szukasz mieszkania<br>lub pokoju do wynajęcia?</h3>
+          <p data-i18n="mzk.cta.p">Wszystkie aktualne oferty — pokoje studenckie i mieszkania — znajdziesz na osobnej stronie. Tam możesz sprawdzić dostępność, ceny i umówić oglądanie.</p>
+          <div class="mzk-cta-sub" data-i18n="mzk.cta.sub">Oferty aktualizowane na bieżąco · Odpowiedź w 24h</div>
         </div>
-        <a href="oferty.html" target="_blank" class="mzk-cta-btn">Zobacz aktualne oferty →</a>
+        <a href="oferty.html" target="_blank" class="mzk-cta-btn" data-i18n="mzk.cta.btn">Zobacz aktualne oferty →</a>
       </div>
 
     </div>
@@ -465,58 +466,58 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
   <div class="inner">
     <div class="svc-header">
       <div>
-        <div class="slabel">Usługi</div>
-        <div class="stitle">Co dokładnie robię dla właścicieli?</div>
+        <div class="slabel" data-i18n="svc.label">Usługi</div>
+        <div class="stitle" data-i18n="svc.title">Co dokładnie robię dla właścicieli?</div>
       </div>
-      <p class="sdesc">Nie jestem pośrednikiem, który podpisuje umowę i znika. Jestem stałą opiekunką Twojego mieszkania — od momentu przejęcia kluczy, aż do dnia kiedy zdecydujesz się zakończyć współpracę.</p>
+      <p class="sdesc" data-i18n="svc.desc">Nie jestem pośrednikiem, który podpisuje umowę i znika. Jestem stałą opiekunką Twojego mieszkania — od momentu przejęcia kluczy, aż do dnia kiedy zdecydujesz się zakończyć współpracę.</p>
     </div>
     <div class="svc-grid">
       <div class="scard featured">
-        <span class="scard-badge">Główna usługa</span>
+        <span class="scard-badge" data-i18n="svc.badge">Główna usługa</span>
         <div class="sicon">🏢</div>
-        <h3>Kompleksowe zarządzanie najmem</h3>
-        <p>Pełna opieka nad mieszkaniem — jeden telefon do mnie zastępuje dziesiątki rozmów z najemcami, hydraulikami i agencjami. Działam na podstawie pełnomocnictwa.</p>
+        <h3 data-i18n="svc.1.title">Kompleksowe zarządzanie najmem</h3>
+        <p data-i18n="svc.1.desc">Pełna opieka nad mieszkaniem — jeden telefon do mnie zastępuje dziesiątki rozmów z najemcami, hydraulikami i agencjami. Działam na podstawie pełnomocnictwa.</p>
         <ul>
-          <li>Pilnowanie ciągłości najmu i terminów umów</li>
-          <li>Podpisywanie umów i aneksów w imieniu właściciela</li>
-          <li>Regularny raport ze stanu mieszkania</li>
-          <li>Kontakt z najemcami w każdej sprawie</li>
+          <li data-i18n="svc.1.li1">Pilnowanie ciągłości najmu i terminów umów</li>
+          <li data-i18n="svc.1.li2">Podpisywanie umów i aneksów w imieniu właściciela</li>
+          <li data-i18n="svc.1.li3">Regularny raport ze stanu mieszkania</li>
+          <li data-i18n="svc.1.li4">Kontakt z najemcami w każdej sprawie</li>
         </ul>
       </div>
       <div class="scard">
         <div class="sicon">🎓</div>
-        <h3>Najem studencki i wynajem pokoi</h3>
-        <p>Specjalizuję się w wynajmie pokoi dla studentów. Znam rytm roku akademickiego i wiem kiedy szukać nowych lokatorów, żeby mieszkanie nigdy nie stało puste.</p>
+        <h3 data-i18n="svc.2.title">Najem studencki i wynajem pokoi</h3>
+        <p data-i18n="svc.2.desc">Specjalizuję się w wynajmie pokoi dla studentów. Znam rytm roku akademickiego i wiem kiedy szukać nowych lokatorów, żeby mieszkanie nigdy nie stało puste.</p>
         <ul>
-          <li>Rekrutacja studentów i weryfikacja</li>
-          <li>Umowy pokojowe i regulaminy mieszkania</li>
-          <li>Rotacja najemców między latami akademickimi</li>
+          <li data-i18n="svc.2.li1">Rekrutacja studentów i weryfikacja</li>
+          <li data-i18n="svc.2.li2">Umowy pokojowe i regulaminy mieszkania</li>
+          <li data-i18n="svc.2.li3">Rotacja najemców między latami akademickimi</li>
         </ul>
       </div>
       <div class="scard">
         <div class="sicon">🔧</div>
-        <h3>Obsługa techniczna i interwencje</h3>
-        <p>Usterki zdarzają się zawsze — ważne, żeby ktoś zareagował szybko. Koordynuję fachowców, kontroluję jakość napraw i rozliczam koszty.</p>
+        <h3 data-i18n="svc.3.title">Obsługa techniczna i interwencje</h3>
+        <p data-i18n="svc.3.desc">Usterki zdarzają się zawsze — ważne, żeby ktoś zareagował szybko. Koordynuję fachowców, kontroluję jakość napraw i rozliczam koszty.</p>
         <ul>
-          <li>Interwencje w ciągu 24 godzin</li>
-          <li>Sprawdzona sieć zaufanych fachowców</li>
-          <li>Nadzór i kontrola jakości napraw</li>
+          <li data-i18n="svc.3.li1">Interwencje w ciągu 24 godzin</li>
+          <li data-i18n="svc.3.li2">Sprawdzona sieć zaufanych fachowców</li>
+          <li data-i18n="svc.3.li3">Nadzór i kontrola jakości napraw</li>
         </ul>
       </div>
       <div class="scard">
         <div class="sicon">🎨</div>
-        <h3>Homestaging</h3>
-        <p>Dobrze przygotowane mieszkanie wynajmuje się szybciej i za wyższy czynsz. Oferuję pełną usługę home stagingu — aranżację, dekorację i profesjonalną sesję zdjęciową.</p>
+        <h3 data-i18n="svc.4.title">Homestaging</h3>
+        <p data-i18n="svc.4.desc">Dobrze przygotowane mieszkanie wynajmuje się szybciej i za wyższy czynsz. Oferuję pełną usługę home stagingu — aranżację, dekorację i profesjonalną sesję zdjęciową.</p>
       </div>
       <div class="scard">
         <div class="sicon">🔍</div>
-        <h3>Weryfikacja i dobór najemców</h3>
-        <p>Weryfikuję potencjalnych najemców zanim cokolwiek podpiszę. Sprawdzam dokumenty, referencje i historię najmu. Dobry najemca to spokój na lata.</p>
+        <h3 data-i18n="svc.5.title">Weryfikacja i dobór najemców</h3>
+        <p data-i18n="svc.5.desc">Weryfikuję potencjalnych najemców zanim cokolwiek podpiszę. Sprawdzam dokumenty, referencje i historię najmu. Dobry najemca to spokój na lata.</p>
       </div>
       <div class="scard">
         <div class="sicon">🏠</div>
-        <h3>Wynajem pojedynczych mieszkań</h3>
-        <p>Pomagam wynająć mieszkanie jednej rodzinie lub osobie — z pełną obsługą formalną, profesjonalnym ogłoszeniem i selekcją najemców.</p>
+        <h3 data-i18n="svc.6.title">Wynajem pojedynczych mieszkań</h3>
+        <p data-i18n="svc.6.desc">Pomagam wynająć mieszkanie jednej rodzinie lub osobie — z pełną obsługą formalną, profesjonalnym ogłoszeniem i selekcją najemców.</p>
       </div>
     </div>
   </div>
@@ -531,19 +532,19 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
           alt="Katarzyna Zemlik KaZem Mieszkania zarządzanie najmem Warszawa"
           loading="lazy">
         <div class="about-photo-badge">
-          <strong>Katarzyna Zemlik</strong>
-          <small>KaZem Mieszkania · Warszawa</small>
+          <strong data-i18n="about.badge.name">Katarzyna Zemlik</strong>
+          <small data-i18n="about.badge.small">KaZem Mieszkania · Warszawa</small>
         </div>
       </div>
       <div class="about-text">
-        <div class="slabel">O mnie</div>
-        <div class="stitle">Jestem Kasia — nie firma, tylko człowiek</div>
-        <p class="sdesc">Wiem, jak wiele stresu potrafi dać najem. Zna się na tym każdy właściciel, który choć raz o 22:00 odebrał telefon „bo przestała działać pralka". Dlatego robię to, co robię.</p>
-        <p class="sdesc" style="margin-top:1rem">Zarządzam mieszkaniami w Warszawie — z prawdziwą troską, nie na autopilocie. Nie jestem anonimową agencją z infolinią. Masz mój numer, moją uwagę i moją odpowiedzialność.</p>
+        <div class="slabel" data-i18n="about.label">O mnie</div>
+        <div class="stitle" data-i18n="about.title">Jestem Kasia — nie firma, tylko człowiek</div>
+        <p class="sdesc" data-i18n="about.p1">Wiem, jak wiele stresu potrafi dać najem. Zna się na tym każdy właściciel, który choć raz o 22:00 odebrał telefon „bo przestała działać pralka". Dlatego robię to, co robię.</p>
+        <p class="sdesc" style="margin-top:1rem" data-i18n="about.p2">Zarządzam mieszkaniami w Warszawie — z prawdziwą troską, nie na autopilocie. Nie jestem anonimową agencją z infolinią. Masz mój numer, moją uwagę i moją odpowiedzialność.</p>
         <div class="about-values">
-          <div class="aval"><div class="aval-dot">✓</div><p><strong>Działam w Twoim imieniu</strong> — mam pełnomocnictwo, podpisuję dokumenty, reprezentuję Cię wobec najemców. Ty możesz być gdziekolwiek.</p></div>
-          <div class="aval"><div class="aval-dot">✓</div><p><strong>Znana twarz w kamienicy</strong> — najemcy wiedzą, kto się nimi zajmuje. Zaufanie buduje się latami i chroni Twoje mieszkanie.</p></div>
-          <div class="aval"><div class="aval-dot">✓</div><p><strong>Specjalistka od rynku studenckiego</strong> — znam ten rynek od podszewki. Wiem kiedy szukać, kogo weryfikować i jak unikać problemów.</p></div>
+          <div class="aval"><div class="aval-dot">✓</div><p><strong data-i18n="about.v1.strong">Działam w Twoim imieniu</strong> <span data-i18n="about.v1.p">— mam pełnomocnictwo, podpisuję dokumenty, reprezentuję Cię wobec najemców. Ty możesz być gdziekolwiek.</span></p></div>
+          <div class="aval"><div class="aval-dot">✓</div><p><strong data-i18n="about.v2.strong">Znana twarz w kamienicy</strong> <span data-i18n="about.v2.p">— najemcy wiedzą, kto się nimi zajmuje. Zaufanie buduje się latami i chroni Twoje mieszkanie.</span></p></div>
+          <div class="aval"><div class="aval-dot">✓</div><p><strong data-i18n="about.v3.strong">Specjalistka od rynku studenckiego</strong> <span data-i18n="about.v3.p">— znam ten rynek od podszewki. Wiem kiedy szukać, kogo weryfikować i jak unikać problemów.</span></p></div>
         </div>
       </div>
     </div>
@@ -552,25 +553,25 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
 
 <section class="why">
   <div class="why-l">
-    <div class="slabel">Dlaczego KaZem</div>
-    <div class="stitle" style="color:#fff">Co zyskujesz oddając mi klucze?</div>
-    <p class="sdesc">Spokojna głowa, regularny czynsz i pewność, że ktoś naprawdę patrzy na Twoje mieszkanie.</p>
+    <div class="slabel" data-i18n="why.label">Dlaczego KaZem</div>
+    <div class="stitle" style="color:#fff" data-i18n="why.title">Co zyskujesz oddając mi klucze?</div>
+    <p class="sdesc" data-i18n="why.desc">Spokojna głowa, regularny czynsz i pewność, że ktoś naprawdę patrzy na Twoje mieszkanie.</p>
     <div class="why-list">
-      <div class="wi"><div class="wcheck">✓</div><p><strong>Zero przestojów.</strong> Pilnuję terminów umów i zaczynam szukać nowych najemców z wyprzedzeniem, zanim poprzedni wyjdzie.</p></div>
-      <div class="wi"><div class="wcheck">✓</div><p><strong>Podpisuję wszystko w Twoim imieniu.</strong> Umowy, aneksy, protokoły — nie musisz przyjeżdżać do Warszawy.</p></div>
-      <div class="wi"><div class="wcheck">✓</div><p><strong>Jedna osoba, nie call center.</strong> Dzwonisz do mnie i wiesz, z kim rozmawiasz.</p></div>
-      <div class="wi"><div class="wcheck">✓</div><p><strong>Transparentne rozliczenia.</strong> Wiesz co, kiedy i za ile. Żadnych ukrytych kosztów.</p></div>
-      <div class="wi"><div class="wcheck">✓</div><p><strong>Sprawdzona sieć fachowców.</strong> Hydraulik, elektryk, stolarz — reagują szybko i uczciwie wyceniają.</p></div>
+      <div class="wi"><div class="wcheck">✓</div><p><strong data-i18n="why.1.strong">Zero przestojów.</strong> <span data-i18n="why.1.p">Pilnuję terminów umów i zaczynam szukać nowych najemców z wyprzedzeniem, zanim poprzedni wyjdzie.</span></p></div>
+      <div class="wi"><div class="wcheck">✓</div><p><strong data-i18n="why.2.strong">Podpisuję wszystko w Twoim imieniu.</strong> <span data-i18n="why.2.p">Umowy, aneksy, protokoły — nie musisz przyjeżdżać do Warszawy.</span></p></div>
+      <div class="wi"><div class="wcheck">✓</div><p><strong data-i18n="why.3.strong">Jedna osoba, nie call center.</strong> <span data-i18n="why.3.p">Dzwonisz do mnie i wiesz, z kim rozmawiasz.</span></p></div>
+      <div class="wi"><div class="wcheck">✓</div><p><strong data-i18n="why.4.strong">Transparentne rozliczenia.</strong> <span data-i18n="why.4.p">Wiesz co, kiedy i za ile. Żadnych ukrytych kosztów.</span></p></div>
+      <div class="wi"><div class="wcheck">✓</div><p><strong data-i18n="why.5.strong">Sprawdzona sieć fachowców.</strong> <span data-i18n="why.5.p">Hydraulik, elektryk, stolarz — reagują szybko i uczciwie wyceniają.</span></p></div>
     </div>
   </div>
   <div class="why-r">
-    <h3>Jak zaczynamy?</h3>
-    <p>Od bezpłatnej rozmowy do spokojnego najmu — cztery proste kroki.</p>
+    <h3 data-i18n="steps.title">Jak zaczynamy?</h3>
+    <p data-i18n="steps.desc">Od bezpłatnej rozmowy do spokojnego najmu — cztery proste kroki.</p>
     <div class="steps">
-      <div class="step"><div class="snum">01</div><div class="stxt"><strong>Bezpłatna konsultacja</strong><small>Opowiadasz mi o mieszkaniu. Bez zobowiązań.</small></div></div>
-      <div class="step"><div class="snum">02</div><div class="stxt"><strong>Ocena i ewentualny homestaging</strong><small>Przygotowuję mieszkanie, żeby wynajęło się szybko i drogo.</small></div></div>
-      <div class="step"><div class="snum">03</div><div class="stxt"><strong>Umowa współpracy i pełnomocnictwo</strong><small>Wszystko jasno na papierze — warunki, zakres, wynagrodzenie.</small></div></div>
-      <div class="step"><div class="snum">04</div><div class="stxt"><strong>Oddajesz klucze — my robimy resztę</strong><small>Czynsz trafia do Ciebie co miesiąc.</small></div></div>
+      <div class="step"><div class="snum">01</div><div class="stxt"><strong data-i18n="step.1.strong">Bezpłatna konsultacja</strong><small data-i18n="step.1.small">Opowiadasz mi o mieszkaniu. Bez zobowiązań.</small></div></div>
+      <div class="step"><div class="snum">02</div><div class="stxt"><strong data-i18n="step.2.strong">Ocena i ewentualny homestaging</strong><small data-i18n="step.2.small">Przygotowuję mieszkanie, żeby wynajęło się szybko i drogo.</small></div></div>
+      <div class="step"><div class="snum">03</div><div class="stxt"><strong data-i18n="step.3.strong">Umowa współpracy i pełnomocnictwo</strong><small data-i18n="step.3.small">Wszystko jasno na papierze — warunki, zakres, wynagrodzenie.</small></div></div>
+      <div class="step"><div class="snum">04</div><div class="stxt"><strong data-i18n="step.4.strong">Oddajesz klucze — my robimy resztę</strong><small data-i18n="step.4.small">Czynsz trafia do Ciebie co miesiąc.</small></div></div>
     </div>
   </div>
 </section>
@@ -584,19 +585,19 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
         <img src="https://images.unsplash.com/photo-1616137466211-f939a420be84?w=500&q=85" alt="homestaging sypialnia przygotowanie do wynajmu" loading="lazy">
       </div>
       <div class="staging-text">
-        <div class="slabel">Homestaging</div>
-        <div class="stitle">Pierwsze zdjęcie to pierwsze wrażenie</div>
-        <p class="sdesc">Właściciele, którzy inwestują w homestaging, wynajmują mieszkanie szybciej i często uzyskują wyższy czynsz niż zakładali. To nie magia — to dobre przygotowanie.</p>
+        <div class="slabel" data-i18n="staging.label">Homestaging</div>
+        <div class="stitle" data-i18n="staging.title">Pierwsze zdjęcie to pierwsze wrażenie</div>
+        <p class="sdesc" data-i18n="staging.desc">Właściciele, którzy inwestują w homestaging, wynajmują mieszkanie szybciej i często uzyskują wyższy czynsz niż zakładali. To nie magia — to dobre przygotowanie.</p>
         <div class="staging-list">
-          <div class="sli">Wizyta w mieszkaniu i analiza potencjału</div>
-          <div class="sli">Plan aranżacji i zakup niezbędnych elementów</div>
-          <div class="sli">Stylizacja i przygotowanie wnętrza do zdjęć</div>
-          <div class="sli">Profesjonalna sesja fotograficzna</div>
-          <div class="sli">Przygotowanie ogłoszenia z opisem i zdjęciami</div>
-          <div class="sli">Publikacja na wszystkich kluczowych portalach</div>
+          <div class="sli" data-i18n="staging.li1">Wizyta w mieszkaniu i analiza potencjału</div>
+          <div class="sli" data-i18n="staging.li2">Plan aranżacji i zakup niezbędnych elementów</div>
+          <div class="sli" data-i18n="staging.li3">Stylizacja i przygotowanie wnętrza do zdjęć</div>
+          <div class="sli" data-i18n="staging.li4">Profesjonalna sesja fotograficzna</div>
+          <div class="sli" data-i18n="staging.li5">Przygotowanie ogłoszenia z opisem i zdjęciami</div>
+          <div class="sli" data-i18n="staging.li6">Publikacja na wszystkich kluczowych portalach</div>
         </div>
         <br>
-        <a href="#kontakt" class="btn-p" style="margin-top:.5rem">Zapytaj o homestaging →</a>
+        <a href="#kontakt" class="btn-p" style="margin-top:.5rem" data-i18n="staging.cta">Zapytaj o homestaging →</a>
       </div>
     </div>
   </div>
@@ -607,18 +608,18 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
   <div class="inner">
     <div class="faq-inner">
       <div>
-        <div class="slabel">FAQ</div>
-        <div class="stitle">Pytania, które słyszę najczęściej</div>
-        <p class="sdesc">Zebrałam odpowiedzi na pytania, które zadają właściciele zanim zdecydują się powierzyć mi swoje mieszkanie.</p>
+        <div class="slabel" data-i18n="faq.label">FAQ</div>
+        <div class="stitle" data-i18n="faq.title">Pytania, które słyszę najczęściej</div>
+        <p class="sdesc" data-i18n="faq.desc">Zebrałam odpowiedzi na pytania, które zadają właściciele zanim zdecydują się powierzyć mi swoje mieszkanie.</p>
         <br><br>
-        <a href="#kontakt" class="btn-p">Masz inne pytanie? Napisz →</a>
+        <a href="#kontakt" class="btn-p" data-i18n="faq.cta">Masz inne pytanie? Napisz →</a>
       </div>
       <div class="faq-list">
-        <div class="faq-item"><div class="faq-q">Czy muszę przyjeżdżać do Warszawy przy podpisywaniu umów?</div><div class="faq-a">Nie — działam na podstawie pełnomocnictwa, więc mogę podpisywać umowy, aneksy i wszelkie dokumenty związane z najmem w Twoim imieniu. Możesz mieszkać po drugiej stronie świata.</div></div>
-        <div class="faq-item"><div class="faq-q">Ile kosztuje zarządzanie najmem w Warszawie?</div><div class="faq-a">Moje wynagrodzenie to zazwyczaj procent od miesięcznego czynszu — dokładna stawka zależy od zakresu usług i liczby lokali. Nie ma ukrytych kosztów. Wszystko ustalamy jasno na początku, zanim cokolwiek podpiszemy.</div></div>
-        <div class="faq-item"><div class="faq-q">Czy zajmujesz się wyłącznie mieszkaniami studenckimi?</div><div class="faq-a">Nie — specjalizuję się w najmie studenckim, ale zajmuję się też kompleksowym zarządzaniem zwykłymi mieszkaniami wynajmowanymi rodzinom lub singlom, oraz wynajmem pojedynczych lokali.</div></div>
-        <div class="faq-item"><div class="faq-q">Co się dzieje, gdy najemca przestaje płacić?</div><div class="faq-a">Reaguję natychmiast — kontaktuję się z najemcą, wysyłam wezwania i wspieram właściciela w podjęciu kroków prawnych. Kluczem jest prewencja: staram się dobierać najemców tak, żeby do takiej sytuacji nie dochodziło.</div></div>
-        <div class="faq-item"><div class="faq-q">Na jakich dzielnicach Warszawy działasz?</div><div class="faq-a">Działam przede wszystkim na Mokotowie, Ursynowie, Woli, Ochocie, w Śródmieściu i na Żoliborzu — ale zasadniczo obsługuję całą Warszawę.</div></div>
+        <div class="faq-item"><div class="faq-q" data-i18n="faq.q1">Czy muszę przyjeżdżać do Warszawy przy podpisywaniu umów?</div><div class="faq-a" data-i18n="faq.a1">Nie — działam na podstawie pełnomocnictwa, więc mogę podpisywać umowy, aneksy i wszelkie dokumenty związane z najmem w Twoim imieniu. Możesz mieszkać po drugiej stronie świata.</div></div>
+        <div class="faq-item"><div class="faq-q" data-i18n="faq.q2">Ile kosztuje zarządzanie najmem w Warszawie?</div><div class="faq-a" data-i18n="faq.a2">Moje wynagrodzenie to zazwyczaj procent od miesięcznego czynszu — dokładna stawka zależy od zakresu usług i liczby lokali. Nie ma ukrytych kosztów. Wszystko ustalamy jasno na początku, zanim cokolwiek podpiszemy.</div></div>
+        <div class="faq-item"><div class="faq-q" data-i18n="faq.q3">Czy zajmujesz się wyłącznie mieszkaniami studenckimi?</div><div class="faq-a" data-i18n="faq.a3">Nie — specjalizuję się w najmie studenckim, ale zajmuję się też kompleksowym zarządzaniem zwykłymi mieszkaniami wynajmowanymi rodzinom lub singlom, oraz wynajmem pojedynczych lokali.</div></div>
+        <div class="faq-item"><div class="faq-q" data-i18n="faq.q4">Co się dzieje, gdy najemca przestaje płacić?</div><div class="faq-a" data-i18n="faq.a4">Reaguję natychmiast — kontaktuję się z najemcą, wysyłam wezwania i wspieram właściciela w podjęciu kroków prawnych. Kluczem jest prewencja: staram się dobierać najemców tak, żeby do takiej sytuacji nie dochodziło.</div></div>
+        <div class="faq-item"><div class="faq-q" data-i18n="faq.q5">Na jakich dzielnicach Warszawy działasz?</div><div class="faq-a" data-i18n="faq.a5">Działam przede wszystkim na Mokotowie, Ursynowie, Woli, Ochocie, w Śródmieściu i na Żoliborzu — ale zasadniczo obsługuję całą Warszawę.</div></div>
       </div>
     </div>
   </div>
@@ -626,21 +627,21 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
 
 <section class="contact" id="kontakt">
   <div class="contact-inner">
-    <div class="slabel">Kontakt</div>
-    <div class="stitle">Porozmawiajmy o Twoim mieszkaniu</div>
-    <p class="sdesc">Bezpłatna konsultacja — bez zobowiązań. Opowiedz mi o swoim mieszkaniu, a ja powiem Ci szczerze, co mogę zrobić i ile to kosztuje.</p>
+    <div class="slabel" data-i18n="contact.label">Kontakt</div>
+    <div class="stitle" data-i18n="contact.title">Porozmawiajmy o Twoim mieszkaniu</div>
+    <p class="sdesc" data-i18n="contact.desc">Bezpłatna konsultacja — bez zobowiązań. Opowiedz mi o swoim mieszkaniu, a ja powiem Ci szczerze, co mogę zrobić i ile to kosztuje.</p>
     <div class="cgrid">
-      <div class="ccard"><div class="ico">📞</div><h4>Telefon</h4><a href="tel:+48723168200">+48 723 168 200</a></div>
+      <div class="ccard"><div class="ico">📞</div><h4 data-i18n="contact.phone">Telefon</h4><a href="tel:+48723168200">+48 723 168 200</a></div>
       <div class="ccard"><div class="ico">✉️</div><h4>E-mail</h4><a href="mailto:kasia@kazemmieszkania.pl">kasia@kazemmieszkania.pl</a></div>
-      <div class="ccard"><div class="ico">📍</div><h4>Obszar działania</h4><p>Warszawa i okolice</p></div>
+      <div class="ccard"><div class="ico">📍</div><h4 data-i18n="contact.area">Obszar działania</h4><p data-i18n="contact.area.v">Warszawa i okolice</p></div>
     </div>
     <div class="cform">
-      <div class="fg"><label>Imię i nazwisko</label><input type="text" placeholder="Jan Kowalski"></div>
-      <div class="fg"><label>Telefon</label><input type="tel" placeholder="+48 600 000 000"></div>
-      <div class="fg"><label>E-mail</label><input type="email" placeholder="jan@example.com"></div>
-      <div class="fg"><label>Czego szukasz?</label><select><option>Zarządzanie najmem</option><option>Najem studencki / pokoje</option><option>Homestaging</option><option>Wynajem pojedynczego mieszkania</option><option>Inne</option></select></div>
-      <div class="fg full"><label>Wiadomość</label><textarea placeholder="Opisz krótko swoje mieszkanie i czego potrzebujesz..."></textarea></div>
-      <button class="sbtn" id="indexSendBtn">Wyślij wiadomość — odezwę się w ciągu 24h</button>
+      <div class="fg"><label data-i18n="contact.f.name">Imię i nazwisko</label><input type="text" data-i18n-ph="contact.f.ph.name" placeholder="Jan Kowalski"></div>
+      <div class="fg"><label data-i18n="contact.f.tel">Telefon</label><input type="tel" placeholder="+48 600 000 000"></div>
+      <div class="fg"><label data-i18n="contact.f.email">E-mail</label><input type="email" placeholder="jan@example.com"></div>
+      <div class="fg"><label data-i18n="contact.f.what">Czego szukasz?</label><select><option data-i18n="contact.f.opt1">Zarządzanie najmem</option><option data-i18n="contact.f.opt2">Najem studencki / pokoje</option><option data-i18n="contact.f.opt3">Homestaging</option><option data-i18n="contact.f.opt4">Wynajem pojedynczego mieszkania</option><option data-i18n="contact.f.opt5">Inne</option></select></div>
+      <div class="fg full"><label data-i18n="contact.f.msg">Wiadomość</label><textarea data-i18n-ph="contact.f.ph.msg" placeholder="Opisz krótko swoje mieszkanie i czego potrzebujesz..."></textarea></div>
+      <button class="sbtn" id="indexSendBtn" data-i18n="contact.f.send">Wyślij wiadomość — odezwę się w ciągu 24h</button>
       <div id="indexFormMsg" style="display:none;margin-top:1rem;padding:.75rem 1.2rem;border-radius:8px;font-size:.9rem;text-align:center"></div>
     </div>
   </div>
@@ -648,12 +649,12 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
 
 <footer>
   <div class="flogo">Ka<span>Zem</span> Mieszkania</div>
-  <p>Katarzyna Zemlik · Warszawa · © 2025</p>
+  <p data-i18n="footer.copy">Katarzyna Zemlik · Warszawa · © 2025</p>
   <ul class="flinks">
-    <li><a href="#uslugi">Usługi</a></li>
-    <li><a href="#o-mnie">O mnie</a></li>
-    <li><a href="#homestaging">Homestaging</a></li>
-    <li><a href="#kontakt">Kontakt</a></li>
+    <li><a href="#uslugi" data-i18n="nav.services">Usługi</a></li>
+    <li><a href="#o-mnie" data-i18n="nav.about">O mnie</a></li>
+    <li><a href="#homestaging" data-i18n="nav.homestaging">Homestaging</a></li>
+    <li><a href="#kontakt" data-i18n="nav.contact">Kontakt</a></li>
   </ul>
 </footer>
 
@@ -744,12 +745,12 @@ setInterval(()=>showReview((current+1)%reviews.length),5000);
     var wiadomosc = inputs[4].value.trim();
 
     if(!imie || !telefon || !email){
-      showMsg('Proszę wypełnić imię, telefon i e-mail.', false);
+      showMsg(window.i18n ? window.i18n.t('contact.f.valid') : 'Proszę wypełnić imię, telefon i e-mail.', false);
       return;
     }
 
     btn.disabled = true;
-    btn.textContent = 'Wysyłam…';
+    btn.textContent = window.i18n ? window.i18n.t('contact.f.sending') : 'Wysyłam…';
 
     var params = {
       from_name:  imie,
@@ -763,14 +764,14 @@ setInterval(()=>showReview((current+1)%reviews.length),5000);
 
     emailjs.send(window._EJS.svc, window._EJS.tpl, params)
       .then(function(){
-        showMsg('✅ Wiadomość wysłana! Odezwę się w ciągu 24h.', true);
+        showMsg(window.i18n ? window.i18n.t('contact.f.success') : '✅ Wiadomość wysłana! Odezwę się w ciągu 24h.', true);
         inputs.forEach(function(el){ el.value = ''; });
-        btn.textContent = 'Wyślij wiadomość — odezwę się w ciągu 24h';
+        btn.textContent = window.i18n ? window.i18n.t('contact.f.send') : 'Wyślij wiadomość — odezwę się w ciągu 24h';
         btn.disabled = false;
       }, function(err){
         console.error('EmailJS error:', err);
-        showMsg('⚠️ Coś poszło nie tak. Napisz bezpośrednio na kasia@kazemmieszkania.pl', false);
-        btn.textContent = 'Wyślij wiadomość — odezwę się w ciągu 24h';
+        showMsg(window.i18n ? window.i18n.t('contact.f.error') : '⚠️ Coś poszło nie tak. Napisz bezpośrednio na kasia@kazemmieszkania.pl', false);
+        btn.textContent = window.i18n ? window.i18n.t('contact.f.send') : 'Wyślij wiadomość — odezwę się w ciągu 24h';
         btn.disabled = false;
       });
   });

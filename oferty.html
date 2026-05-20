@@ -349,6 +349,7 @@ body.is-admin .card-admin-btns{display:flex}
   }
 }
 </script>
+<script src="i18n.js"></script>
 <!-- EmailJS -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
@@ -366,56 +367,56 @@ body.is-admin .card-admin-btns{display:flex}
 
 <nav>
   <a href="index.html" class="logo">Ka<span>Zem</span> Mieszkania</a>
-  <a href="index.html" class="nav-back">← Strona główna</a>
+  <a href="index.html" class="nav-back" data-i18n="nav.back">← Strona główna</a>
   <div class="nav-right">
-    <a href="#" class="nav-cta" onclick="openContactModal();return false;">Kontakt</a>
+    <a href="#" class="nav-cta" onclick="openContactModal();return false;" data-i18n="nav.contact">Kontakt</a>
     <button id="btnAdminLogin"  onclick="showLoginModal()" title="Panel Kasi">⚙</button>
-    <button id="btnAdminPanel"  onclick="openPanel()">⚙ Zarządzaj</button>
-    <button id="btnAdminLogout" onclick="adminLogout()">Wyloguj</button>
+    <button id="btnAdminPanel"  onclick="openPanel()" data-i18n="nav.manage">⚙ Zarządzaj</button>
+    <button id="btnAdminLogout" onclick="adminLogout()" data-i18n="nav.logout">Wyloguj</button>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="hlabel">Aktualne oferty · Warszawa</div>
-  <h1>Pokoje i mieszkania<br>do wynajęcia w <em>Warszawie</em></h1>
-  <p>Pokoje studenckie i mieszkania na wynajem w Warszawie — Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Wszystkie lokale zarządzane przez KaZem Mieszkania.</p>
+  <div class="hlabel" data-i18n="off.hero.label">Aktualne oferty · Warszawa</div>
+  <h1><span data-i18n="off.hero.h1.1">Pokoje i mieszkania</span><br><span data-i18n="off.hero.h1.2">do wynajęcia w</span> <em data-i18n="off.hero.h1.3">Warszawie</em></h1>
+  <p><span data-i18n="off.hero.desc">Pokoje studenckie i mieszkania na wynajem w Warszawie — Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Wszystkie lokale zarządzane przez KaZem Mieszkania.</span></p>
   <div class="hstats">
-    <div class="hstat"><div class="hstat-n" id="cntAv">0</div><div class="hstat-l">Dostępne</div></div>
-    <div class="hstat"><div class="hstat-n" id="cntSo">0</div><div class="hstat-l">Wkrótce</div></div>
-    <div class="hstat"><div class="hstat-n" id="cntAll">0</div><div class="hstat-l">Wszystkich</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntAv">0</div><div class="hstat-l" data-i18n="off.filter.avail">Dostępne</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntSo">0</div><div class="hstat-l" data-i18n="off.filter.soon">Wkrótce</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntAll">0</div><div class="hstat-l" data-i18n="off.filter.all">Wszystkich</div></div>
   </div>
 </div>
 
 <section class="mapsec">
   <div class="maphdr">
     <div>
-      <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.4rem">Mapa ofert</div>
+      <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.4rem" data-i18n="off.map.title">Mapa ofert</div>
       <h2>Znajdź ofertę na mapie</h2>
     </div>
-    <p>Najedź na kropkę aby zobaczyć szczegóły.<br>Kliknij aby przejść do oferty.</p>
+    <p data-i18n="off.map.hint1">Najedź na kropkę aby zobaczyć szczegóły.<br data-i18n="off.map.hint2">Kliknij aby przejść do oferty.</p>
   </div>
   <div class="mapwrap">
     <div id="map"></div>
     <div class="maplegend">
-      <div class="legitem"><div class="legdot av"></div>Dostępne</div>
-      <div class="legitem"><div class="legdot so"></div>Wkrótce</div>
-      <div class="legitem"><div class="legdot tk"></div>Zajęte</div>
+      <div class="legitem"><div class="legdot av"></div data-i18n="off.filter.avail">Dostępne</div>
+      <div class="legitem"><div class="legdot so"></div data-i18n="off.filter.soon">Wkrótce</div>
+      <div class="legitem"><div class="legdot tk"></div data-i18n="off.filter.taken">Zajęte</div>
     </div>
   </div>
 </section>
 
 <div class="filtwrap">
   <div class="filters">
-    <span class="flabel">Typ:</span>
-    <button class="fbtn active" data-ft="type"   data-fv="all">Wszystkie</button>
-    <button class="fbtn"        data-ft="type"   data-fv="pokoj">🛏 Pokój</button>
-    <button class="fbtn"        data-ft="type"   data-fv="mieszkanie">🏠 Mieszkanie</button>
+    <span class="flabel" data-i18n="off.filter.type">Typ:</span>
+    <button class="fbtn active" data-ft="type"   data-fv="all" data-i18n="off.filter.all2">Wszystkie</button>
+    <button class="fbtn"        data-ft="type"   data-fv="pokoj" data-i18n="off.filter.room">🛏 Pokój</button>
+    <button class="fbtn"        data-ft="type"   data-fv="mieszkanie" data-i18n="off.filter.apt">🏠 Mieszkanie</button>
     <div class="fsep"></div>
-    <span class="flabel">Status:</span>
-    <button class="fbtn active" data-ft="status" data-fv="all">Wszystkie</button>
-    <button class="fbtn"        data-ft="status" data-fv="available">Dostępne</button>
-    <button class="fbtn"        data-ft="status" data-fv="soon">Wkrótce</button>
-    <button class="fbtn"        data-ft="status" data-fv="taken">Zajęte</button>
+    <span class="flabel" data-i18n="off.filter.status">Status:</span>
+    <button class="fbtn active" data-ft="status" data-fv="all" data-i18n="off.filter.all2">Wszystkie</button>
+    <button class="fbtn"        data-ft="status" data-fv="available" data-i18n="off.filter.avail">Dostępne</button>
+    <button class="fbtn"        data-ft="status" data-fv="soon" data-i18n="off.filter.soon">Wkrótce</button>
+    <button class="fbtn"        data-ft="status" data-fv="taken" data-i18n="off.filter.taken">Zajęte</button>
     <span class="fcount" id="fcount"></span>
   </div>
 </div>
@@ -450,29 +451,29 @@ body.is-admin .card-admin-btns{display:flex}
           </div>
         </div>
         <div class="mchips" id="mchips"></div>
-        <div class="mlabel">Opis</div>
+        <div class="mlabel" data-i18n="modal.desc">Opis</div>
         <div class="mdesc"  id="mdesc"></div>
         <div class="mfeats" id="mfeats"></div>
         <div class="mcontact">
-          <h3 id="mcontact-title">📞 Zapytaj o tę ofertę</h3>
+          <h3 id="mcontact-title" data-i18n="modal.ask">📞 Zapytaj o tę ofertę</h3>
           <div id="mcontact-type-row" style="display:none;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem">
-            <label style="font-size:.8rem;color:var(--muted);width:100%;margin-bottom:.2rem">Czego szukasz?</label>
-            <button type="button" class="mtype-btn" onclick="setContactType('Mieszkanie')">🏠 Mieszkanie</button>
-            <button type="button" class="mtype-btn" onclick="setContactType('Pokój')">🛏 Pokój</button>
-            <button type="button" class="mtype-btn" onclick="setContactType('Inne')">💬 Inne</button>
+            <label style="font-size:.8rem;color:var(--muted);width:100%;margin-bottom:.2rem" data-i18n="modal.type.label">Czego szukasz?</label>
+            <button type="button" class="mtype-btn" onclick="setContactType('Mieszkanie')" data-i18n="modal.type.apt">🏠 Mieszkanie</button>
+            <button type="button" class="mtype-btn" onclick="setContactType('Pokój')" data-i18n="modal.type.room">🛏 Pokój</button>
+            <button type="button" class="mtype-btn" onclick="setContactType('Inne')" data-i18n="modal.type.other">💬 Inne</button>
           </div>
           <div class="mdirect">
             <a href="tel:+48723168200"               class="mdirectbtn">📞 723 168 200</a>
             <a href="https://wa.me/48723168200" target="_blank" class="mdirectbtn">💬 WhatsApp</a>
             <a href="mailto:kasia@kazemmieszkania.pl" class="mdirectbtn">✉️ E-mail</a>
           </div>
-          <div class="mform-divider">lub wyślij wiadomość</div>
+          <div class="mform-divider" data-i18n="modal.or">lub wyślij wiadomość</div>
           <div class="mform">
-            <div class="mfg"><label>Imię</label><input type="text" id="mfname"  placeholder="Jan Kowalski"></div>
-            <div class="mfg"><label>Telefon</label><input type="tel" id="mfphone" placeholder="+48 600 000 000"></div>
-            <div class="mfg"><label>E-mail</label><input type="email" id="mfemail" placeholder="jan@example.com"></div>
-            <div class="mfg full"><label>Wiadomość</label><textarea id="mfmsg" rows="3"></textarea></div>
-            <button class="msend" id="msend">Wyślij zapytanie →</button>
+            <div class="mfg"><label data-i18n="modal.name">Imię</label><input type="text" id="mfname" data-i18n-ph="modal.ph.name"  placeholder="Jan Kowalski"></div>
+            <div class="mfg"><label data-i18n="modal.phone">Telefon</label><input type="tel" id="mfphone" placeholder="+48 600 000 000"></div>
+            <div class="mfg"><label data-i18n="modal.email">E-mail</label><input type="email" id="mfemail" placeholder="jan@example.com"></div>
+            <div class="mfg full"><label data-i18n="modal.msg">Wiadomość</label><textarea id="mfmsg" rows="3"></textarea></div>
+            <button class="msend" id="msend" data-i18n="modal.send">Wyślij zapytanie →</button>
           </div>
         </div>
       </div>
@@ -991,7 +992,7 @@ function renderGrid(){
         '<div class="cfooter">'+
         (eps==='available'?'<div class="cprice">'+(p.price||0)+' zł<small>/mies.</small></div>':
          eps==='soon'?'<div style="font-size:.78rem;color:#b45309;font-weight:600">Wkrótce wolne</div>':
-         '<div style="font-size:.78rem;color:var(--muted)">Zajęte</div>')+
+         '<div style="font-size:.78rem;color:var(--muted)" data-i18n="off.filter.taken">Zajęte</div>')+
         '<button class="ccta">'+(eps==='taken'?'Zajęte':'Szczegóły')+'</button></div>'+
       '</div>'+adminBtns+'</div>';
   }
@@ -1120,7 +1121,8 @@ function openModal(offer,p){
   if(_gp)      _gp.style.display = 'none';
   if(_gn)      _gn.style.display = 'none';
   var ps=effectiveStatus(p)||mainStatus(offer), multi=(offer.pokoje||[]).length>1;
-  var stMap={available:{cls:'av',txt:'Dostępne teraz'},soon:{cls:'so',txt:'Wkrótce'+(p.dateFrom?' · dostępne od '+fmtDate(p.dateFrom):'')},taken:{cls:'tk',txt:'Zajęte'}};
+  var _i=window.i18n||{t:function(k){return k;}};
+  var stMap={available:{cls:'av',txt:_i.t('status.available')},soon:{cls:'so',txt:_i.t('status.soon')+(p.dateFrom?' · '+_i.t('status.soon.from').split('·')[1].trim()+' '+fmtDate(p.dateFrom):'')},taken:{cls:'tk',txt:_i.t('status.taken')}};
   var sl=stMap[ps]||stMap.taken;
   var sEl=document.getElementById('mstat'); sEl.textContent=sl.txt; sEl.className='mstat '+sl.cls;
   document.getElementById('mtitle').textContent=multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title;
@@ -1132,7 +1134,7 @@ function openModal(offer,p){
     document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:#b45309;font-weight:600">Wkrótce wolne</span>';
     document.getElementById('mdeposit').textContent=p.dateFrom?'Dostępne od: '+fmtDate(p.dateFrom):'';
   } else {
-    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:var(--muted)">Zajęte</span>';
+    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:var(--muted)" data-i18n="off.filter.taken">Zajęte</span>';
     document.getElementById('mdeposit').textContent='';
   }
   var chips=[];
@@ -1142,7 +1144,13 @@ function openModal(offer,p){
   document.getElementById('mchips').innerHTML=chips.join('');
   document.getElementById('mdesc').textContent=p.desc||offer.desc||'';
   document.getElementById('mfeats').innerHTML=(offer.features||[]).map(function(f){return '<div class="mfeat">'+f+'</div>';}).join('');
-  document.getElementById('mfmsg').value='Dzień dobry, jestem zainteresowany/a ofertą: '+(multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title)+' ('+offer.district+'). Proszę o kontakt.';
+  var _offerLang = window.i18n ? window.i18n.getLang() : 'pl';
+  var _greetings = {pl:'Dzień dobry, jestem zainteresowany/a ofertą: ',en:'Hello, I am interested in the listing: ',ua:'Доброго дня, мене цікавить оголошення: '};
+  document.getElementById('mfmsg').value=(_greetings[_offerLang]||_greetings.pl)+(multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title)+(offer.district?(' ('+offer.district+')'):'')+({
+    pl:'. Proszę o kontakt.',
+    en:'. Please contact me.',
+    ua:'. Будь ласка, зв\'яжіться зі мною.'
+  }[_offerLang]||'. Proszę o kontakt.');
   gImgs=[]; var pImgs=p.imgs||[], mi=p.mainImg||0;
   if(pImgs.length){gImgs.push(pImgs[mi]);pImgs.forEach(function(img,i){if(i!==mi)gImgs.push(img);});}
   if(offer.img&&gImgs.indexOf(offer.img)<0) gImgs.push(offer.img);
@@ -1197,7 +1205,13 @@ function setContactType(type){
   document.querySelectorAll('.mtype-btn').forEach(function(b){
     b.classList.toggle('active', b.textContent.includes(type));
   });
-  document.getElementById('mfmsg').value = 'Dzień dobry, szukam ' + type.toLowerCase() + ' do wynajęcia. Proszę o kontakt.';
+  var _lang = window.i18n ? window.i18n.getLang() : 'pl';
+  var _msgs = {
+    pl: 'Dzień dobry, szukam ' + type.toLowerCase() + ' do wynajęcia. Proszę o kontakt.',
+    en: 'Hello, I am looking for a ' + type.toLowerCase() + ' to rent. Please contact me.',
+    ua: 'Доброго дня, шукаю ' + type.toLowerCase() + ' для оренди. Прошу зв\'язатися зі мною.'
+  };
+  document.getElementById('mfmsg').value = _msgs[_lang] || _msgs.pl;
   document.getElementById('moverlay').querySelector('.mcontact h3') && 
     (document.getElementById('mcontact-title').textContent = '📞 Zapytaj o ' + type.toLowerCase());
 }
@@ -1214,7 +1228,7 @@ function openContactModal(){
 
   document.getElementById('mstat').textContent  = '';
   document.getElementById('mstat').className    = 'mstat';
-  document.getElementById('mtitle').textContent = 'Zapytaj o ofertę';
+  document.getElementById('mtitle').textContent = (window.i18n ? window.i18n.t('modal.ask').replace('📞 ','') : 'Zapytaj o ofertę');
   document.getElementById('mloc').textContent   = '';
   document.getElementById('mprice').innerHTML   = '';
   document.getElementById('mdeposit').textContent = '';
@@ -1267,13 +1281,14 @@ function openContactModal(){
     var offerTitle = (document.getElementById('mtitle') || {}).textContent || '';
     var roomTitle  = (document.getElementById('msubtitle') || {}).textContent || '';
 
+    var _i2=window.i18n||{t:function(k){return k;}};
     if(!name || !phone){
-      showFeedback('Proszę podać imię i telefon.', false);
+      showFeedback(_i2.t('modal.valid'), false);
       return;
     }
 
     btn.disabled = true;
-    btn.textContent = 'Wysyłam…';
+    btn.textContent = (window.i18n ? window.i18n.t('modal.sending') : 'Wysyłam…');
     feedbackEl.style.display = 'none';
 
     var params = {
@@ -1290,17 +1305,17 @@ function openContactModal(){
 
     emailjs.send(window._EJS.svc, window._EJS.tpl, params)
       .then(function(){
-        showFeedback('✅ Wysłano! Odezwę się wkrótce.', true);
+        showFeedback((window.i18n ? window.i18n.t('modal.success') : '✅ Wysłano! Odezwę się wkrótce.'), true);
         document.getElementById('mfname').value  = '';
         document.getElementById('mfphone').value = '';
         document.getElementById('mfemail').value = '';
         document.getElementById('mfmsg').value   = '';
-        btn.textContent = 'Wyślij zapytanie →';
+        btn.textContent = (window.i18n ? window.i18n.t('modal.send') : 'Wyślij zapytanie →');
         btn.disabled = false;
       }, function(err){
         console.error('EmailJS error:', err);
-        showFeedback('⚠️ Błąd wysyłki. Zadzwoń: 723 168 200', false);
-        btn.textContent = 'Wyślij zapytanie →';
+        showFeedback((window.i18n ? window.i18n.t('modal.error') : '⚠️ Błąd wysyłki. Zadzwoń: 723 168 200'), false);
+        btn.textContent = (window.i18n ? window.i18n.t('modal.send') : 'Wyślij zapytanie →');
         btn.disabled = false;
       });
   });
