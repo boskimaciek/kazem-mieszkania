@@ -391,16 +391,16 @@ body.is-admin .card-admin-btns{display:flex}
   <div class="maphdr">
     <div>
       <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.4rem" data-i18n="off.map.title">Mapa ofert</div>
-      <h2>Znajdź ofertę na mapie</h2>
+      <h2 data-i18n="off.map.find">Znajdź ofertę na mapie</h2>
     </div>
     <p data-i18n="off.map.hint1">Najedź na kropkę aby zobaczyć szczegóły.<br data-i18n="off.map.hint2">Kliknij aby przejść do oferty.</p>
   </div>
   <div class="mapwrap">
     <div id="map"></div>
     <div class="maplegend">
-      <div class="legitem"><div class="legdot av"></div data-i18n="off.filter.avail">Dostępne</div>
-      <div class="legitem"><div class="legdot so"></div data-i18n="off.filter.soon">Wkrótce</div>
-      <div class="legitem"><div class="legdot tk"></div data-i18n="off.filter.taken">Zajęte</div>
+      <div class="legitem"><div class="legdot av"></div><span data-i18n="off.filter.avail">Dostępne</span></div>
+      <div class="legitem"><div class="legdot so"></div><span data-i18n="off.filter.soon">Wkrótce</span></div>
+      <div class="legitem"><div class="legdot tk"></div><span data-i18n="off.filter.taken">Zajęte</span></div>
     </div>
   </div>
 </section>
@@ -800,7 +800,7 @@ function makeOv(eps, p, big) {
     txt = 'Wolne od ' + (shortDt(p.dateFrom) || '—');
     col = '#fde68a';
   } else {
-    txt = 'Zajęte do ' + (shortDt(p.dateTo) || '—');
+    txt = (window.i18n?window.i18n.t('js.taken.until'):'Zajęte do') + ' ' + (shortDt(p.dateTo) || '—');
     col = '#f3f4f6';
   }
   return '<div style="position:absolute;bottom:0;left:0;right:0;background:'+grad+';padding:'+pad+';text-align:center">'+
@@ -809,7 +809,8 @@ function makeOv(eps, p, big) {
 
 function buildPopup(o) {
   var ms  = mainStatus(o), pp = o.pokoje||[];
-  var slM = {available:{cls:'av',txt:'Dostępne'},soon:{cls:'so',txt:'Wkrótce'},taken:{cls:'tk',txt:'Zajęte'}};
+  var _pi=window.i18n||{t:function(k){return k;}};
+  var slM = {available:{cls:'av',txt:_pi.t('status.available')},soon:{cls:'so',txt:_pi.t('status.soon')},taken:{cls:'tk',txt:_pi.t('status.taken')}};
   var sl  = slM[ms];
   var dc  = {available:'#22c55e',soon:'#f59e0b',taken:'#9ca3af'};
   if(pp.length > 1) {
@@ -835,7 +836,7 @@ function buildPopup(o) {
       '<div style="display:grid;grid-template-columns:repeat('+cols+','+sz+'px);gap:2px;border-radius:10px 10px 0 0;overflow:hidden">'+cells+'</div>'+
       '<div class="kpi-body"><div class="kpi-status '+sl.cls+'" style="font-size:.67rem">'+parts.join(' · ')+'</div>'+
       '<div class="kpi-title">'+o.title+'</div><div class="kpi-meta">'+o.district+(o.floor?' · p.'+o.floor:'')+'</div></div>'+
-      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">Zobacz szczegóły →</a></div>';
+      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">'+(window.i18n?window.i18n.t('off.map.details'):'Zobacz szczegóły →')+'</a></div>';
   } else {
     var p0=pp[0]||{},src0=getImg(p0,o);
     var eps0=effectiveStatus(p0);
@@ -846,7 +847,7 @@ function buildPopup(o) {
         ov0+'<div style="position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;background:'+dc[eps0||ms]+';border:2px solid #fff"></div></div>'+
       '<div class="kpi-body"><div class="kpi-status '+sl.cls+'">'+sl.txt+'</div>'+
       '<div class="kpi-title">'+o.title+'</div><div class="kpi-meta">'+o.district+(o.floor?' · p.'+o.floor:'')+'</div></div>'+
-      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">Zobacz szczegóły →</a></div>';
+      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">'+(window.i18n?window.i18n.t('off.map.details'):'Zobacz szczegóły →')+'</a></div>';
   }
 }
 
@@ -950,7 +951,8 @@ function renderGrid(){
     var tl=o.type==='pokoj'?'Pokój':'Mieszkanie';
     var eps=effectiveStatus(p);
     var sc={available:'s-av',soon:'s-so',taken:'s-tk'}[eps]||'s-tk';
-    var st={available:'Dostępne',soon:'Wkrótce',taken:'Zajęte'}[eps]||'Zajęte';
+    var _ri=window.i18n||{t:function(k){return k;}};
+    var st={available:_ri.t('status.available'),soon:_ri.t('status.soon'),taken:_ri.t('status.taken')}[eps]||_ri.t('status.taken');
     var img=getImg(p,o);
     var imgH=img?'<img src="'+img+'" alt="'+o.title+'" loading="lazy">':'<div class="cimg-ph">🏠</div>';
     // Overlay na zdjęciu karty — analogicznie jak makeOv na mapie
@@ -962,7 +964,8 @@ function renderGrid(){
       cardOvTxt='Wolne od '+(p.dateFrom?fmtDate(p.dateFrom):'—');
       cardOvCol='#fde68a';
     } else {
-      cardOvTxt='Zajęte do '+(p.dateTo?fmtDate(p.dateTo):'—');
+      var _takenTxt=(window.i18n?window.i18n.t('js.end'):'')||'Koniec umowy:';
+      cardOvTxt=_takenTxt.replace(':','')+' '+(p.dateTo?fmtDate(p.dateTo):'—');
       cardOvCol='#f3f4f6';
     }
     var cardOv='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.82) 55%,rgba(0,0,0,.95));padding:12px 10px 8px;text-align:center">'+
@@ -993,7 +996,7 @@ function renderGrid(){
         (eps==='available'?'<div class="cprice">'+(p.price||0)+' zł<small>/mies.</small></div>':
          eps==='soon'?'<div style="font-size:.78rem;color:#b45309;font-weight:600">Wkrótce wolne</div>':
          '<div style="font-size:.78rem;color:var(--muted)" data-i18n="off.filter.taken">Zajęte</div>')+
-        '<button class="ccta">'+(eps==='taken'?'Zajęte':'Szczegóły')+'</button></div>'+
+        '<button class="ccta">'+(eps==='taken'?(window.i18n?window.i18n.t('status.taken'):'Zajęte'):(window.i18n?window.i18n.t('off.card.details'):'Szczegóły'))+'</button></div>'+
       '</div>'+adminBtns+'</div>';
   }
   grid.innerHTML=html;
@@ -1131,8 +1134,8 @@ function openModal(offer,p){
     document.getElementById('mprice').innerHTML=(p.price||0)+' zł<small>/mies.</small>';
     document.getElementById('mdeposit').textContent=p.deposit?'Kaucja: '+p.deposit+' zł':'';
   } else if(ps==='soon'){
-    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:#b45309;font-weight:600">Wkrótce wolne</span>';
-    document.getElementById('mdeposit').textContent=p.dateFrom?'Dostępne od: '+fmtDate(p.dateFrom):'';
+    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:#b45309;font-weight:600">'+(window.i18n?window.i18n.t('js.soon.label'):'Wkrótce wolne')+'</span>';
+    document.getElementById('mdeposit').textContent=p.dateFrom?(window.i18n?window.i18n.t('js.avail.dt'):'Dostępne od: ')+fmtDate(p.dateFrom):'';
   } else {
     document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:var(--muted)" data-i18n="off.filter.taken">Zajęte</span>';
     document.getElementById('mdeposit').textContent='';
@@ -1648,6 +1651,17 @@ document.getElementById('grid').innerHTML =
 loadOffers(function(){
   checkAuth();
   renderGrid();
+});
+// Przerenderuj przy zmianie języka
+document.addEventListener('kazem:langchange', function(){
+  renderGrid();
+  // Odśwież też legendę mapową (statyczne etykiety)
+  if(document.querySelector('.maplegend')) {
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(window.i18n) el.innerHTML = window.i18n.t(key);
+    });
+  }
 });
 setTimeout(function(){
   var valid=OFFERS.filter(function(o){return !isNaN(parseFloat(o.lat));});

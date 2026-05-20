@@ -246,6 +246,11 @@
     'js.end':         { pl: 'Koniec umowy:', en: 'Contract end:', ua: 'Кінець договору:' },
     'js.soon.label':  { pl: 'Wkrótce wolne', en: 'Soon available', ua: 'Незабаром вільно' },
     'js.avail.dt':    { pl: 'Dostępne od: ', en: 'Available from: ', ua: 'Доступно з: ' },
+    'off.map.details':  { pl: 'Zobacz szczegóły →', en: 'View details →',   ua: 'Переглянути →' },
+    'off.card.details': { pl: 'Szczegóły',           en: 'Details',          ua: 'Деталі' },
+    'js.taken.until':   { pl: 'Zajęte do',           en: 'Taken until',      ua: 'Зайнято до' },
+
+
   };
 
   // ── Core ───────────────────────────────────────────────────────────────────
