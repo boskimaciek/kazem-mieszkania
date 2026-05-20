@@ -341,6 +341,23 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
   ]
 }
 </script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function(){
+    // ── EMAILJS CONFIG ──────────────────────────────────────────
+    // 1. Zarejestruj się na https://www.emailjs.com (bezpłatnie)
+    // 2. Dodaj Email Service (Gmail / własny SMTP) → skopiuj Service ID
+    // 3. Utwórz Email Template → skopiuj Template ID
+    // 4. W zakładce Account skopiuj Public Key
+    // Uzupełnij poniższe trzy wartości:
+    var EJS_PUBLIC_KEY  = 'eNRb-tv-avrdSLrd3';   // np. 'abc123XYZ'
+    var EJS_SERVICE_ID  = 'service_xd3yix9';   // np. 'service_xxxxxxx'
+    var EJS_TEMPLATE_ID = 'template_tafk6pj';  // np. 'template_xxxxxxx'
+    window._EJS = { pub: EJS_PUBLIC_KEY, svc: EJS_SERVICE_ID, tpl: EJS_TEMPLATE_ID };
+    emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+  })();
+</script>
 </head>
 <body>
 
@@ -623,7 +640,8 @@ footer p{color:rgba(255,255,255,.38);font-size:.8rem}
       <div class="fg"><label>E-mail</label><input type="email" placeholder="jan@example.com"></div>
       <div class="fg"><label>Czego szukasz?</label><select><option>Zarządzanie najmem</option><option>Najem studencki / pokoje</option><option>Homestaging</option><option>Wynajem pojedynczego mieszkania</option><option>Inne</option></select></div>
       <div class="fg full"><label>Wiadomość</label><textarea placeholder="Opisz krótko swoje mieszkanie i czego potrzebujesz..."></textarea></div>
-      <button class="sbtn">Wyślij wiadomość — odezwę się w ciągu 24h</button>
+      <button class="sbtn" id="indexSendBtn">Wyślij wiadomość — odezwę się w ciągu 24h</button>
+      <div id="indexFormMsg" style="display:none;margin-top:1rem;padding:.75rem 1.2rem;border-radius:8px;font-size:.9rem;text-align:center"></div>
     </div>
   </div>
 </section>
@@ -698,6 +716,65 @@ function showReview(idx){
 }
 showReview(0);
 setInterval(()=>showReview((current+1)%reviews.length),5000);
+</script>
+
+<script>
+// ── FORMULARZ KONTAKTOWY — EmailJS ──────────────────────────────
+(function(){
+  var form = document.querySelector('.cform');
+  var btn  = document.getElementById('indexSendBtn');
+  var msg  = document.getElementById('indexFormMsg');
+
+  function showMsg(text, ok){
+    msg.textContent = text;
+    msg.style.display = 'block';
+    msg.style.background = ok ? '#d4edda' : '#f8d7da';
+    msg.style.color       = ok ? '#155724' : '#721c24';
+    msg.style.border      = '1px solid ' + (ok ? '#c3e6cb' : '#f5c6cb');
+    msg.style.borderRadius = '8px';
+    msg.style.padding = '.75rem 1.2rem';
+  }
+
+  btn.addEventListener('click', function(){
+    var inputs    = form.querySelectorAll('input, select, textarea');
+    var imie      = inputs[0].value.trim();
+    var telefon   = inputs[1].value.trim();
+    var email     = inputs[2].value.trim();
+    var temat     = inputs[3].value;
+    var wiadomosc = inputs[4].value.trim();
+
+    if(!imie || !telefon || !email){
+      showMsg('Proszę wypełnić imię, telefon i e-mail.', false);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Wysyłam…';
+
+    var params = {
+      from_name:  imie,
+      from_phone: telefon,
+      from_email: email,
+      subject:    temat,
+      message:    wiadomosc || '(brak wiadomości)',
+      to_name:    'Kasia',
+      page:       'Strona główna (właściciele)'
+    };
+
+    emailjs.send(window._EJS.svc, window._EJS.tpl, params)
+      .then(function(){
+        showMsg('✅ Wiadomość wysłana! Odezwę się w ciągu 24h.', true);
+        inputs.forEach(function(el){ el.value = ''; });
+        btn.textContent = 'Wyślij wiadomość — odezwę się w ciągu 24h';
+        btn.disabled = false;
+      }, function(err){
+        console.error('EmailJS error:', err);
+        showMsg('⚠️ Coś poszło nie tak. Napisz bezpośrednio na kasia@kazemmieszkania.pl', false);
+        btn.textContent = 'Wyślij wiadomość — odezwę się w ciągu 24h';
+        btn.disabled = false;
+      });
+  });
+})();
 </script>
 </body>
 </html>
