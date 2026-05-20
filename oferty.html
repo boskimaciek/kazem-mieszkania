@@ -1108,6 +1108,17 @@ function openById(oid,pid){
 }
 
 function openModal(offer,p){
+  // Reset stanu modalnego przed wypełnieniem
+  var _typeRow = document.getElementById('mcontact-type-row');
+  var _ctitle  = document.getElementById('mcontact-title');
+  var _mg      = document.querySelector('.mgallery');
+  var _gp      = document.getElementById('gprev');
+  var _gn      = document.getElementById('gnext');
+  if(_typeRow) _typeRow.style.display = 'none';
+  if(_ctitle)  _ctitle.textContent = '📞 Zapytaj o tę ofertę';
+  if(_mg)      _mg.style.display = '';
+  if(_gp)      _gp.style.display = 'none';
+  if(_gn)      _gn.style.display = 'none';
   var ps=effectiveStatus(p)||mainStatus(offer), multi=(offer.pokoje||[]).length>1;
   var stMap={available:{cls:'av',txt:'Dostępne teraz'},soon:{cls:'so',txt:'Wkrótce'+(p.dateFrom?' · dostępne od '+fmtDate(p.dateFrom):'')},taken:{cls:'tk',txt:'Zajęte'}};
   var sl=stMap[ps]||stMap.taken;
@@ -1157,11 +1168,9 @@ function openModal(offer,p){
   }
   document.getElementById('gprev').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gnext').style.display=gImgs.length>1?'flex':'none';
+  document.querySelector('.mgallery') && (document.querySelector('.mgallery').style.display = '');
   document.getElementById('gcnt').textContent=gImgs.length>1?'1 / '+gImgs.length:'';
   document.getElementById('gdots').innerHTML=gImgs.map(function(_,i){return '<button class="gdot'+(i===0?' active':'')+'" data-i="'+i+'"></button>';}).join('');
-  document.getElementById('mcontact-type-row').style.display = 'none';
-  document.getElementById('mcontact-title').textContent = '📞 Zapytaj o tę ofertę';
-  if(document.querySelector('.mgallery')) document.querySelector('.mgallery').style.display = '';
   document.getElementById('moverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1213,6 +1222,11 @@ function openContactModal(){
   document.getElementById('mdesc').textContent  = '';
   document.getElementById('mfeats').innerHTML   = '';
   if(mgallery) mgallery.style.display = 'none';
+  var gprev = document.getElementById('gprev');
+  var gnext = document.getElementById('gnext');
+  if(gprev) gprev.style.display = 'none';
+  if(gnext) gnext.style.display = 'none';
+  document.getElementById('gcnt').textContent = '';
 
   // Pokaż wybór typu
   document.getElementById('mcontact-type-row').style.display = 'flex';
