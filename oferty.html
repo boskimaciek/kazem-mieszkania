@@ -182,6 +182,8 @@ body.is-admin .card-admin-btns{display:flex}
 .mfeats{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.4rem}
 .mfeat{background:var(--cream);border:1px solid var(--border);border-radius:100px;padding:.28rem .8rem;font-size:.78rem;color:var(--dark)}
 .mcontact{background:var(--cream);border-radius:14px;padding:1.3rem;border:1px solid var(--border)}
+.mtype-btn{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:.4rem .9rem;font-size:.85rem;cursor:pointer;transition:all .15s}
+.mtype-btn:hover,.mtype-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
 .mcontact h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:.9rem}
 .mform{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
 .mfg{display:flex;flex-direction:column;gap:.3rem}
@@ -363,7 +365,7 @@ body.is-admin .card-admin-btns{display:flex}
   <a href="index.html" class="logo">Ka<span>Zem</span> Mieszkania</a>
   <a href="index.html" class="nav-back">← Strona główna</a>
   <div class="nav-right">
-    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+    <a href="#" class="nav-cta" onclick="openContactModal();return false;">Kontakt</a>
     <button id="btnAdminLogin"  onclick="showLoginModal()" title="Panel Kasi">⚙</button>
     <button id="btnAdminPanel"  onclick="openPanel()">⚙ Zarządzaj</button>
     <button id="btnAdminLogout" onclick="adminLogout()">Wyloguj</button>
@@ -449,10 +451,17 @@ body.is-admin .card-admin-btns{display:flex}
         <div class="mdesc"  id="mdesc"></div>
         <div class="mfeats" id="mfeats"></div>
         <div class="mcontact">
-          <h3>📞 Zapytaj o tę ofertę</h3>
+          <h3 id="mcontact-title">📞 Zapytaj o tę ofertę</h3>
+          <div id="mcontact-type-row" style="display:none;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem">
+            <label style="font-size:.8rem;color:var(--muted);width:100%;margin-bottom:.2rem">Czego szukasz?</label>
+            <button type="button" class="mtype-btn" onclick="setContactType('Mieszkanie')">🏠 Mieszkanie</button>
+            <button type="button" class="mtype-btn" onclick="setContactType('Pokój')">🛏 Pokój</button>
+            <button type="button" class="mtype-btn" onclick="setContactType('Inne')">💬 Inne</button>
+          </div>
           <div class="mform">
             <div class="mfg"><label>Imię</label><input type="text" id="mfname"  placeholder="Jan Kowalski"></div>
             <div class="mfg"><label>Telefon</label><input type="tel" id="mfphone" placeholder="+48 600 000 000"></div>
+            <div class="mfg"><label>E-mail</label><input type="email" id="mfemail" placeholder="jan@example.com"></div>
             <div class="mfg full"><label>Wiadomość</label><textarea id="mfmsg" rows="3"></textarea></div>
             <button class="msend" id="msend">Wyślij zapytanie →</button>
           </div>
@@ -1146,6 +1155,9 @@ function openModal(offer,p){
   document.getElementById('gnext').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gcnt').textContent=gImgs.length>1?'1 / '+gImgs.length:'';
   document.getElementById('gdots').innerHTML=gImgs.map(function(_,i){return '<button class="gdot'+(i===0?' active':'')+'" data-i="'+i+'"></button>';}).join('');
+  document.getElementById('mcontact-type-row').style.display = 'none';
+  document.getElementById('mcontact-title').textContent = '📞 Zapytaj o tę ofertę';
+  if(document.querySelector('.mgallery')) document.querySelector('.mgallery').style.display = '';
   document.getElementById('moverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1167,6 +1179,50 @@ document.addEventListener('keydown',function(e){
     if(e.key==='ArrowRight') showImg(gIdx+1);
   }
 });
+// ── WYBÓR TYPU ZAPYTANIA ─────────────────────────────────────
+function setContactType(type){
+  document.querySelectorAll('.mtype-btn').forEach(function(b){
+    b.classList.toggle('active', b.textContent.includes(type));
+  });
+  document.getElementById('mfmsg').value = 'Dzień dobry, szukam ' + type.toLowerCase() + ' do wynajęcia. Proszę o kontakt.';
+  document.getElementById('moverlay').querySelector('.mcontact h3') && 
+    (document.getElementById('mcontact-title').textContent = '📞 Zapytaj o ' + type.toLowerCase());
+}
+
+// ── KONTAKT BEZ OFERTY (z nawigacji) ─────────────────────────
+function openContactModal(){
+  // Ukryj sekcje związane z konkretną ofertą
+  var hideEls = ['mstat','mtitle','mloc','mpricebox','mchips','mlabel','mdesc','mfeats','mgallery','gprev','gnext','gcnt','gdots','mgalph'];
+  var mpricebox = document.querySelector('.mpricebox');
+  var mlabel    = document.querySelector('.mlabel');
+  var mfeats    = document.getElementById('mfeats');
+  var mchips    = document.getElementById('mchips');
+  var mgallery  = document.querySelector('.mgallery');
+
+  document.getElementById('mstat').textContent  = '';
+  document.getElementById('mstat').className    = 'mstat';
+  document.getElementById('mtitle').textContent = 'Zapytaj o ofertę';
+  document.getElementById('mloc').textContent   = '';
+  document.getElementById('mprice').innerHTML   = '';
+  document.getElementById('mdeposit').textContent = '';
+  document.getElementById('mchips').innerHTML   = '';
+  document.getElementById('mdesc').textContent  = '';
+  document.getElementById('mfeats').innerHTML   = '';
+  if(mgallery) mgallery.style.display = 'none';
+
+  // Pokaż wybór typu
+  document.getElementById('mcontact-type-row').style.display = 'flex';
+
+  // Ustaw domyślną wiadomość
+  document.getElementById('mfmsg').value = '';
+  document.getElementById('mfname').value  = '';
+  document.getElementById('mfphone').value = '';
+  document.getElementById('mfemail').value = '';
+
+  document.getElementById('moverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
 // ── FORMULARZ W MODALU — EmailJS ───────────────────────────────
 (function(){
   var btn = document.getElementById('msend');
@@ -1205,8 +1261,10 @@ document.addEventListener('keydown',function(e){
     var params = {
       from_name:  name,
       from_phone: phone,
-      from_email: '(brak)',
-      subject:    'Zapytanie o: ' + offerTitle + (roomTitle ? ' / ' + roomTitle : ''),
+      from_email: document.getElementById('mfemail').value.trim() || '(brak)',
+      subject:    offerTitle
+        ? 'Zapytanie o: ' + offerTitle + (roomTitle ? ' / ' + roomTitle : '')
+        : 'Zapytanie — ' + (document.querySelector('.mtype-btn.active') ? document.querySelector('.mtype-btn.active').textContent.trim() : 'kontakt ogólny'),
       message:    msg || '(brak wiadomości)',
       to_name:    'Kasia',
       page:       'Strona ofert (najemcy)'
@@ -1217,6 +1275,7 @@ document.addEventListener('keydown',function(e){
         showFeedback('✅ Wysłano! Odezwę się wkrótce.', true);
         document.getElementById('mfname').value  = '';
         document.getElementById('mfphone').value = '';
+        document.getElementById('mfemail').value = '';
         document.getElementById('mfmsg').value   = '';
         btn.textContent = 'Wyślij zapytanie →';
         btn.disabled = false;
