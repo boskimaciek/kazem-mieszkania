@@ -344,6 +344,18 @@ body.is-admin .card-admin-btns{display:flex}
   }
 }
 </script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function(){
+    // ── EMAILJS CONFIG — uzupełnij te same wartości co w index.html ──
+    var EJS_PUBLIC_KEY  = 'eNRb-tv-avrdSLrd3';
+    var EJS_SERVICE_ID  = 'service_xd3yix9';
+    var EJS_TEMPLATE_ID = 'template_tafk6pj';
+    window._EJS = { pub: EJS_PUBLIC_KEY, svc: EJS_SERVICE_ID, tpl: EJS_TEMPLATE_ID };
+    emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+  })();
+</script>
 </head>
 <body>
 
@@ -1155,11 +1167,67 @@ document.addEventListener('keydown',function(e){
     if(e.key==='ArrowRight') showImg(gIdx+1);
   }
 });
-document.getElementById('msend').addEventListener('click',function(){
-  var name=document.getElementById('mfname').value.trim(),phone=document.getElementById('mfphone').value.trim(),msg=document.getElementById('mfmsg').value.trim();
-  if(!name||!phone){alert('Proszę podać imię i telefon.');return;}
-  window.location.href='mailto:kasia@kazemmieszkania.pl?subject='+encodeURIComponent('Zapytanie — KaZem Mieszkania')+'&body='+encodeURIComponent(msg+'\nImię: '+name+'\nTelefon: '+phone);
-});
+// ── FORMULARZ W MODALU — EmailJS ───────────────────────────────
+(function(){
+  var btn = document.getElementById('msend');
+  // Dynamiczny feedback pod przyciskiem
+  var feedbackEl = document.createElement('div');
+  feedbackEl.id = 'msendFeedback';
+  feedbackEl.style.cssText = 'display:none;margin-top:.6rem;padding:.6rem 1rem;border-radius:8px;font-size:.85rem;text-align:center;grid-column:1/-1';
+  btn.parentNode.appendChild(feedbackEl);
+
+  function showFeedback(text, ok){
+    feedbackEl.textContent = text;
+    feedbackEl.style.display = 'block';
+    feedbackEl.style.background = ok ? '#d4edda' : '#f8d7da';
+    feedbackEl.style.color       = ok ? '#155724' : '#721c24';
+    feedbackEl.style.border      = '1px solid ' + (ok ? '#c3e6cb' : '#f5c6cb');
+  }
+
+  btn.addEventListener('click', function(){
+    var name  = document.getElementById('mfname').value.trim();
+    var phone = document.getElementById('mfphone').value.trim();
+    var msg   = document.getElementById('mfmsg').value.trim();
+
+    // Pobierz tytuł aktualnej oferty z modalu
+    var offerTitle = (document.getElementById('mtitle') || {}).textContent || '';
+    var roomTitle  = (document.getElementById('msubtitle') || {}).textContent || '';
+
+    if(!name || !phone){
+      showFeedback('Proszę podać imię i telefon.', false);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Wysyłam…';
+    feedbackEl.style.display = 'none';
+
+    var params = {
+      from_name:  name,
+      from_phone: phone,
+      from_email: '(brak)',
+      subject:    'Zapytanie o: ' + offerTitle + (roomTitle ? ' / ' + roomTitle : ''),
+      message:    msg || '(brak wiadomości)',
+      to_name:    'Kasia',
+      page:       'Strona ofert (najemcy)'
+    };
+
+    emailjs.send(window._EJS.svc, window._EJS.tpl, params)
+      .then(function(){
+        showFeedback('✅ Wysłano! Odezwę się wkrótce.', true);
+        document.getElementById('mfname').value  = '';
+        document.getElementById('mfphone').value = '';
+        document.getElementById('mfmsg').value   = '';
+        btn.textContent = 'Wyślij zapytanie →';
+        btn.disabled = false;
+      }, function(err){
+        console.error('EmailJS error:', err);
+        showFeedback('⚠️ Błąd wysyłki. Zadzwoń: 723 168 200', false);
+        btn.textContent = 'Wyślij zapytanie →';
+        btn.disabled = false;
+      });
+  });
+})();
 
 // ── ADMIN PANEL ────────────────────────────────────────────────
 function openPanel(){
