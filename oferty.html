@@ -184,6 +184,9 @@ body.is-admin .card-admin-btns{display:flex}
 .mcontact{background:var(--cream);border-radius:14px;padding:1.3rem;border:1px solid var(--border)}
 .mtype-btn{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:.4rem .9rem;font-size:.85rem;cursor:pointer;transition:all .15s}
 .mtype-btn:hover,.mtype-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.mform-divider{text-align:center;font-size:.8rem;color:var(--muted);margin:.9rem 0 .6rem;position:relative}
+.mform-divider::before,.mform-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
+.mform-divider::before{left:0}.mform-divider::after{right:0}
 .mcontact h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:.9rem}
 .mform{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
 .mfg{display:flex;flex-direction:column;gap:.3rem}
@@ -458,17 +461,18 @@ body.is-admin .card-admin-btns{display:flex}
             <button type="button" class="mtype-btn" onclick="setContactType('Pokój')">🛏 Pokój</button>
             <button type="button" class="mtype-btn" onclick="setContactType('Inne')">💬 Inne</button>
           </div>
+          <div class="mdirect">
+            <a href="tel:+48723168200"               class="mdirectbtn">📞 723 168 200</a>
+            <a href="https://wa.me/48723168200" target="_blank" class="mdirectbtn">💬 WhatsApp</a>
+            <a href="mailto:kasia@kazemmieszkania.pl" class="mdirectbtn">✉️ E-mail</a>
+          </div>
+          <div class="mform-divider">lub wyślij wiadomość</div>
           <div class="mform">
             <div class="mfg"><label>Imię</label><input type="text" id="mfname"  placeholder="Jan Kowalski"></div>
             <div class="mfg"><label>Telefon</label><input type="tel" id="mfphone" placeholder="+48 600 000 000"></div>
             <div class="mfg"><label>E-mail</label><input type="email" id="mfemail" placeholder="jan@example.com"></div>
             <div class="mfg full"><label>Wiadomość</label><textarea id="mfmsg" rows="3"></textarea></div>
             <button class="msend" id="msend">Wyślij zapytanie →</button>
-          </div>
-          <div class="mdirect">
-            <a href="tel:+48723168200"              class="mdirectbtn">📞 723 168 200</a>
-            <a href="mailto:kasia@kazemmieszkania.pl" class="mdirectbtn">✉️ E-mail</a>
-            <a href="https://wa.me/48723168200" target="_blank" class="mdirectbtn">💬 WhatsApp</a>
           </div>
         </div>
       </div>
