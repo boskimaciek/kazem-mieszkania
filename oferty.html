@@ -15,8 +15,6 @@
 <meta name="keywords" content="pokój studencki Warszawa, wynajem pokoju Warszawa, mieszkanie studenckie Warszawa, wynajem mieszkania Warszawa, pokoje do wynajęcia Warszawa, najem studencki Mokotów Wola Śródmieście Żoliborz Ursynów">
 <link rel="canonical" href="https://kazemmieszkania.pl/oferty.html">
 <meta name="description" content="Aktualne oferty pokoi studenckich i mieszkań na wynajem w Warszawie. Dostępne lokale w Mokotowie, Woli, Śródmieściu, Żoliborzu i innych dzielnicach. Sprawdź dostępność i ceny – odpowiedź w 24h.">
-<!-- Baner cookie — wspólny dla index.html i oferty.html -->
-<script src="cookie-consent.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -165,6 +163,10 @@ body.is-admin .card-admin-btns{display:flex}
 .gdots{position:absolute;bottom:.65rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem}
 .gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);border:none;cursor:pointer;transition:all .2s;padding:0}
 .gdot.active{background:#fff;transform:scale(1.3)}
+/* tryb mini (>10 zdjęć): tylko 5 widocznych kropek skalowanych wg odległości */
+.gdots.mini .gdot{width:5px;height:5px;background:rgba(255,255,255,.25);transform:none;pointer-events:none}
+.gdots.mini .gdot.near{background:rgba(255,255,255,.55);width:6px;height:6px}
+.gdots.mini .gdot.active{background:#fff;width:7px;height:7px}
 .gcnt{position:absolute;top:.65rem;left:.65rem;background:rgba(26,26,24,.55);color:#fff;font-size:.73rem;padding:.22rem .65rem;border-radius:100px;backdrop-filter:blur(4px)}
 .mcontent{padding:1.6rem 2rem 2rem}
 .mtop{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;margin-bottom:.9rem}
@@ -566,7 +568,7 @@ body.is-admin .card-admin-btns{display:flex}
           <div class="fg"><label>Opis</label>
             <textarea id="mDesc" placeholder="Opis mieszkania..."></textarea>
           </div>
-          <div class="fg"><label>Zdjęcia (max 10) — ★ = główne — przeciągnij aby zmienić kolejność</label>
+          <div class="fg"><label>Zdjęcia (max 30) — ★ = główne — przeciągnij aby zmienić kolejność</label>
             <div class="pgrid" id="pg-mieszkanie"></div>
             <div class="fg-row" style="margin-top:.4rem">
               <input type="url" class="purl" id="purl-mieszkanie" placeholder="Wklej URL + Enter"
@@ -1027,7 +1029,16 @@ function showImg(idx){
 
   // Aktualizuj licznik i kropki natychmiast
   document.getElementById('gcnt').textContent = gImgs.length > 1 ? (gIdx+1)+' / '+gImgs.length : '';
-  document.querySelectorAll('.gdot').forEach(function(d,i){ d.classList.toggle('active', i===gIdx); });
+  if(gImgs.length > 10) {
+    // Tryb mini: tylko klasy active/near, bez przesuwania DOM
+    document.querySelectorAll('.gdot').forEach(function(d,i){
+      var dist = Math.abs(i - gIdx);
+      d.classList.toggle('active', i === gIdx);
+      d.classList.toggle('near',   dist === 1);
+    });
+  } else {
+    document.querySelectorAll('.gdot').forEach(function(d,i){ d.classList.toggle('active', i===gIdx); });
+  }
 
   var next = _galSlot === 'a' ? 'b' : 'a';
   var elCur  = document.getElementById('mgalimg_' + _galSlot);
@@ -1135,7 +1146,16 @@ function openModal(offer,p){
   document.getElementById('gprev').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gnext').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gcnt').textContent=gImgs.length>1?'1 / '+gImgs.length:'';
-  document.getElementById('gdots').innerHTML=gImgs.map(function(_,i){return '<button class="gdot'+(i===0?' active':'')+'" data-i="'+i+'"></button>';}).join('');
+  var gdotsEl = document.getElementById('gdots');
+  var isMini = gImgs.length > 10;
+  gdotsEl.className = 'gdots' + (isMini ? ' mini' : '');
+  // przy mini: renderuj wszystkie kropki (bez pointer-events), przy normal: klikalnie
+  gdotsEl.innerHTML = gImgs.map(function(_,i){
+    var cls = 'gdot' + (i===0?' active':'') + (isMini && i===1?' near':'');
+    var btn = isMini ? '<span class="'+cls+'" data-i="'+i+'"></span>'
+                     : '<button class="'+cls+'" data-i="'+i+'"></button>';
+    return btn;
+  }).join('');
   document.getElementById('moverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1334,7 +1354,7 @@ function addRoom(data){
       '<div class="fg"><label>Kaucja (zł)</label><input type="number" class="r-deposit" value="'+(data.deposit||'')+'" placeholder="1800"></div>'+
     '</div>'+
     '<div class="fg"><label>Opis pokoju</label><textarea class="r-desc" placeholder="Opis tego pokoju...">'+(data.desc||'')+'</textarea></div>'+
-    '<div class="fg"><label>Zdjęcia (max 10) — ★ = główne — przeciągnij aby zmienić kolejność</label>'+
+    '<div class="fg"><label>Zdjęcia (max 30) — ★ = główne — przeciągnij aby zmienić kolejność</label>'+
       '<div class="pgrid" id="pg-'+rid+'"></div>'+
       '<div class="fg-row" style="margin-top:.4rem">'+
         '<input type="url" class="purl" placeholder="Wklej URL + Enter" onkeydown="if(event.key===\'Enter\'){addUrl(\''+rid+'\',this.value);this.value=\'\';}">'+
@@ -1381,19 +1401,19 @@ function renderPhotos(rid){
        (i!==d.mainImg?'<button class="ppsetmain" onclick="setMain(\''+rid+'\','+i+')" title="Ustaw główne">★</button>':'')+
        '</div>';
   }
-  if(d.imgs.length<10) h+='<div class="photo-add-tile" onclick="document.getElementById(\'pfile-'+rid+'\').click()"><span style="font-size:1.4rem">+</span><small>Dodaj</small></div>';
+  if(d.imgs.length<30) h+='<div class="photo-add-tile" onclick="document.getElementById(\'pfile-'+rid+'\').click()"><span style="font-size:1.4rem">+</span><small>Dodaj</small></div>';
   grid.innerHTML=h; initDrag(rid);
 }
 function delPhoto(rid,idx){var d=imgs_data[rid];d.imgs.splice(idx,1);if(d.mainImg>=d.imgs.length)d.mainImg=Math.max(0,d.imgs.length-1);else if(d.mainImg>idx)d.mainImg--;renderPhotos(rid);}
 function setMain(rid,idx){imgs_data[rid].mainImg=idx;renderPhotos(rid);}
 function addUrl(rid,url){
   if(!url||!url.startsWith('http')){toast('Podaj poprawny URL','err');return;}
-  var d=imgs_data[rid]; if(d.imgs.length>=10){toast('Maksymalnie 10 zdjęć','err');return;}
+  var d=imgs_data[rid]; if(d.imgs.length>=30){toast('Maksymalnie 30 zdjęć','err');return;}
   d.imgs.push(url); renderPhotos(rid);
 }
 function uploadFiles(rid,input){
-  var files=Array.from(input.files),d=imgs_data[rid],rem=10-d.imgs.length;
-  if(!rem){toast('Maksymalnie 10 zdjęć','err');return;} files=files.slice(0,rem);
+  var files=Array.from(input.files),d=imgs_data[rid],rem=30-d.imgs.length;
+  if(!rem){toast('Maksymalnie 30 zdjęć','err');return;} files=files.slice(0,rem);
   var prog=document.getElementById('pprog-'+rid); prog.style.display='block'; var done=0;
   files.forEach(function(file){
     var fd=new FormData(); fd.append('file',file); fd.append('upload_preset',PRESET);
@@ -1499,11 +1519,5 @@ setTimeout(function(){
   }
 },150);
 </script>
-
-<!-- Miniaturowa stopka z linkiem do polityki i ustawień cookie -->
-<div style="background:var(--dark);border-top:1px solid rgba(196,151,90,.2);padding:.9rem 2.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem">
-  <p style="font-size:.75rem;color:rgba(255,255,255,.32);margin:0">KaZem Mieszkania · Katarzyna Zemlik · Warszawa</p>
-  <button onclick="window.KZCookie && window.KZCookie.showSettings()" style="background:none;border:none;color:rgba(255,255,255,.35);font-size:.72rem;font-family:'DM Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px;transition:color .2s" onmouseover="this.style.color='#C4975A'" onmouseout="this.style.color='rgba(255,255,255,.35)'">🍪 Zmień ustawienia cookie</button>
-</div>
 </body>
 </html>
