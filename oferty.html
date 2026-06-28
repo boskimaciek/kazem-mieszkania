@@ -163,7 +163,6 @@ body.is-admin .card-admin-btns{display:flex}
 .gdots{position:absolute;bottom:.65rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem}
 .gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);border:none;cursor:pointer;transition:all .2s;padding:0}
 .gdot.active{background:#fff;transform:scale(1.3)}
-/* tryb mini (>10 zdjęć): tylko 5 widocznych kropek skalowanych wg odległości */
 .gdots.mini .gdot{width:5px;height:5px;background:rgba(255,255,255,.25);transform:none;pointer-events:none}
 .gdots.mini .gdot.near{background:rgba(255,255,255,.55);width:6px;height:6px}
 .gdots.mini .gdot.active{background:#fff;width:7px;height:7px}
@@ -894,9 +893,21 @@ function renderGrid(){
     if(activeStatus!=='all'&&mainStatus(o)!==activeStatus) return false;
     return true;
   });
-  document.getElementById('cntAv').textContent =OFFERS.filter(function(o){return mainStatus(o)==='available';}).length;
-  document.getElementById('cntSo').textContent =OFFERS.filter(function(o){return mainStatus(o)==='soon';}).length;
-  document.getElementById('cntAll').textContent=OFFERS.length;
+  function countUnits(offers, statusFilter) {
+    return offers.reduce(function(sum, o) {
+      if(o.type === 'mieszkanie') {
+        if(!statusFilter || mainStatus(o) === statusFilter) sum += 1;
+      } else {
+        (o.pokoje||[]).forEach(function(p) {
+          if(!statusFilter || effectiveStatus(p) === statusFilter) sum += 1;
+        });
+      }
+      return sum;
+    }, 0);
+  }
+  document.getElementById('cntAv').textContent  = countUnits(OFFERS, 'available');
+  document.getElementById('cntSo').textContent  = countUnits(OFFERS, 'soon');
+  document.getElementById('cntAll').textContent = countUnits(OFFERS, null);
 
   var expanded=[];
   filtered.forEach(function(o){(o.pokoje||[]).forEach(function(p){expanded.push({o:o,p:p});});});
@@ -1030,7 +1041,6 @@ function showImg(idx){
   // Aktualizuj licznik i kropki natychmiast
   document.getElementById('gcnt').textContent = gImgs.length > 1 ? (gIdx+1)+' / '+gImgs.length : '';
   if(gImgs.length > 10) {
-    // Tryb mini: tylko klasy active/near, bez przesuwania DOM
     document.querySelectorAll('.gdot').forEach(function(d,i){
       var dist = Math.abs(i - gIdx);
       d.classList.toggle('active', i === gIdx);
@@ -1149,12 +1159,11 @@ function openModal(offer,p){
   var gdotsEl = document.getElementById('gdots');
   var isMini = gImgs.length > 10;
   gdotsEl.className = 'gdots' + (isMini ? ' mini' : '');
-  // przy mini: renderuj wszystkie kropki (bez pointer-events), przy normal: klikalnie
   gdotsEl.innerHTML = gImgs.map(function(_,i){
     var cls = 'gdot' + (i===0?' active':'') + (isMini && i===1?' near':'');
-    var btn = isMini ? '<span class="'+cls+'" data-i="'+i+'"></span>'
-                     : '<button class="'+cls+'" data-i="'+i+'"></button>';
-    return btn;
+    return isMini
+      ? '<span class="'+cls+'" data-i="'+i+'"></span>'
+      : '<button class="'+cls+'" data-i="'+i+'"></button>';
   }).join('');
   document.getElementById('moverlay').classList.add('open');
   document.body.style.overflow='hidden';
