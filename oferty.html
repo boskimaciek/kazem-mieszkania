@@ -1,3 +1,4 @@
+<!-- oferty.html · v2026-06-28 · PRODUKCJA + licznik „Wszystkie" (countUnits) + 30 zdjęć + i18n + cookies -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -163,9 +164,6 @@ body.is-admin .card-admin-btns{display:flex}
 .gdots{position:absolute;bottom:.65rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem}
 .gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);border:none;cursor:pointer;transition:all .2s;padding:0}
 .gdot.active{background:#fff;transform:scale(1.3)}
-.gdots.mini .gdot{width:5px;height:5px;background:rgba(255,255,255,.25);transform:none;pointer-events:none}
-.gdots.mini .gdot.near{background:rgba(255,255,255,.55);width:6px;height:6px}
-.gdots.mini .gdot.active{background:#fff;width:7px;height:7px}
 .gcnt{position:absolute;top:.65rem;left:.65rem;background:rgba(26,26,24,.55);color:#fff;font-size:.73rem;padding:.22rem .65rem;border-radius:100px;backdrop-filter:blur(4px)}
 .mcontent{padding:1.6rem 2rem 2rem}
 .mtop{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;margin-bottom:.9rem}
@@ -185,6 +183,11 @@ body.is-admin .card-admin-btns{display:flex}
 .mfeats{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.4rem}
 .mfeat{background:var(--cream);border:1px solid var(--border);border-radius:100px;padding:.28rem .8rem;font-size:.78rem;color:var(--dark)}
 .mcontact{background:var(--cream);border-radius:14px;padding:1.3rem;border:1px solid var(--border)}
+.mtype-btn{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:.4rem .9rem;font-size:.85rem;cursor:pointer;transition:all .15s}
+.mtype-btn:hover,.mtype-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.mform-divider{text-align:center;font-size:.8rem;color:var(--muted);margin:.9rem 0 .6rem;position:relative}
+.mform-divider::before,.mform-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
+.mform-divider::before{left:0}.mform-divider::after{right:0}
 .mcontact h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:.9rem}
 .mform{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
 .mfg{display:flex;flex-direction:column;gap:.3rem}
@@ -320,6 +323,9 @@ body.is-admin .card-admin-btns{display:flex}
   .mfg.full{grid-column:1}
 }
 @keyframes pulsering{0%,100%{transform:scale(1);opacity:.25}50%{transform:scale(1.7);opacity:0}}
+.gdots.mini .gdot{width:5px;height:5px;background:rgba(255,255,255,.25);transform:none;pointer-events:none}
+.gdots.mini .gdot.near{background:rgba(255,255,255,.55);width:6px;height:6px}
+.gdots.mini .gdot.active{background:#fff;width:7px;height:7px}
 </style>
 
 <script type="application/ld+json">
@@ -347,61 +353,74 @@ body.is-admin .card-admin-btns{display:flex}
   }
 }
 </script>
+<script src="i18n.js"></script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function(){
+    // ── EMAILJS CONFIG — uzupełnij te same wartości co w index.html ──
+    var EJS_PUBLIC_KEY  = 'eNRb-tv-avrdSLrd3';
+    var EJS_SERVICE_ID  = 'service_xd3yix9';
+    var EJS_TEMPLATE_ID = 'template_tafk6pj';
+    window._EJS = { pub: EJS_PUBLIC_KEY, svc: EJS_SERVICE_ID, tpl: EJS_TEMPLATE_ID };
+    emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+  })();
+</script>
 </head>
 <body>
 
 <nav>
   <a href="index.html" class="logo">Ka<span>Zem</span> Mieszkania</a>
-  <a href="index.html" class="nav-back">← Strona główna</a>
+  <a href="index.html" class="nav-back" data-i18n="nav.back">← Strona główna</a>
   <div class="nav-right">
-    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
+    <a href="#" class="nav-cta" onclick="openContactModal();return false;" data-i18n="nav.contact">Kontakt</a>
     <button id="btnAdminLogin"  onclick="showLoginModal()" title="Panel Kasi">⚙</button>
-    <button id="btnAdminPanel"  onclick="openPanel()">⚙ Zarządzaj</button>
-    <button id="btnAdminLogout" onclick="adminLogout()">Wyloguj</button>
+    <button id="btnAdminPanel"  onclick="openPanel()" data-i18n="nav.manage">⚙ Zarządzaj</button>
+    <button id="btnAdminLogout" onclick="adminLogout()" data-i18n="nav.logout">Wyloguj</button>
   </div>
 </nav>
 
 <div class="hero">
-  <div class="hlabel">Aktualne oferty · Warszawa</div>
-  <h1>Pokoje i mieszkania<br>do wynajęcia w <em>Warszawie</em></h1>
-  <p>Pokoje studenckie i mieszkania na wynajem w Warszawie — Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Wszystkie lokale zarządzane przez KaZem Mieszkania.</p>
+  <div class="hlabel" data-i18n="off.hero.label">Aktualne oferty · Warszawa</div>
+  <h1><span data-i18n="off.hero.h1.1">Pokoje i mieszkania</span><br><span data-i18n="off.hero.h1.2">do wynajęcia w</span> <em data-i18n="off.hero.h1.3">Warszawie</em></h1>
+  <p><span data-i18n="off.hero.desc">Pokoje studenckie i mieszkania na wynajem w Warszawie — Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Wszystkie lokale zarządzane przez KaZem Mieszkania.</span></p>
   <div class="hstats">
-    <div class="hstat"><div class="hstat-n" id="cntAv">0</div><div class="hstat-l">Dostępne</div></div>
-    <div class="hstat"><div class="hstat-n" id="cntSo">0</div><div class="hstat-l">Wkrótce</div></div>
-    <div class="hstat"><div class="hstat-n" id="cntAll">0</div><div class="hstat-l">Wszystkich</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntAv">0</div><div class="hstat-l" data-i18n="off.filter.avail">Dostępne</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntSo">0</div><div class="hstat-l" data-i18n="off.filter.soon">Wkrótce</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntAll">0</div><div class="hstat-l" data-i18n="off.filter.all">Wszystkich</div></div>
   </div>
 </div>
 
 <section class="mapsec">
   <div class="maphdr">
     <div>
-      <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.4rem">Mapa ofert</div>
-      <h2>Znajdź ofertę na mapie</h2>
+      <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.4rem" data-i18n="off.map.title">Mapa ofert</div>
+      <h2 data-i18n="off.map.find">Znajdź ofertę na mapie</h2>
     </div>
-    <p>Najedź na kropkę aby zobaczyć szczegóły.<br>Kliknij aby przejść do oferty.</p>
+    <p data-i18n="off.map.hint1">Najedź na kropkę aby zobaczyć szczegóły.<br data-i18n="off.map.hint2">Kliknij aby przejść do oferty.</p>
   </div>
   <div class="mapwrap">
     <div id="map"></div>
     <div class="maplegend">
-      <div class="legitem"><div class="legdot av"></div>Dostępne</div>
-      <div class="legitem"><div class="legdot so"></div>Wkrótce</div>
-      <div class="legitem"><div class="legdot tk"></div>Zajęte</div>
+      <div class="legitem"><div class="legdot av"></div><span data-i18n="off.filter.avail">Dostępne</span></div>
+      <div class="legitem"><div class="legdot so"></div><span data-i18n="off.filter.soon">Wkrótce</span></div>
+      <div class="legitem"><div class="legdot tk"></div><span data-i18n="off.filter.taken">Zajęte</span></div>
     </div>
   </div>
 </section>
 
 <div class="filtwrap">
   <div class="filters">
-    <span class="flabel">Typ:</span>
-    <button class="fbtn active" data-ft="type"   data-fv="all">Wszystkie</button>
-    <button class="fbtn"        data-ft="type"   data-fv="pokoj">🛏 Pokój</button>
-    <button class="fbtn"        data-ft="type"   data-fv="mieszkanie">🏠 Mieszkanie</button>
+    <span class="flabel" data-i18n="off.filter.type">Typ:</span>
+    <button class="fbtn active" data-ft="type"   data-fv="all" data-i18n="off.filter.all2">Wszystkie</button>
+    <button class="fbtn"        data-ft="type"   data-fv="pokoj" data-i18n="off.filter.room">🛏 Pokój</button>
+    <button class="fbtn"        data-ft="type"   data-fv="mieszkanie" data-i18n="off.filter.apt">🏠 Mieszkanie</button>
     <div class="fsep"></div>
-    <span class="flabel">Status:</span>
-    <button class="fbtn active" data-ft="status" data-fv="all">Wszystkie</button>
-    <button class="fbtn"        data-ft="status" data-fv="available">Dostępne</button>
-    <button class="fbtn"        data-ft="status" data-fv="soon">Wkrótce</button>
-    <button class="fbtn"        data-ft="status" data-fv="taken">Zajęte</button>
+    <span class="flabel" data-i18n="off.filter.status">Status:</span>
+    <button class="fbtn active" data-ft="status" data-fv="all" data-i18n="off.filter.all2">Wszystkie</button>
+    <button class="fbtn"        data-ft="status" data-fv="available" data-i18n="off.filter.avail">Dostępne</button>
+    <button class="fbtn"        data-ft="status" data-fv="soon" data-i18n="off.filter.soon">Wkrótce</button>
+    <button class="fbtn"        data-ft="status" data-fv="taken" data-i18n="off.filter.taken">Zajęte</button>
     <span class="fcount" id="fcount"></span>
   </div>
 </div>
@@ -436,21 +455,29 @@ body.is-admin .card-admin-btns{display:flex}
           </div>
         </div>
         <div class="mchips" id="mchips"></div>
-        <div class="mlabel">Opis</div>
+        <div class="mlabel" data-i18n="modal.desc">Opis</div>
         <div class="mdesc"  id="mdesc"></div>
         <div class="mfeats" id="mfeats"></div>
         <div class="mcontact">
-          <h3>📞 Zapytaj o tę ofertę</h3>
-          <div class="mform">
-            <div class="mfg"><label>Imię</label><input type="text" id="mfname"  placeholder="Jan Kowalski"></div>
-            <div class="mfg"><label>Telefon</label><input type="tel" id="mfphone" placeholder="+48 600 000 000"></div>
-            <div class="mfg full"><label>Wiadomość</label><textarea id="mfmsg" rows="3"></textarea></div>
-            <button class="msend" id="msend">Wyślij zapytanie →</button>
+          <h3 id="mcontact-title" data-i18n="modal.ask">📞 Zapytaj o tę ofertę</h3>
+          <div id="mcontact-type-row" style="display:none;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem">
+            <label style="font-size:.8rem;color:var(--muted);width:100%;margin-bottom:.2rem" data-i18n="modal.type.label">Czego szukasz?</label>
+            <button type="button" class="mtype-btn" onclick="setContactType('Mieszkanie')" data-i18n="modal.type.apt">🏠 Mieszkanie</button>
+            <button type="button" class="mtype-btn" onclick="setContactType('Pokój')" data-i18n="modal.type.room">🛏 Pokój</button>
+            <button type="button" class="mtype-btn" onclick="setContactType('Inne')" data-i18n="modal.type.other">💬 Inne</button>
           </div>
           <div class="mdirect">
-            <a href="tel:+48723168200"              class="mdirectbtn">📞 723 168 200</a>
-            <a href="mailto:kasia@kazemmieszkania.pl" class="mdirectbtn">✉️ E-mail</a>
+            <a href="tel:+48723168200"               class="mdirectbtn">📞 723 168 200</a>
             <a href="https://wa.me/48723168200" target="_blank" class="mdirectbtn">💬 WhatsApp</a>
+            <a href="mailto:kasia@kazemmieszkania.pl" class="mdirectbtn">✉️ E-mail</a>
+          </div>
+          <div class="mform-divider" data-i18n="modal.or">lub wyślij wiadomość</div>
+          <div class="mform">
+            <div class="mfg"><label data-i18n="modal.name">Imię</label><input type="text" id="mfname" data-i18n-ph="modal.ph.name"  placeholder="Jan Kowalski"></div>
+            <div class="mfg"><label data-i18n="modal.phone">Telefon</label><input type="tel" id="mfphone" placeholder="+48 600 000 000"></div>
+            <div class="mfg"><label data-i18n="modal.email">E-mail</label><input type="email" id="mfemail" placeholder="jan@example.com"></div>
+            <div class="mfg full"><label data-i18n="modal.msg">Wiadomość</label><textarea id="mfmsg" rows="3"></textarea></div>
+            <button class="msend" id="msend" data-i18n="modal.send">Wyślij zapytanie →</button>
           </div>
         </div>
       </div>
@@ -777,7 +804,7 @@ function makeOv(eps, p, big) {
     txt = 'Wolne od ' + (shortDt(p.dateFrom) || '—');
     col = '#fde68a';
   } else {
-    txt = 'Zajęte do ' + (shortDt(p.dateTo) || '—');
+    txt = (window.i18n?window.i18n.t('js.taken.until'):'Zajęte do') + ' ' + (shortDt(p.dateTo) || '—');
     col = '#f3f4f6';
   }
   return '<div style="position:absolute;bottom:0;left:0;right:0;background:'+grad+';padding:'+pad+';text-align:center">'+
@@ -786,7 +813,8 @@ function makeOv(eps, p, big) {
 
 function buildPopup(o) {
   var ms  = mainStatus(o), pp = o.pokoje||[];
-  var slM = {available:{cls:'av',txt:'Dostępne'},soon:{cls:'so',txt:'Wkrótce'},taken:{cls:'tk',txt:'Zajęte'}};
+  var _pi=window.i18n||{t:function(k){return k;}};
+  var slM = {available:{cls:'av',txt:_pi.t('status.available')},soon:{cls:'so',txt:_pi.t('status.soon')},taken:{cls:'tk',txt:_pi.t('status.taken')}};
   var sl  = slM[ms];
   var dc  = {available:'#22c55e',soon:'#f59e0b',taken:'#9ca3af'};
   if(pp.length > 1) {
@@ -812,7 +840,7 @@ function buildPopup(o) {
       '<div style="display:grid;grid-template-columns:repeat('+cols+','+sz+'px);gap:2px;border-radius:10px 10px 0 0;overflow:hidden">'+cells+'</div>'+
       '<div class="kpi-body"><div class="kpi-status '+sl.cls+'" style="font-size:.67rem">'+parts.join(' · ')+'</div>'+
       '<div class="kpi-title">'+o.title+'</div><div class="kpi-meta">'+o.district+(o.floor?' · p.'+o.floor:'')+'</div></div>'+
-      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">Zobacz szczegóły →</a></div>';
+      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">'+(window.i18n?window.i18n.t('off.map.details'):'Zobacz szczegóły →')+'</a></div>';
   } else {
     var p0=pp[0]||{},src0=getImg(p0,o);
     var eps0=effectiveStatus(p0);
@@ -823,7 +851,7 @@ function buildPopup(o) {
         ov0+'<div style="position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;background:'+dc[eps0||ms]+';border:2px solid #fff"></div></div>'+
       '<div class="kpi-body"><div class="kpi-status '+sl.cls+'">'+sl.txt+'</div>'+
       '<div class="kpi-title">'+o.title+'</div><div class="kpi-meta">'+o.district+(o.floor?' · p.'+o.floor:'')+'</div></div>'+
-      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">Zobacz szczegóły →</a></div>';
+      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">'+(window.i18n?window.i18n.t('off.map.details'):'Zobacz szczegóły →')+'</a></div>';
   }
 }
 
@@ -939,7 +967,8 @@ function renderGrid(){
     var tl=o.type==='pokoj'?'Pokój':'Mieszkanie';
     var eps=effectiveStatus(p);
     var sc={available:'s-av',soon:'s-so',taken:'s-tk'}[eps]||'s-tk';
-    var st={available:'Dostępne',soon:'Wkrótce',taken:'Zajęte'}[eps]||'Zajęte';
+    var _ri=window.i18n||{t:function(k){return k;}};
+    var st={available:_ri.t('status.available'),soon:_ri.t('status.soon'),taken:_ri.t('status.taken')}[eps]||_ri.t('status.taken');
     var img=getImg(p,o);
     var imgH=img?'<img src="'+img+'" alt="'+o.title+'" loading="lazy">':'<div class="cimg-ph">🏠</div>';
     // Overlay na zdjęciu karty — analogicznie jak makeOv na mapie
@@ -951,7 +980,8 @@ function renderGrid(){
       cardOvTxt='Wolne od '+(p.dateFrom?fmtDate(p.dateFrom):'—');
       cardOvCol='#fde68a';
     } else {
-      cardOvTxt='Zajęte do '+(p.dateTo?fmtDate(p.dateTo):'—');
+      var _takenTxt=(window.i18n?window.i18n.t('js.end'):'')||'Koniec umowy:';
+      cardOvTxt=_takenTxt.replace(':','')+' '+(p.dateTo?fmtDate(p.dateTo):'—');
       cardOvCol='#f3f4f6';
     }
     var cardOv='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.82) 55%,rgba(0,0,0,.95));padding:12px 10px 8px;text-align:center">'+
@@ -981,8 +1011,8 @@ function renderGrid(){
         '<div class="cfooter">'+
         (eps==='available'?'<div class="cprice">'+(p.price||0)+' zł<small>/mies.</small></div>':
          eps==='soon'?'<div style="font-size:.78rem;color:#b45309;font-weight:600">Wkrótce wolne</div>':
-         '<div style="font-size:.78rem;color:var(--muted)">Zajęte</div>')+
-        '<button class="ccta">'+(eps==='taken'?'Zajęte':'Szczegóły')+'</button></div>'+
+         '<div style="font-size:.78rem;color:var(--muted)" data-i18n="off.filter.taken">Zajęte</div>')+
+        '<button class="ccta">'+(eps==='taken'?(window.i18n?window.i18n.t('status.taken'):'Zajęte'):(window.i18n?window.i18n.t('off.card.details'):'Szczegóły'))+'</button></div>'+
       '</div>'+adminBtns+'</div>';
   }
   grid.innerHTML=html;
@@ -1040,11 +1070,11 @@ function showImg(idx){
 
   // Aktualizuj licznik i kropki natychmiast
   document.getElementById('gcnt').textContent = gImgs.length > 1 ? (gIdx+1)+' / '+gImgs.length : '';
-  if(gImgs.length > 10) {
+  if(gImgs.length > 10){
     document.querySelectorAll('.gdot').forEach(function(d,i){
-      var dist = Math.abs(i - gIdx);
-      d.classList.toggle('active', i === gIdx);
-      d.classList.toggle('near',   dist === 1);
+      var dist=Math.abs(i-gIdx);
+      d.classList.toggle('active', i===gIdx);
+      d.classList.toggle('near', dist===1);
     });
   } else {
     document.querySelectorAll('.gdot').forEach(function(d,i){ d.classList.toggle('active', i===gIdx); });
@@ -1106,8 +1136,20 @@ function openById(oid,pid){
 }
 
 function openModal(offer,p){
+  // Reset stanu modalnego przed wypełnieniem
+  var _typeRow = document.getElementById('mcontact-type-row');
+  var _ctitle  = document.getElementById('mcontact-title');
+  var _mg      = document.querySelector('.mgallery');
+  var _gp      = document.getElementById('gprev');
+  var _gn      = document.getElementById('gnext');
+  if(_typeRow) _typeRow.style.display = 'none';
+  if(_ctitle)  _ctitle.textContent = '📞 Zapytaj o tę ofertę';
+  if(_mg)      _mg.style.display = '';
+  if(_gp)      _gp.style.display = 'none';
+  if(_gn)      _gn.style.display = 'none';
   var ps=effectiveStatus(p)||mainStatus(offer), multi=(offer.pokoje||[]).length>1;
-  var stMap={available:{cls:'av',txt:'Dostępne teraz'},soon:{cls:'so',txt:'Wkrótce'+(p.dateFrom?' · dostępne od '+fmtDate(p.dateFrom):'')},taken:{cls:'tk',txt:'Zajęte'}};
+  var _i=window.i18n||{t:function(k){return k;}};
+  var stMap={available:{cls:'av',txt:_i.t('status.available')},soon:{cls:'so',txt:_i.t('status.soon')+(p.dateFrom?' · '+_i.t('status.soon.from').split('·')[1].trim()+' '+fmtDate(p.dateFrom):'')},taken:{cls:'tk',txt:_i.t('status.taken')}};
   var sl=stMap[ps]||stMap.taken;
   var sEl=document.getElementById('mstat'); sEl.textContent=sl.txt; sEl.className='mstat '+sl.cls;
   document.getElementById('mtitle').textContent=multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title;
@@ -1116,10 +1158,10 @@ function openModal(offer,p){
     document.getElementById('mprice').innerHTML=(p.price||0)+' zł<small>/mies.</small>';
     document.getElementById('mdeposit').textContent=p.deposit?'Kaucja: '+p.deposit+' zł':'';
   } else if(ps==='soon'){
-    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:#b45309;font-weight:600">Wkrótce wolne</span>';
-    document.getElementById('mdeposit').textContent=p.dateFrom?'Dostępne od: '+fmtDate(p.dateFrom):'';
+    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:#b45309;font-weight:600">'+(window.i18n?window.i18n.t('js.soon.label'):'Wkrótce wolne')+'</span>';
+    document.getElementById('mdeposit').textContent=p.dateFrom?(window.i18n?window.i18n.t('js.avail.dt'):'Dostępne od: ')+fmtDate(p.dateFrom):'';
   } else {
-    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:var(--muted)">Zajęte</span>';
+    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:var(--muted)" data-i18n="off.filter.taken">Zajęte</span>';
     document.getElementById('mdeposit').textContent='';
   }
   var chips=[];
@@ -1129,7 +1171,13 @@ function openModal(offer,p){
   document.getElementById('mchips').innerHTML=chips.join('');
   document.getElementById('mdesc').textContent=p.desc||offer.desc||'';
   document.getElementById('mfeats').innerHTML=(offer.features||[]).map(function(f){return '<div class="mfeat">'+f+'</div>';}).join('');
-  document.getElementById('mfmsg').value='Dzień dobry, jestem zainteresowany/a ofertą: '+(multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title)+' ('+offer.district+'). Proszę o kontakt.';
+  var _offerLang = window.i18n ? window.i18n.getLang() : 'pl';
+  var _greetings = {pl:'Dzień dobry, jestem zainteresowany/a ofertą: ',en:'Hello, I am interested in the listing: ',ua:'Доброго дня, мене цікавить оголошення: '};
+  document.getElementById('mfmsg').value=(_greetings[_offerLang]||_greetings.pl)+(multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title)+(offer.district?(' ('+offer.district+')'):'')+({
+    pl:'. Proszę o kontakt.',
+    en:'. Please contact me.',
+    ua:'. Будь ласка, зв\'яжіться зі мною.'
+  }[_offerLang]||'. Proszę o kontakt.');
   gImgs=[]; var pImgs=p.imgs||[], mi=p.mainImg||0;
   if(pImgs.length){gImgs.push(pImgs[mi]);pImgs.forEach(function(img,i){if(i!==mi)gImgs.push(img);});}
   if(offer.img&&gImgs.indexOf(offer.img)<0) gImgs.push(offer.img);
@@ -1155,15 +1203,14 @@ function openModal(offer,p){
   }
   document.getElementById('gprev').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gnext').style.display=gImgs.length>1?'flex':'none';
+  document.querySelector('.mgallery') && (document.querySelector('.mgallery').style.display = '');
   document.getElementById('gcnt').textContent=gImgs.length>1?'1 / '+gImgs.length:'';
-  var gdotsEl = document.getElementById('gdots');
-  var isMini = gImgs.length > 10;
-  gdotsEl.className = 'gdots' + (isMini ? ' mini' : '');
-  gdotsEl.innerHTML = gImgs.map(function(_,i){
-    var cls = 'gdot' + (i===0?' active':'') + (isMini && i===1?' near':'');
-    return isMini
-      ? '<span class="'+cls+'" data-i="'+i+'"></span>'
-      : '<button class="'+cls+'" data-i="'+i+'"></button>';
+  var gdotsEl=document.getElementById('gdots');
+  var isMini=gImgs.length>10;
+  gdotsEl.className='gdots'+(isMini?' mini':'');
+  gdotsEl.innerHTML=gImgs.map(function(_,i){
+    var cls='gdot'+(i===0?' active':'')+(isMini&&i===1?' near':'');
+    return isMini?'<span class="'+cls+'" data-i="'+i+'"></span>':'<button class="'+cls+'" data-i="'+i+'"></button>';
   }).join('');
   document.getElementById('moverlay').classList.add('open');
   document.body.style.overflow='hidden';
@@ -1186,11 +1233,126 @@ document.addEventListener('keydown',function(e){
     if(e.key==='ArrowRight') showImg(gIdx+1);
   }
 });
-document.getElementById('msend').addEventListener('click',function(){
-  var name=document.getElementById('mfname').value.trim(),phone=document.getElementById('mfphone').value.trim(),msg=document.getElementById('mfmsg').value.trim();
-  if(!name||!phone){alert('Proszę podać imię i telefon.');return;}
-  window.location.href='mailto:kasia@kazemmieszkania.pl?subject='+encodeURIComponent('Zapytanie — KaZem Mieszkania')+'&body='+encodeURIComponent(msg+'\nImię: '+name+'\nTelefon: '+phone);
-});
+// ── WYBÓR TYPU ZAPYTANIA ─────────────────────────────────────
+function setContactType(type){
+  document.querySelectorAll('.mtype-btn').forEach(function(b){
+    b.classList.toggle('active', b.textContent.includes(type));
+  });
+  var _lang = window.i18n ? window.i18n.getLang() : 'pl';
+  var _msgs = {
+    pl: 'Dzień dobry, szukam ' + type.toLowerCase() + ' do wynajęcia. Proszę o kontakt.',
+    en: 'Hello, I am looking for a ' + type.toLowerCase() + ' to rent. Please contact me.',
+    ua: 'Доброго дня, шукаю ' + type.toLowerCase() + ' для оренди. Прошу зв\'язатися зі мною.'
+  };
+  document.getElementById('mfmsg').value = _msgs[_lang] || _msgs.pl;
+  document.getElementById('moverlay').querySelector('.mcontact h3') && 
+    (document.getElementById('mcontact-title').textContent = '📞 Zapytaj o ' + type.toLowerCase());
+}
+
+// ── KONTAKT BEZ OFERTY (z nawigacji) ─────────────────────────
+function openContactModal(){
+  // Ukryj sekcje związane z konkretną ofertą
+  var hideEls = ['mstat','mtitle','mloc','mpricebox','mchips','mlabel','mdesc','mfeats','mgallery','gprev','gnext','gcnt','gdots','mgalph'];
+  var mpricebox = document.querySelector('.mpricebox');
+  var mlabel    = document.querySelector('.mlabel');
+  var mfeats    = document.getElementById('mfeats');
+  var mchips    = document.getElementById('mchips');
+  var mgallery  = document.querySelector('.mgallery');
+
+  document.getElementById('mstat').textContent  = '';
+  document.getElementById('mstat').className    = 'mstat';
+  document.getElementById('mtitle').textContent = (window.i18n ? window.i18n.t('modal.ask').replace('📞 ','') : 'Zapytaj o ofertę');
+  document.getElementById('mloc').textContent   = '';
+  document.getElementById('mprice').innerHTML   = '';
+  document.getElementById('mdeposit').textContent = '';
+  document.getElementById('mchips').innerHTML   = '';
+  document.getElementById('mdesc').textContent  = '';
+  document.getElementById('mfeats').innerHTML   = '';
+  if(mgallery) mgallery.style.display = 'none';
+  var gprev = document.getElementById('gprev');
+  var gnext = document.getElementById('gnext');
+  if(gprev) gprev.style.display = 'none';
+  if(gnext) gnext.style.display = 'none';
+  document.getElementById('gcnt').textContent = '';
+
+  // Pokaż wybór typu
+  document.getElementById('mcontact-type-row').style.display = 'flex';
+
+  // Ustaw domyślną wiadomość
+  document.getElementById('mfmsg').value = '';
+  document.getElementById('mfname').value  = '';
+  document.getElementById('mfphone').value = '';
+  document.getElementById('mfemail').value = '';
+
+  document.getElementById('moverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// ── FORMULARZ W MODALU — EmailJS ───────────────────────────────
+(function(){
+  var btn = document.getElementById('msend');
+  // Dynamiczny feedback pod przyciskiem
+  var feedbackEl = document.createElement('div');
+  feedbackEl.id = 'msendFeedback';
+  feedbackEl.style.cssText = 'display:none;margin-top:.6rem;padding:.6rem 1rem;border-radius:8px;font-size:.85rem;text-align:center;grid-column:1/-1';
+  btn.parentNode.appendChild(feedbackEl);
+
+  function showFeedback(text, ok){
+    feedbackEl.textContent = text;
+    feedbackEl.style.display = 'block';
+    feedbackEl.style.background = ok ? '#d4edda' : '#f8d7da';
+    feedbackEl.style.color       = ok ? '#155724' : '#721c24';
+    feedbackEl.style.border      = '1px solid ' + (ok ? '#c3e6cb' : '#f5c6cb');
+  }
+
+  btn.addEventListener('click', function(){
+    var name  = document.getElementById('mfname').value.trim();
+    var phone = document.getElementById('mfphone').value.trim();
+    var msg   = document.getElementById('mfmsg').value.trim();
+
+    // Pobierz tytuł aktualnej oferty z modalu
+    var offerTitle = (document.getElementById('mtitle') || {}).textContent || '';
+    var roomTitle  = (document.getElementById('msubtitle') || {}).textContent || '';
+
+    var _i2=window.i18n||{t:function(k){return k;}};
+    if(!name || !phone){
+      showFeedback(_i2.t('modal.valid'), false);
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = (window.i18n ? window.i18n.t('modal.sending') : 'Wysyłam…');
+    feedbackEl.style.display = 'none';
+
+    var params = {
+      from_name:  name,
+      from_phone: phone,
+      from_email: document.getElementById('mfemail').value.trim() || '(brak)',
+      subject:    offerTitle
+        ? 'Zapytanie o: ' + offerTitle + (roomTitle ? ' / ' + roomTitle : '')
+        : 'Zapytanie — ' + (document.querySelector('.mtype-btn.active') ? document.querySelector('.mtype-btn.active').textContent.trim() : 'kontakt ogólny'),
+      message:    msg || '(brak wiadomości)',
+      to_name:    'Kasia',
+      page:       'Strona ofert (najemcy)'
+    };
+
+    emailjs.send(window._EJS.svc, window._EJS.tpl, params)
+      .then(function(){
+        showFeedback((window.i18n ? window.i18n.t('modal.success') : '✅ Wysłano! Odezwę się wkrótce.'), true);
+        document.getElementById('mfname').value  = '';
+        document.getElementById('mfphone').value = '';
+        document.getElementById('mfemail').value = '';
+        document.getElementById('mfmsg').value   = '';
+        btn.textContent = (window.i18n ? window.i18n.t('modal.send') : 'Wyślij zapytanie →');
+        btn.disabled = false;
+      }, function(err){
+        console.error('EmailJS error:', err);
+        showFeedback((window.i18n ? window.i18n.t('modal.error') : '⚠️ Błąd wysyłki. Zadzwoń: 723 168 200'), false);
+        btn.textContent = (window.i18n ? window.i18n.t('modal.send') : 'Wyślij zapytanie →');
+        btn.disabled = false;
+      });
+  });
+})();
 
 // ── ADMIN PANEL ────────────────────────────────────────────────
 function openPanel(){
@@ -1520,6 +1682,17 @@ loadOffers(function(){
   checkAuth();
   renderGrid();
 });
+// Przerenderuj przy zmianie języka
+document.addEventListener('kazem:langchange', function(){
+  renderGrid();
+  // Odśwież też legendę mapową (statyczne etykiety)
+  if(document.querySelector('.maplegend')) {
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(window.i18n) el.innerHTML = window.i18n.t(key);
+    });
+  }
+});
 setTimeout(function(){
   var valid=OFFERS.filter(function(o){return !isNaN(parseFloat(o.lat));});
   if(valid.length>1){
@@ -1528,5 +1701,9 @@ setTimeout(function(){
   }
 },150);
 </script>
+<div style="text-align:center;padding:1.2rem;background:var(--dark);border-top:1px solid rgba(196,151,90,.15)">
+  <button id="kz-cookie-settings-btn" onclick="KZCookie.showSettings()">🍪 Zmień ustawienia cookie</button>
+</div>
+<script src="cookie-consent.js"></script>
 </body>
 </html>
