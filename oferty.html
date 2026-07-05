@@ -1,7 +1,9 @@
-<!-- oferty.html · v2026-06-28 · PRODUKCJA + licznik „Wszystkie" (countUnits) + 30 zdjęć + i18n + cookies -->
+<!-- oferty.html · v2026-07-03 · REDESIGN 2.1 "editorial warm" (Bricolage/Instrument/Newsreader, oxblood) + i18n (PL/EN/UA) + GA4 Consent Mode v2 -->
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+<!-- GA4 + Cookie Consent Mode v2 — inicjalizacja przez cookie-consent.js (MUSI być pierwszy) -->
+<script src="cookie-consent.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pokoje studenckie i mieszkania do wynajęcia Warszawa | KaZem Mieszkania</title>
@@ -16,51 +18,53 @@
 <meta name="keywords" content="pokój studencki Warszawa, wynajem pokoju Warszawa, mieszkanie studenckie Warszawa, wynajem mieszkania Warszawa, pokoje do wynajęcia Warszawa, najem studencki Mokotów Wola Śródmieście Żoliborz Ursynów">
 <link rel="canonical" href="https://kazemmieszkania.pl/oferty.html">
 <meta name="description" content="Aktualne oferty pokoi studenckich i mieszkań na wynajem w Warszawie. Dostępne lokale w Mokotowie, Woli, Śródmieściu, Żoliborzu i innych dzielnicach. Sprawdź dostępność i ceny – odpowiedź w 24h.">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --cream:#F5F0E8;--dark:#1A1A18;--accent:#C4975A;--al:#E8D5B4;
-  --muted:#6B6459;--white:#FDFCF9;--border:#E2DAC8;--red:#dc2626;--green:#15803d
+  --cream:#FAF7F0;--dark:#171512;--accent:#A8432C;--al:#F3DED6;
+  --muted:#5C564D;--white:#FFFFFF;--border:#DDD5C7;--red:#dc2626;--green:#15803d
 }
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden}
+body{font-family:'Instrument Sans',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(253,252,249,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
-.logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--dark);text-decoration:none}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-size:1.4rem;font-weight:700;color:var(--dark);text-decoration:none}
 .logo span{color:var(--accent)}
 .nav-back{font-size:.85rem;color:var(--muted);text-decoration:none;transition:color .2s}
 .nav-back:hover{color:var(--accent)}
 .nav-right{display:flex;align-items:center;gap:.75rem}
 .nav-cta{background:var(--dark);color:var(--white);padding:.5rem 1.3rem;border-radius:100px;font-size:.85rem;font-weight:500;text-decoration:none;transition:background .2s}
 .nav-cta:hover{background:var(--accent)}
-#btnAdminLogin{display:inline-flex;background:none;border:1px solid var(--border);color:var(--muted);padding:.42rem .9rem;border-radius:100px;font-size:.78rem;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s}
+#btnAdminLogin{display:inline-flex;background:none;border:1px solid var(--border);color:var(--muted);padding:.42rem .9rem;border-radius:100px;font-size:.78rem;font-family:'Instrument Sans',sans-serif;cursor:pointer;transition:all .2s}
 #btnAdminLogin:hover{border-color:var(--accent);color:var(--accent)}
-#btnAdminPanel{display:none;background:var(--accent);color:#fff;padding:.42rem .9rem;border-radius:100px;font-size:.78rem;font-weight:600;font-family:'DM Sans',sans-serif;border:none;cursor:pointer;transition:background .2s}
+#btnAdminPanel{display:none;background:var(--accent);color:#fff;padding:.42rem .9rem;border-radius:100px;font-size:.78rem;font-weight:600;font-family:'Instrument Sans',sans-serif;border:none;cursor:pointer;transition:background .2s}
 #btnAdminPanel:hover{background:var(--dark)}
-#btnAdminLogout{display:none;background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.2);padding:.42rem .9rem;border-radius:100px;font-size:.78rem;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .2s}
+#btnAdminLogout{display:none;background:rgba(220,38,38,.08);color:var(--red);border:1px solid rgba(220,38,38,.2);padding:.42rem .9rem;border-radius:100px;font-size:.78rem;font-family:'Instrument Sans',sans-serif;cursor:pointer;transition:all .2s}
 #btnAdminLogout:hover{background:var(--red);color:#fff}
 
 /* HERO */
 .hero{padding:8rem 2.5rem 4rem;text-align:center;background:var(--dark);position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(196,151,90,.04) 40px,rgba(196,151,90,.04) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(196,151,90,.04) 40px,rgba(196,151,90,.04) 41px)}
+.hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(168,67,44,.04) 40px,rgba(168,67,44,.04) 41px),repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(168,67,44,.04) 40px,rgba(168,67,44,.04) 41px)}
 .hlabel{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:1rem;position:relative}
-.hero h1{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--white);line-height:1.1;margin-bottom:1rem;position:relative}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-size:3rem;font-weight:700;color:var(--white);line-height:1.1;margin-bottom:1rem;position:relative}
 .hero h1 em{font-style:italic;color:var(--accent)}
 .hero p{font-size:1rem;color:rgba(255,255,255,.55);max-width:480px;margin:0 auto 2rem;position:relative;line-height:1.75}
 .hstats{display:flex;gap:0;justify-content:center;position:relative;max-width:380px;margin:0 auto}
 .hstat{flex:1;text-align:center;padding:.5rem;border-right:1px solid rgba(255,255,255,.1)}
 .hstat:last-child{border-right:none}
-.hstat-n{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--accent)}
+.hstat-n{font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:700;color:var(--accent)}
 .hstat-l{font-size:.7rem;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.05em}
 
 /* MAP */
 .mapsec{background:var(--dark);padding:3rem 2.5rem}
 .maphdr{max-width:1100px;margin:0 auto 1.2rem;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.maphdr h2{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:var(--white)}
+.maphdr h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.8rem;font-weight:700;color:var(--white)}
 .maphdr p{font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.6}
 .mapwrap{max-width:1100px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.1);height:440px;position:relative}
 #map{height:100%;width:100%}
@@ -78,7 +82,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .kpi-body{padding:.7rem .9rem .4rem}
 .kpi-status{font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:.2rem}
 .kpi-status.av{color:#15803d}.kpi-status.so{color:#b45309}.kpi-status.tk{color:#6b7280}
-.kpi-title{font-family:'Playfair Display',serif;font-size:.9rem;font-weight:700;color:var(--dark);line-height:1.25;margin-bottom:.15rem}
+.kpi-title{font-family:'Bricolage Grotesque',sans-serif;font-size:.9rem;font-weight:700;color:var(--dark);line-height:1.25;margin-bottom:.15rem}
 .kpi-meta{font-size:.7rem;color:var(--muted);margin-bottom:.3rem}
 .kpi-cta{display:block;text-align:center;padding:.4rem;background:var(--dark);color:var(--white);font-size:.72rem;font-weight:600;text-decoration:none;transition:background .2s}
 .kpi-cta:hover{background:var(--accent)}
@@ -86,7 +90,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 /* FILTERS */
 .filtwrap{background:var(--white);border-bottom:1px solid var(--border);padding:1.1rem 2.5rem;position:sticky;top:64px;z-index:50}
 .filters{max-width:1100px;margin:0 auto;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
-.fbtn{padding:.42rem 1rem;border-radius:100px;font-size:.81rem;font-weight:500;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
+.fbtn{padding:.42rem 1rem;border-radius:100px;font-size:.81rem;font-weight:500;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;font-family:'Instrument Sans',sans-serif}
 .fbtn:hover,.fbtn.active{background:var(--dark);color:var(--white);border-color:var(--dark)}
 .fsep{width:1px;height:18px;background:var(--border);flex-shrink:0}
 .flabel{font-size:.73rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0}
@@ -97,7 +101,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
 #pagination{max-width:1100px;margin:0 auto;padding:0 2.5rem 4rem;text-align:center}
 .pgwrap{display:inline-flex;gap:.4rem;align-items:center;background:var(--white);border:1px solid var(--border);border-radius:100px;padding:.4rem .6rem}
-.pgbtn{padding:.4rem .85rem;border-radius:100px;border:none;background:transparent;color:var(--muted);font-size:.85rem;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;transition:all .18s;min-width:36px}
+.pgbtn{padding:.4rem .85rem;border-radius:100px;border:none;background:transparent;color:var(--muted);font-size:.85rem;font-family:'Instrument Sans',sans-serif;font-weight:500;cursor:pointer;transition:all .18s;min-width:36px}
 .pgbtn:hover:not(.pgdis):not(.pgact){background:var(--cream);color:var(--dark)}
 .pgbtn.pgact{background:var(--dark);color:var(--white)}
 .pgbtn.pgdis{opacity:.35;cursor:default}
@@ -118,14 +122,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .cbody{padding:1.3rem}
 .cbadge{font-size:.68rem;color:var(--accent);font-weight:600;letter-spacing:.04em;margin-bottom:.2rem}
 .cdistrict{font-size:.7rem;color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem}
-.ctitle{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:.45rem;line-height:1.3}
+.ctitle{font-family:'Bricolage Grotesque',sans-serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:.45rem;line-height:1.3}
 .cdesc{font-size:.81rem;color:var(--muted);line-height:1.65;margin-bottom:.9rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .cdetails{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem}
 .cdet{background:var(--cream);border-radius:6px;padding:.22rem .6rem;font-size:.73rem;color:var(--muted)}
 .cfooter{display:flex;align-items:center;justify-content:space-between;padding-top:.9rem;border-top:1px solid var(--border)}
-.cprice{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--dark)}
-.cprice small{font-family:'DM Sans',sans-serif;font-size:.7rem;color:var(--muted);font-weight:400}
-.ccta{background:var(--dark);color:var(--white);padding:.48rem 1.05rem;border-radius:100px;font-size:.78rem;font-weight:500;border:none;cursor:pointer;transition:background .2s;font-family:'DM Sans',sans-serif}
+.cprice{font-family:'Bricolage Grotesque',sans-serif;font-size:1.25rem;font-weight:700;color:var(--dark)}
+.cprice small{font-family:'Instrument Sans',sans-serif;font-size:.7rem;color:var(--muted);font-weight:400}
+.ccta{background:var(--dark);color:var(--white);padding:.48rem 1.05rem;border-radius:100px;font-size:.78rem;font-weight:500;border:none;cursor:pointer;transition:background .2s;font-family:'Instrument Sans',sans-serif}
 .ccta:hover{background:var(--accent)}
 .card.taken .ccta{background:var(--muted);pointer-events:none}
 .tbanner{background:var(--dark);color:rgba(255,255,255,.6);text-align:center;padding:.55rem;font-size:.76rem}
@@ -134,8 +138,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .sbanner strong{color:#b45309}
 .card-admin-btns{position:absolute;bottom:.6rem;right:.6rem;display:none;gap:.35rem;z-index:10}
 body.is-admin .card-admin-btns{display:flex}
-.cab{padding:.3rem .75rem;border-radius:100px;font-size:.7rem;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
-.cab-edit{background:rgba(196,151,90,.9);color:#fff}
+.cab{padding:.3rem .75rem;border-radius:100px;font-size:.7rem;font-weight:600;border:none;cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:all .2s}
+.cab-edit{background:rgba(168,67,44,.9);color:#fff}
 .cab-edit:hover{background:var(--accent)}
 .cab-del{background:rgba(220,38,38,.85);color:#fff}
 .cab-del:hover{background:var(--red)}
@@ -159,7 +163,7 @@ body.is-admin .card-admin-btns{display:flex}
 .mclose{z-index:10}
 .mgal-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,#2a2520,#1a1a18)}
 .gnav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.15);backdrop-filter:blur(4px);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.gnav:hover{background:rgba(196,151,90,.8)}
+.gnav:hover{background:rgba(168,67,44,.8)}
 .gprev{left:.9rem}.gnext{right:.9rem}
 .gdots{position:absolute;bottom:.65rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem}
 .gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);border:none;cursor:pointer;transition:all .2s;padding:0}
@@ -169,11 +173,11 @@ body.is-admin .card-admin-btns{display:flex}
 .mtop{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start;margin-bottom:.9rem}
 .mstat{font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.35rem}
 .mstat.av{color:#15803d}.mstat.so{color:#b45309}.mstat.tk{color:#6b7280}
-.mtitle{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--dark);line-height:1.2;margin-bottom:.25rem}
+.mtitle{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;font-weight:700;color:var(--dark);line-height:1.2;margin-bottom:.25rem}
 .mloc{font-size:.83rem;color:var(--muted)}
 .mpricebox{text-align:right;flex-shrink:0}
-.mprice{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--dark);line-height:1}
-.mprice small{font-family:'DM Sans',sans-serif;font-size:.72rem;color:var(--muted);font-weight:400}
+.mprice{font-family:'Bricolage Grotesque',sans-serif;font-size:1.9rem;font-weight:700;color:var(--dark);line-height:1}
+.mprice small{font-family:'Instrument Sans',sans-serif;font-size:.72rem;color:var(--muted);font-weight:400}
 .mdeposit{font-size:.76rem;color:var(--muted);margin-top:.2rem}
 .mchips{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.1rem}
 .mchip{background:var(--cream);border-radius:8px;padding:.38rem .8rem;font-size:.8rem;color:var(--muted)}
@@ -183,20 +187,15 @@ body.is-admin .card-admin-btns{display:flex}
 .mfeats{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:1.4rem}
 .mfeat{background:var(--cream);border:1px solid var(--border);border-radius:100px;padding:.28rem .8rem;font-size:.78rem;color:var(--dark)}
 .mcontact{background:var(--cream);border-radius:14px;padding:1.3rem;border:1px solid var(--border)}
-.mtype-btn{background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:.4rem .9rem;font-size:.85rem;cursor:pointer;transition:all .15s}
-.mtype-btn:hover,.mtype-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.mform-divider{text-align:center;font-size:.8rem;color:var(--muted);margin:.9rem 0 .6rem;position:relative}
-.mform-divider::before,.mform-divider::after{content:'';position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
-.mform-divider::before{left:0}.mform-divider::after{right:0}
-.mcontact h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:.9rem}
+.mcontact h3{font-family:'Bricolage Grotesque',sans-serif;font-size:1.05rem;font-weight:700;color:var(--dark);margin-bottom:.9rem}
 .mform{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
 .mfg{display:flex;flex-direction:column;gap:.3rem}
 .mfg.full{grid-column:1/-1}
 .mfg label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:500}
-.mfg input,.mfg textarea{background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:.62rem .88rem;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--dark);outline:none;transition:border-color .2s;width:100%}
+.mfg input,.mfg textarea{background:var(--white);border:1.5px solid var(--border);border-radius:8px;padding:.62rem .88rem;font-family:'Instrument Sans',sans-serif;font-size:.88rem;color:var(--dark);outline:none;transition:border-color .2s;width:100%}
 .mfg input:focus,.mfg textarea:focus{border-color:var(--accent)}
 .mfg textarea{resize:vertical;min-height:78px}
-.msend{grid-column:1/-1;background:var(--dark);color:var(--white);border:none;border-radius:100px;padding:.82rem;font-size:.88rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:background .2s;width:100%}
+.msend{grid-column:1/-1;background:var(--dark);color:var(--white);border:none;border-radius:100px;padding:.82rem;font-size:.88rem;font-family:'Instrument Sans',sans-serif;font-weight:600;cursor:pointer;transition:background .2s;width:100%}
 .msend:hover{background:var(--accent)}
 .mdirect{display:flex;gap:.75rem;margin-top:.85rem;flex-wrap:wrap}
 .mdirectbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem .9rem;border-radius:100px;font-size:.82rem;font-weight:500;text-decoration:none;transition:all .2s;border:1.5px solid var(--border);color:var(--dark);white-space:nowrap}
@@ -206,15 +205,15 @@ body.is-admin .card-admin-btns{display:flex}
 .login-overlay{position:fixed;inset:0;background:rgba(26,26,24,.85);z-index:5000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
 .login-overlay.open{display:flex}
 .login-box{background:var(--white);border-radius:20px;padding:2.2rem;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.4)}
-.login-logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--dark);margin-bottom:.25rem}
+.login-logo{font-family:'Bricolage Grotesque',sans-serif;font-size:1.6rem;font-weight:700;color:var(--dark);margin-bottom:.25rem}
 .login-logo span{color:var(--accent)}
 .login-sub{font-size:.82rem;color:var(--muted);margin-bottom:1.6rem}
-.login-box input{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:.72rem 1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--dark);outline:none;margin-bottom:.85rem;transition:border-color .2s}
+.login-box input{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:.72rem 1rem;font-family:'Instrument Sans',sans-serif;font-size:.95rem;color:var(--dark);outline:none;margin-bottom:.85rem;transition:border-color .2s}
 .login-box input:focus{border-color:var(--accent)}
-.login-btn{width:100%;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.8rem;font-size:.92rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:background .2s}
+.login-btn{width:100%;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.8rem;font-size:.92rem;font-family:'Instrument Sans',sans-serif;font-weight:600;cursor:pointer;transition:background .2s}
 .login-btn:hover{background:var(--accent)}
 .login-err{color:var(--red);font-size:.8rem;margin-top:.6rem;display:none}
-.login-cancel{background:none;border:none;font-size:.78rem;color:var(--muted);cursor:pointer;margin-top:.75rem;font-family:'DM Sans',sans-serif;text-decoration:underline}
+.login-cancel{background:none;border:none;font-size:.78rem;color:var(--muted);cursor:pointer;margin-top:.75rem;font-family:'Instrument Sans',sans-serif;text-decoration:underline}
 
 /* ADMIN PANEL DRAWER */
 .panel-overlay{position:fixed;inset:0;background:rgba(26,26,24,.8);z-index:3000;display:none;align-items:flex-start;justify-content:flex-end;backdrop-filter:blur(6px)}
@@ -222,13 +221,13 @@ body.is-admin .card-admin-btns{display:flex}
 .panel-drawer{background:var(--white);width:min(600px,100vw);height:100vh;overflow-y:auto;box-shadow:-20px 0 60px rgba(0,0,0,.3);animation:drawerIn .3s ease}
 @keyframes drawerIn{from{transform:translateX(100%)}to{transform:translateX(0)}}
 .panel-hdr{background:var(--dark);padding:1.2rem 1.6rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
-.panel-hdr-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white)}
+.panel-hdr-title{font-family:'Bricolage Grotesque',sans-serif;font-size:1.2rem;font-weight:700;color:var(--white)}
 .panel-hdr-title span{color:var(--accent)}
 .pclose{background:rgba(255,255,255,.1);border:none;color:#fff;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.pclose:hover{background:rgba(196,151,90,.6)}
+.pclose:hover{background:rgba(168,67,44,.6)}
 .panel-body{padding:1.4rem 1.6rem}
 .ptabs{display:flex;gap:.4rem;margin-bottom:1.5rem;border-bottom:2px solid var(--border)}
-.ptab{padding:.55rem 1.1rem;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'DM Sans',sans-serif;transition:all .2s}
+.ptab{padding:.55rem 1.1rem;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:'Instrument Sans',sans-serif;transition:all .2s}
 .ptab.active{color:var(--accent);border-bottom-color:var(--accent)}
 .ptabpanel{display:none}
 .ptabpanel.active{display:block}
@@ -246,14 +245,14 @@ body.is-admin .card-admin-btns{display:flex}
 .pb-so{background:#fef3c7;color:#b45309}
 .pb-tk{background:#f3f4f6;color:#6b7280}
 .poi-actions{display:flex;gap:.4rem;flex-shrink:0}
-.pab{padding:.35rem .8rem;border-radius:100px;font-size:.72rem;font-weight:500;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.pab{padding:.35rem .8rem;border-radius:100px;font-size:.72rem;font-weight:500;border:1.5px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'Instrument Sans',sans-serif;transition:all .2s}
 .pab:hover{border-color:var(--accent);color:var(--accent)}
 .pab.del:hover{border-color:var(--red);color:var(--red)}
-.add-offer-btn{width:100%;margin-top:1rem;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.75rem;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:background .2s}
+.add-offer-btn{width:100%;margin-top:1rem;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.75rem;font-family:'Instrument Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:background .2s}
 .add-offer-btn:hover{background:var(--accent)}
 .fg{display:flex;flex-direction:column;gap:.32rem;margin-bottom:.85rem}
 .fg label{font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.fg input,.fg select,.fg textarea{background:var(--cream);border:1.5px solid var(--border);border-radius:9px;padding:.68rem .95rem;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--dark);outline:none;transition:border-color .2s;width:100%}
+.fg input,.fg select,.fg textarea{background:var(--cream);border:1.5px solid var(--border);border-radius:9px;padding:.68rem .95rem;font-family:'Instrument Sans',sans-serif;font-size:.88rem;color:var(--dark);outline:none;transition:border-color .2s;width:100%}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--accent)}
 .fg textarea{resize:vertical;min-height:70px}
 .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
@@ -265,35 +264,35 @@ body.is-admin .card-admin-btns{display:flex}
 .rform-title{font-size:.85rem;font-weight:700;color:var(--dark)}
 .rdel{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.95rem;transition:color .2s;padding:.2rem .4rem;border-radius:4px}
 .rdel:hover{color:var(--red)}
-.add-room{width:100%;background:transparent;border:1.5px dashed var(--border);border-radius:9px;padding:.65rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--muted);cursor:pointer;transition:all .2s;margin-bottom:.9rem}
+.add-room{width:100%;background:transparent;border:1.5px dashed var(--border);border-radius:9px;padding:.65rem;font-family:'Instrument Sans',sans-serif;font-size:.82rem;color:var(--muted);cursor:pointer;transition:all .2s;margin-bottom:.9rem}
 .add-room:hover{border-color:var(--accent);color:var(--accent)}
 .pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:.5rem}
 .pphoto{position:relative;aspect-ratio:1;border-radius:7px;overflow:hidden;background:#e0d8cc;cursor:grab}
 .pphoto img{width:100%;height:100%;object-fit:cover;display:block}
-.pphoto.main-p::after{content:'★';position:absolute;top:3px;left:3px;background:rgba(196,151,90,.9);color:#fff;font-size:.65rem;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:16px;text-align:center}
+.pphoto.main-p::after{content:'★';position:absolute;top:3px;left:3px;background:rgba(168,67,44,.9);color:#fff;font-size:.65rem;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:16px;text-align:center}
 .ppdel{position:absolute;top:3px;right:3px;background:rgba(220,38,38,.85);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.ppsetmain{position:absolute;bottom:3px;left:3px;background:rgba(196,151,90,.85);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ppsetmain{position:absolute;bottom:3px;left:3px;background:rgba(168,67,44,.85);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:.65rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .photo-add-tile{aspect-ratio:1;border-radius:7px;border:1.5px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:border-color .2s;font-size:1.2rem;color:var(--muted);gap:.25rem}
 .photo-add-tile:hover{border-color:var(--accent);color:var(--accent)}
 .photo-add-tile small{font-size:.6rem}
-.purl{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:.52rem .8rem;font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--dark);outline:none;margin-top:.3rem}
+.purl{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:.52rem .8rem;font-family:'Instrument Sans',sans-serif;font-size:.78rem;color:var(--dark);outline:none;margin-top:.3rem}
 .purl:focus{border-color:var(--accent)}
 .puprog{font-size:.72rem;color:var(--accent);margin-top:.25rem;display:none}
 .fact{display:flex;gap:.65rem;justify-content:flex-end;margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--border)}
-.btn-c{background:transparent;border:1.5px solid var(--border);border-radius:100px;padding:.65rem 1.4rem;font-size:.85rem;font-family:'DM Sans',sans-serif;cursor:pointer;color:var(--muted);transition:all .2s}
+.btn-c{background:transparent;border:1.5px solid var(--border);border-radius:100px;padding:.65rem 1.4rem;font-size:.85rem;font-family:'Instrument Sans',sans-serif;cursor:pointer;color:var(--muted);transition:all .2s}
 .btn-c:hover{border-color:var(--muted);color:var(--dark)}
-.btn-s{background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.65rem 1.8rem;font-size:.85rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;transition:background .2s}
+.btn-s{background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.65rem 1.8rem;font-size:.85rem;font-family:'Instrument Sans',sans-serif;font-weight:600;cursor:pointer;transition:background .2s}
 .btn-s:hover{background:var(--accent)}
 
 /* CONFIRM */
 .conf-overlay{position:fixed;inset:0;background:rgba(26,26,24,.7);z-index:6000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .conf-overlay.open{display:flex}
 .conf-box{background:var(--white);border-radius:16px;padding:2rem;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
-.conf-box h3{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.65rem}
+.conf-box h3{font-family:'Bricolage Grotesque',sans-serif;font-size:1.15rem;margin-bottom:.65rem}
 .conf-box p{font-size:.85rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.6}
 .conf-btns{display:flex;gap:.65rem}
-.conf-no{flex:1;background:var(--cream);border:1.5px solid var(--border);border-radius:100px;padding:.68rem;font-family:'DM Sans',sans-serif;font-size:.85rem;cursor:pointer;color:var(--dark)}
-.conf-yes{flex:1;background:var(--red);color:#fff;border:none;border-radius:100px;padding:.68rem;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer}
+.conf-no{flex:1;background:var(--cream);border:1.5px solid var(--border);border-radius:100px;padding:.68rem;font-family:'Instrument Sans',sans-serif;font-size:.85rem;cursor:pointer;color:var(--dark)}
+.conf-yes{flex:1;background:var(--red);color:#fff;border:none;border-radius:100px;padding:.68rem;font-family:'Instrument Sans',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer}
 
 /* TOAST */
 .toast{position:fixed;bottom:2rem;right:2rem;background:var(--dark);color:#fff;padding:.7rem 1.3rem;border-radius:100px;font-size:.83rem;font-weight:500;z-index:9999;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none}
@@ -323,9 +322,6 @@ body.is-admin .card-admin-btns{display:flex}
   .mfg.full{grid-column:1}
 }
 @keyframes pulsering{0%,100%{transform:scale(1);opacity:.25}50%{transform:scale(1.7);opacity:0}}
-.gdots.mini .gdot{width:5px;height:5px;background:rgba(255,255,255,.25);transform:none;pointer-events:none}
-.gdots.mini .gdot.near{background:rgba(255,255,255,.55);width:6px;height:6px}
-.gdots.mini .gdot.active{background:#fff;width:7px;height:7px}
 </style>
 
 <script type="application/ld+json">
@@ -353,19 +349,6 @@ body.is-admin .card-admin-btns{display:flex}
   }
 }
 </script>
-<script src="i18n.js"></script>
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-  (function(){
-    // ── EMAILJS CONFIG — uzupełnij te same wartości co w index.html ──
-    var EJS_PUBLIC_KEY  = 'eNRb-tv-avrdSLrd3';
-    var EJS_SERVICE_ID  = 'service_xd3yix9';
-    var EJS_TEMPLATE_ID = 'template_tafk6pj';
-    window._EJS = { pub: EJS_PUBLIC_KEY, svc: EJS_SERVICE_ID, tpl: EJS_TEMPLATE_ID };
-    emailjs.init({ publicKey: EJS_PUBLIC_KEY });
-  })();
-</script>
 </head>
 <body>
 
@@ -373,54 +356,55 @@ body.is-admin .card-admin-btns{display:flex}
   <a href="index.html" class="logo">Ka<span>Zem</span> Mieszkania</a>
   <a href="index.html" class="nav-back" data-i18n="nav.back">← Strona główna</a>
   <div class="nav-right">
-    <a href="#" class="nav-cta" onclick="openContactModal();return false;" data-i18n="nav.contact">Kontakt</a>
+    <a href="index.html#kontakt" class="nav-cta">Kontakt</a>
     <button id="btnAdminLogin"  onclick="showLoginModal()" title="Panel Kasi">⚙</button>
     <button id="btnAdminPanel"  onclick="openPanel()" data-i18n="nav.manage">⚙ Zarządzaj</button>
     <button id="btnAdminLogout" onclick="adminLogout()" data-i18n="nav.logout">Wyloguj</button>
   </div>
 </nav>
+<script src="i18n.js?v=2026-07-03"></script>
 
 <div class="hero">
-  <div class="hlabel" data-i18n="off.hero.label">Aktualne oferty · Warszawa</div>
-  <h1><span data-i18n="off.hero.h1.1">Pokoje i mieszkania</span><br><span data-i18n="off.hero.h1.2">do wynajęcia w</span> <em data-i18n="off.hero.h1.3">Warszawie</em></h1>
-  <p><span data-i18n="off.hero.desc">Pokoje studenckie i mieszkania na wynajem w Warszawie — Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Wszystkie lokale zarządzane przez KaZem Mieszkania.</span></p>
+  <div class="hlabel" data-i18n="of.hlabel">Aktualne oferty · Warszawa</div>
+  <h1 data-i18n="of.h1">Pokoje i mieszkania<br>do wynajęcia w <em>Warszawie</em></h1>
+  <p data-i18n="of.sub">Pokoje studenckie i mieszkania na wynajem w Warszawie — Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Wszystkie lokale zarządzane przez KaZem Mieszkania.</p>
   <div class="hstats">
-    <div class="hstat"><div class="hstat-n" id="cntAv">0</div><div class="hstat-l" data-i18n="off.filter.avail">Dostępne</div></div>
-    <div class="hstat"><div class="hstat-n" id="cntSo">0</div><div class="hstat-l" data-i18n="off.filter.soon">Wkrótce</div></div>
-    <div class="hstat"><div class="hstat-n" id="cntAll">0</div><div class="hstat-l" data-i18n="off.filter.all">Wszystkich</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntAv">0</div><div class="hstat-l" data-i18n="of.stat.av">Dostępne</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntSo">0</div><div class="hstat-l" data-i18n="of.stat.so">Wkrótce</div></div>
+    <div class="hstat"><div class="hstat-n" id="cntAll">0</div><div class="hstat-l" data-i18n="of.stat.all">Wszystkich</div></div>
   </div>
 </div>
 
 <section class="mapsec">
   <div class="maphdr">
     <div>
-      <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.4rem" data-i18n="off.map.title">Mapa ofert</div>
-      <h2 data-i18n="off.map.find">Znajdź ofertę na mapie</h2>
+      <div style="font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:.4rem" data-i18n="of.map.label">Mapa ofert</div>
+      <h2 data-i18n="of.map.h2">Znajdź ofertę na mapie</h2>
     </div>
-    <p data-i18n="off.map.hint1">Najedź na kropkę aby zobaczyć szczegóły.<br data-i18n="off.map.hint2">Kliknij aby przejść do oferty.</p>
+    <p data-i18n="of.map.p">Najedź na kropkę aby zobaczyć szczegóły.<br>Kliknij aby przejść do oferty.</p>
   </div>
   <div class="mapwrap">
     <div id="map"></div>
     <div class="maplegend">
-      <div class="legitem"><div class="legdot av"></div><span data-i18n="off.filter.avail">Dostępne</span></div>
-      <div class="legitem"><div class="legdot so"></div><span data-i18n="off.filter.soon">Wkrótce</span></div>
-      <div class="legitem"><div class="legdot tk"></div><span data-i18n="off.filter.taken">Zajęte</span></div>
+      <div class="legitem"><div class="legdot av"></div><span data-i18n="of.f.av">Dostępne</span></div>
+      <div class="legitem"><div class="legdot so"></div><span data-i18n="of.f.soon">Wkrótce</span></div>
+      <div class="legitem"><div class="legdot tk"></div><span data-i18n="of.f.taken">Zajęte</span></div>
     </div>
   </div>
 </section>
 
 <div class="filtwrap">
   <div class="filters">
-    <span class="flabel" data-i18n="off.filter.type">Typ:</span>
-    <button class="fbtn active" data-ft="type"   data-fv="all" data-i18n="off.filter.all2">Wszystkie</button>
-    <button class="fbtn"        data-ft="type"   data-fv="pokoj" data-i18n="off.filter.room">🛏 Pokój</button>
-    <button class="fbtn"        data-ft="type"   data-fv="mieszkanie" data-i18n="off.filter.apt">🏠 Mieszkanie</button>
+    <span class="flabel" data-i18n="of.f.type">Typ:</span>
+    <button class="fbtn active" data-ft="type"   data-fv="all" data-i18n="of.f.all">Wszystkie</button>
+    <button class="fbtn"        data-ft="type"   data-fv="pokoj" data-i18n="of.f.room">🛏 Pokój</button>
+    <button class="fbtn"        data-ft="type"   data-fv="mieszkanie" data-i18n="of.f.apt">🏠 Mieszkanie</button>
     <div class="fsep"></div>
-    <span class="flabel" data-i18n="off.filter.status">Status:</span>
-    <button class="fbtn active" data-ft="status" data-fv="all" data-i18n="off.filter.all2">Wszystkie</button>
-    <button class="fbtn"        data-ft="status" data-fv="available" data-i18n="off.filter.avail">Dostępne</button>
-    <button class="fbtn"        data-ft="status" data-fv="soon" data-i18n="off.filter.soon">Wkrótce</button>
-    <button class="fbtn"        data-ft="status" data-fv="taken" data-i18n="off.filter.taken">Zajęte</button>
+    <span class="flabel" data-i18n="of.f.status">Status:</span>
+    <button class="fbtn active" data-ft="status" data-fv="all" data-i18n="of.f.all">Wszystkie</button>
+    <button class="fbtn"        data-ft="status" data-fv="available" data-i18n="of.f.av">Dostępne</button>
+    <button class="fbtn"        data-ft="status" data-fv="soon" data-i18n="of.f.soon">Wkrótce</button>
+    <button class="fbtn"        data-ft="status" data-fv="taken" data-i18n="of.f.taken">Zajęte</button>
     <span class="fcount" id="fcount"></span>
   </div>
 </div>
@@ -459,25 +443,17 @@ body.is-admin .card-admin-btns{display:flex}
         <div class="mdesc"  id="mdesc"></div>
         <div class="mfeats" id="mfeats"></div>
         <div class="mcontact">
-          <h3 id="mcontact-title" data-i18n="modal.ask">📞 Zapytaj o tę ofertę</h3>
-          <div id="mcontact-type-row" style="display:none;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem">
-            <label style="font-size:.8rem;color:var(--muted);width:100%;margin-bottom:.2rem" data-i18n="modal.type.label">Czego szukasz?</label>
-            <button type="button" class="mtype-btn" onclick="setContactType('Mieszkanie')" data-i18n="modal.type.apt">🏠 Mieszkanie</button>
-            <button type="button" class="mtype-btn" onclick="setContactType('Pokój')" data-i18n="modal.type.room">🛏 Pokój</button>
-            <button type="button" class="mtype-btn" onclick="setContactType('Inne')" data-i18n="modal.type.other">💬 Inne</button>
-          </div>
-          <div class="mdirect">
-            <a href="tel:+48723168200"               class="mdirectbtn">📞 723 168 200</a>
-            <a href="https://wa.me/48723168200" target="_blank" class="mdirectbtn">💬 WhatsApp</a>
-            <a href="mailto:kasia@kazemmieszkania.pl" class="mdirectbtn">✉️ E-mail</a>
-          </div>
-          <div class="mform-divider" data-i18n="modal.or">lub wyślij wiadomość</div>
+          <h3 data-i18n="modal.ask">📞 Zapytaj o tę ofertę</h3>
           <div class="mform">
-            <div class="mfg"><label data-i18n="modal.name">Imię</label><input type="text" id="mfname" data-i18n-ph="modal.ph.name"  placeholder="Jan Kowalski"></div>
+            <div class="mfg"><label data-i18n="modal.name">Imię</label><input type="text" id="mfname"  placeholder="Jan Kowalski"></div>
             <div class="mfg"><label data-i18n="modal.phone">Telefon</label><input type="tel" id="mfphone" placeholder="+48 600 000 000"></div>
-            <div class="mfg"><label data-i18n="modal.email">E-mail</label><input type="email" id="mfemail" placeholder="jan@example.com"></div>
             <div class="mfg full"><label data-i18n="modal.msg">Wiadomość</label><textarea id="mfmsg" rows="3"></textarea></div>
             <button class="msend" id="msend" data-i18n="modal.send">Wyślij zapytanie →</button>
+          </div>
+          <div class="mdirect">
+            <a href="tel:+48723168200"              class="mdirectbtn">📞 723 168 200</a>
+            <a href="mailto:kasia@kazemmieszkania.pl" class="mdirectbtn">✉️ E-mail</a>
+            <a href="https://wa.me/48723168200" target="_blank" class="mdirectbtn">💬 WhatsApp</a>
           </div>
         </div>
       </div>
@@ -549,7 +525,7 @@ body.is-admin .card-admin-btns{display:flex}
         <input type="hidden" id="fLat">
         <input type="hidden" id="fLng">
         <div style="display:flex;gap:.6rem;align-items:center;margin-bottom:.85rem">
-          <button type="button" id="geocodeBtn" onclick="geocodeAddress()" style="flex-shrink:0;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.6rem 1.2rem;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--dark)'">📍 Znajdź na mapie</button>
+          <button type="button" id="geocodeBtn" onclick="geocodeAddress()" style="flex-shrink:0;background:var(--dark);color:#fff;border:none;border-radius:100px;padding:.6rem 1.2rem;font-family:'Instrument Sans',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:background .2s" onmouseover="this.style.background='var(--accent)'" onmouseout="this.style.background='var(--dark)'">📍 Znajdź na mapie</button>
           <span id="geocodeStatus" style="font-size:.75rem;color:var(--muted)">Uzupełnij ulicę i dzielnicę, potem kliknij.</span>
         </div>
 
@@ -594,7 +570,7 @@ body.is-admin .card-admin-btns{display:flex}
           <div class="fg"><label>Opis</label>
             <textarea id="mDesc" placeholder="Opis mieszkania..."></textarea>
           </div>
-          <div class="fg"><label>Zdjęcia (max 30) — ★ = główne — przeciągnij aby zmienić kolejność</label>
+          <div class="fg"><label>Zdjęcia (max 10) — ★ = główne — przeciągnij aby zmienić kolejność</label>
             <div class="pgrid" id="pg-mieszkanie"></div>
             <div class="fg-row" style="margin-top:.4rem">
               <input type="url" class="purl" id="purl-mieszkanie" placeholder="Wklej URL + Enter"
@@ -636,6 +612,8 @@ body.is-admin .card-admin-btns{display:flex}
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
+// i18n helper — fallback PL gdy i18n.js niezaładowany
+function T(k, fb){ if(!(window.i18n && window.i18n.t)) return fb; var v = window.i18n.t(k); return (v === k) ? fb : v; }
 // ── CONFIG ─────────────────────────────────────────────────────
 var PASS        = 'KaZem2025!';
 var CLOUD       = 'dlo3ipbs8';
@@ -801,10 +779,10 @@ function makeOv(eps, p, big) {
     txt = p.price ? p.price + ' zł<span style="font-size:'+fs2+';opacity:.8">/mies.</span>' : 'Wolne';
     col = '#fff';
   } else if(eps === 'soon') {
-    txt = 'Wolne od ' + (shortDt(p.dateFrom) || '—');
+    txt = T('js.avail.from','Dostępne od:') + ' ' + (shortDt(p.dateFrom) || '—');
     col = '#fde68a';
   } else {
-    txt = (window.i18n?window.i18n.t('js.taken.until'):'Zajęte do') + ' ' + (shortDt(p.dateTo) || '—');
+    txt = T('js.taken.until','Zajęte do') + ' ' + (shortDt(p.dateTo) || '—');
     col = '#f3f4f6';
   }
   return '<div style="position:absolute;bottom:0;left:0;right:0;background:'+grad+';padding:'+pad+';text-align:center">'+
@@ -813,8 +791,7 @@ function makeOv(eps, p, big) {
 
 function buildPopup(o) {
   var ms  = mainStatus(o), pp = o.pokoje||[];
-  var _pi=window.i18n||{t:function(k){return k;}};
-  var slM = {available:{cls:'av',txt:_pi.t('status.available')},soon:{cls:'so',txt:_pi.t('status.soon')},taken:{cls:'tk',txt:_pi.t('status.taken')}};
+  var slM = {available:{cls:'av',txt:T('of.f.av','Dostępne')},soon:{cls:'so',txt:T('of.f.soon','Wkrótce')},taken:{cls:'tk',txt:T('of.f.taken','Zajęte')}};
   var sl  = slM[ms];
   var dc  = {available:'#22c55e',soon:'#f59e0b',taken:'#9ca3af'};
   if(pp.length > 1) {
@@ -840,7 +817,7 @@ function buildPopup(o) {
       '<div style="display:grid;grid-template-columns:repeat('+cols+','+sz+'px);gap:2px;border-radius:10px 10px 0 0;overflow:hidden">'+cells+'</div>'+
       '<div class="kpi-body"><div class="kpi-status '+sl.cls+'" style="font-size:.67rem">'+parts.join(' · ')+'</div>'+
       '<div class="kpi-title">'+o.title+'</div><div class="kpi-meta">'+o.district+(o.floor?' · p.'+o.floor:'')+'</div></div>'+
-      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">'+(window.i18n?window.i18n.t('off.map.details'):'Zobacz szczegóły →')+'</a></div>';
+      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">Zobacz szczegóły →</a></div>';
   } else {
     var p0=pp[0]||{},src0=getImg(p0,o);
     var eps0=effectiveStatus(p0);
@@ -851,7 +828,7 @@ function buildPopup(o) {
         ov0+'<div style="position:absolute;top:5px;right:5px;width:10px;height:10px;border-radius:50%;background:'+dc[eps0||ms]+';border:2px solid #fff"></div></div>'+
       '<div class="kpi-body"><div class="kpi-status '+sl.cls+'">'+sl.txt+'</div>'+
       '<div class="kpi-title">'+o.title+'</div><div class="kpi-meta">'+o.district+(o.floor?' · p.'+o.floor:'')+'</div></div>'+
-      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">'+(window.i18n?window.i18n.t('off.map.details'):'Zobacz szczegóły →')+'</a></div>';
+      '<a class="kpi-cta" onclick="event.stopPropagation();this.parentNode.click();map.closePopup()">Zobacz szczegóły →</a></div>';
   }
 }
 
@@ -921,21 +898,9 @@ function renderGrid(){
     if(activeStatus!=='all'&&mainStatus(o)!==activeStatus) return false;
     return true;
   });
-  function countUnits(offers, statusFilter) {
-    return offers.reduce(function(sum, o) {
-      if(o.type === 'mieszkanie') {
-        if(!statusFilter || mainStatus(o) === statusFilter) sum += 1;
-      } else {
-        (o.pokoje||[]).forEach(function(p) {
-          if(!statusFilter || effectiveStatus(p) === statusFilter) sum += 1;
-        });
-      }
-      return sum;
-    }, 0);
-  }
-  document.getElementById('cntAv').textContent  = countUnits(OFFERS, 'available');
-  document.getElementById('cntSo').textContent  = countUnits(OFFERS, 'soon');
-  document.getElementById('cntAll').textContent = countUnits(OFFERS, null);
+  document.getElementById('cntAv').textContent =OFFERS.filter(function(o){return mainStatus(o)==='available';}).length;
+  document.getElementById('cntSo').textContent =OFFERS.filter(function(o){return mainStatus(o)==='soon';}).length;
+  document.getElementById('cntAll').textContent=OFFERS.length;
 
   var expanded=[];
   filtered.forEach(function(o){(o.pokoje||[]).forEach(function(p){expanded.push({o:o,p:p});});});
@@ -948,13 +913,13 @@ function renderGrid(){
   var total=expanded.length, totalPages=Math.max(1,Math.ceil(total/PAGE_SIZE));
   if(currentPage>totalPages) currentPage=1;
   var pageItems=expanded.slice((currentPage-1)*PAGE_SIZE,currentPage*PAGE_SIZE);
-  document.getElementById('fcount').textContent=total?'Wyników: '+total+(totalPages>1?' (str. '+currentPage+'/'+totalPages+')':''):'Brak wyników';
+  document.getElementById('fcount').textContent=total?T('of.results','Wyników:')+' '+total+(totalPages>1?' ('+T('js.page','Strona').toLowerCase().slice(0,3)+'. '+currentPage+'/'+totalPages+')':''):T('of.noresults','Brak ofert');
 
   var grid=document.getElementById('grid');
   if(!expanded.length){
     grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted)">'+
       '<div style="font-size:3rem;margin-bottom:1rem">🏠</div>'+
-      '<div style="font-family:\'Playfair Display\',serif;font-size:1.4rem;margin-bottom:.5rem">Brak ofert</div>'+
+      '<div style="font-family:\'Bricolage Grotesque\',sans-serif;font-weight:700;font-size:1.4rem;margin-bottom:.5rem">'+T('of.noresults','Brak ofert')+'</div>'+
       '<p>Zmień filtry lub wróć później.</p></div>';
     document.getElementById('pagination').innerHTML='';
     renderMap(filtered); return;
@@ -964,11 +929,10 @@ function renderGrid(){
   for(var ii=0;ii<pageItems.length;ii++){
     var item=pageItems[ii], o=item.o, p=item.p, ps=p.status;
     var multi=(o.pokoje||[]).length>1;
-    var tl=o.type==='pokoj'?'Pokój':'Mieszkanie';
+    var tl=o.type==='pokoj'?T('of.type.room','Pokój'):T('of.type.apt','Mieszkanie');
     var eps=effectiveStatus(p);
     var sc={available:'s-av',soon:'s-so',taken:'s-tk'}[eps]||'s-tk';
-    var _ri=window.i18n||{t:function(k){return k;}};
-    var st={available:_ri.t('status.available'),soon:_ri.t('status.soon'),taken:_ri.t('status.taken')}[eps]||_ri.t('status.taken');
+    var st={available:T('of.f.av','Dostępne'),soon:T('of.f.soon','Wkrótce'),taken:T('of.f.taken','Zajęte')}[eps]||T('of.f.taken','Zajęte');
     var img=getImg(p,o);
     var imgH=img?'<img src="'+img+'" alt="'+o.title+'" loading="lazy">':'<div class="cimg-ph">🏠</div>';
     // Overlay na zdjęciu karty — analogicznie jak makeOv na mapie
@@ -977,11 +941,10 @@ function renderGrid(){
       cardOvTxt=p.price?(p.price+' zł<span style="font-size:10px;opacity:.8">/mies.</span>'):'Wolne';
       cardOvCol='#fff';
     } else if(eps==='soon'){
-      cardOvTxt='Wolne od '+(p.dateFrom?fmtDate(p.dateFrom):'—');
+      cardOvTxt=T('js.avail.from','Dostępne od:')+' '+(p.dateFrom?fmtDate(p.dateFrom):'—');
       cardOvCol='#fde68a';
     } else {
-      var _takenTxt=(window.i18n?window.i18n.t('js.end'):'')||'Koniec umowy:';
-      cardOvTxt=_takenTxt.replace(':','')+' '+(p.dateTo?fmtDate(p.dateTo):'—');
+      cardOvTxt=T('js.taken.until','Zajęte do')+' '+(p.dateTo?fmtDate(p.dateTo):'—');
       cardOvCol='#f3f4f6';
     }
     var cardOv='<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.82) 55%,rgba(0,0,0,.95));padding:12px 10px 8px;text-align:center">'+
@@ -1010,9 +973,9 @@ function renderGrid(){
         '<div class="cdetails">'+details+'</div>'+
         '<div class="cfooter">'+
         (eps==='available'?'<div class="cprice">'+(p.price||0)+' zł<small>/mies.</small></div>':
-         eps==='soon'?'<div style="font-size:.78rem;color:#b45309;font-weight:600">Wkrótce wolne</div>':
-         '<div style="font-size:.78rem;color:var(--muted)" data-i18n="off.filter.taken">Zajęte</div>')+
-        '<button class="ccta">'+(eps==='taken'?(window.i18n?window.i18n.t('status.taken'):'Zajęte'):(window.i18n?window.i18n.t('off.card.details'):'Szczegóły'))+'</button></div>'+
+         eps==='soon'?'<div style="font-size:.78rem;color:#b45309;font-weight:600">'+T('js.soon.label','Wkrótce wolne')+'</div>':
+         '<div style="font-size:.78rem;color:var(--muted)">'+T('of.f.taken','Zajęte')+'</div>')+
+        '<button class="ccta">'+(eps==='taken'?T('of.f.taken','Zajęte'):T('of.details','Szczegóły'))+'</button></div>'+
       '</div>'+adminBtns+'</div>';
   }
   grid.innerHTML=html;
@@ -1070,15 +1033,7 @@ function showImg(idx){
 
   // Aktualizuj licznik i kropki natychmiast
   document.getElementById('gcnt').textContent = gImgs.length > 1 ? (gIdx+1)+' / '+gImgs.length : '';
-  if(gImgs.length > 10){
-    document.querySelectorAll('.gdot').forEach(function(d,i){
-      var dist=Math.abs(i-gIdx);
-      d.classList.toggle('active', i===gIdx);
-      d.classList.toggle('near', dist===1);
-    });
-  } else {
-    document.querySelectorAll('.gdot').forEach(function(d,i){ d.classList.toggle('active', i===gIdx); });
-  }
+  document.querySelectorAll('.gdot').forEach(function(d,i){ d.classList.toggle('active', i===gIdx); });
 
   var next = _galSlot === 'a' ? 'b' : 'a';
   var elCur  = document.getElementById('mgalimg_' + _galSlot);
@@ -1136,32 +1091,20 @@ function openById(oid,pid){
 }
 
 function openModal(offer,p){
-  // Reset stanu modalnego przed wypełnieniem
-  var _typeRow = document.getElementById('mcontact-type-row');
-  var _ctitle  = document.getElementById('mcontact-title');
-  var _mg      = document.querySelector('.mgallery');
-  var _gp      = document.getElementById('gprev');
-  var _gn      = document.getElementById('gnext');
-  if(_typeRow) _typeRow.style.display = 'none';
-  if(_ctitle)  _ctitle.textContent = '📞 Zapytaj o tę ofertę';
-  if(_mg)      _mg.style.display = '';
-  if(_gp)      _gp.style.display = 'none';
-  if(_gn)      _gn.style.display = 'none';
   var ps=effectiveStatus(p)||mainStatus(offer), multi=(offer.pokoje||[]).length>1;
-  var _i=window.i18n||{t:function(k){return k;}};
-  var stMap={available:{cls:'av',txt:_i.t('status.available')},soon:{cls:'so',txt:_i.t('status.soon')+(p.dateFrom?' · '+_i.t('status.soon.from').split('·')[1].trim()+' '+fmtDate(p.dateFrom):'')},taken:{cls:'tk',txt:_i.t('status.taken')}};
+  var stMap={available:{cls:'av',txt:T('status.available','Dostępne teraz')},soon:{cls:'so',txt:(p.dateFrom?T('status.soon.from','Wkrótce · dostępne od')+' '+fmtDate(p.dateFrom):T('status.soon','Wkrótce'))},taken:{cls:'tk',txt:T('status.taken','Zajęte')}};
   var sl=stMap[ps]||stMap.taken;
   var sEl=document.getElementById('mstat'); sEl.textContent=sl.txt; sEl.className='mstat '+sl.cls;
   document.getElementById('mtitle').textContent=multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title;
   document.getElementById('mloc').textContent=offer.district+(offer.street?' · '+offer.street:'')+(offer.floor?' · piętro '+offer.floor:'');
   if(ps==='available'){
     document.getElementById('mprice').innerHTML=(p.price||0)+' zł<small>/mies.</small>';
-    document.getElementById('mdeposit').textContent=p.deposit?'Kaucja: '+p.deposit+' zł':'';
+    document.getElementById('mdeposit').textContent=p.deposit?T('js.deposit','Kaucja:')+' '+p.deposit+' zł':'';
   } else if(ps==='soon'){
-    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:#b45309;font-weight:600">'+(window.i18n?window.i18n.t('js.soon.label'):'Wkrótce wolne')+'</span>';
-    document.getElementById('mdeposit').textContent=p.dateFrom?(window.i18n?window.i18n.t('js.avail.dt'):'Dostępne od: ')+fmtDate(p.dateFrom):'';
+    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:#b45309;font-weight:600">'+T('js.soon.label','Wkrótce wolne')+'</span>';
+    document.getElementById('mdeposit').textContent=p.dateFrom?T('js.avail.dt','Dostępne od: ')+fmtDate(p.dateFrom):'';
   } else {
-    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:var(--muted)" data-i18n="off.filter.taken">Zajęte</span>';
+    document.getElementById('mprice').innerHTML='<span style="font-size:1rem;color:var(--muted)">'+T('status.taken','Zajęte')+'</span>';
     document.getElementById('mdeposit').textContent='';
   }
   var chips=[];
@@ -1171,13 +1114,7 @@ function openModal(offer,p){
   document.getElementById('mchips').innerHTML=chips.join('');
   document.getElementById('mdesc').textContent=p.desc||offer.desc||'';
   document.getElementById('mfeats').innerHTML=(offer.features||[]).map(function(f){return '<div class="mfeat">'+f+'</div>';}).join('');
-  var _offerLang = window.i18n ? window.i18n.getLang() : 'pl';
-  var _greetings = {pl:'Dzień dobry, jestem zainteresowany/a ofertą: ',en:'Hello, I am interested in the listing: ',ua:'Доброго дня, мене цікавить оголошення: '};
-  document.getElementById('mfmsg').value=(_greetings[_offerLang]||_greetings.pl)+(multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title)+(offer.district?(' ('+offer.district+')'):'')+({
-    pl:'. Proszę o kontakt.',
-    en:'. Please contact me.',
-    ua:'. Будь ласка, зв\'яжіться зі мною.'
-  }[_offerLang]||'. Proszę o kontakt.');
+  document.getElementById('mfmsg').value='Dzień dobry, jestem zainteresowany/a ofertą: '+(multi?offer.title+' — '+(p.nazwa||'Pokój'):offer.title)+' ('+offer.district+'). Proszę o kontakt.';
   gImgs=[]; var pImgs=p.imgs||[], mi=p.mainImg||0;
   if(pImgs.length){gImgs.push(pImgs[mi]);pImgs.forEach(function(img,i){if(i!==mi)gImgs.push(img);});}
   if(offer.img&&gImgs.indexOf(offer.img)<0) gImgs.push(offer.img);
@@ -1203,15 +1140,8 @@ function openModal(offer,p){
   }
   document.getElementById('gprev').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gnext').style.display=gImgs.length>1?'flex':'none';
-  document.querySelector('.mgallery') && (document.querySelector('.mgallery').style.display = '');
   document.getElementById('gcnt').textContent=gImgs.length>1?'1 / '+gImgs.length:'';
-  var gdotsEl=document.getElementById('gdots');
-  var isMini=gImgs.length>10;
-  gdotsEl.className='gdots'+(isMini?' mini':'');
-  gdotsEl.innerHTML=gImgs.map(function(_,i){
-    var cls='gdot'+(i===0?' active':'')+(isMini&&i===1?' near':'');
-    return isMini?'<span class="'+cls+'" data-i="'+i+'"></span>':'<button class="'+cls+'" data-i="'+i+'"></button>';
-  }).join('');
+  document.getElementById('gdots').innerHTML=gImgs.map(function(_,i){return '<button class="gdot'+(i===0?' active':'')+'" data-i="'+i+'"></button>';}).join('');
   document.getElementById('moverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1233,126 +1163,11 @@ document.addEventListener('keydown',function(e){
     if(e.key==='ArrowRight') showImg(gIdx+1);
   }
 });
-// ── WYBÓR TYPU ZAPYTANIA ─────────────────────────────────────
-function setContactType(type){
-  document.querySelectorAll('.mtype-btn').forEach(function(b){
-    b.classList.toggle('active', b.textContent.includes(type));
-  });
-  var _lang = window.i18n ? window.i18n.getLang() : 'pl';
-  var _msgs = {
-    pl: 'Dzień dobry, szukam ' + type.toLowerCase() + ' do wynajęcia. Proszę o kontakt.',
-    en: 'Hello, I am looking for a ' + type.toLowerCase() + ' to rent. Please contact me.',
-    ua: 'Доброго дня, шукаю ' + type.toLowerCase() + ' для оренди. Прошу зв\'язатися зі мною.'
-  };
-  document.getElementById('mfmsg').value = _msgs[_lang] || _msgs.pl;
-  document.getElementById('moverlay').querySelector('.mcontact h3') && 
-    (document.getElementById('mcontact-title').textContent = '📞 Zapytaj o ' + type.toLowerCase());
-}
-
-// ── KONTAKT BEZ OFERTY (z nawigacji) ─────────────────────────
-function openContactModal(){
-  // Ukryj sekcje związane z konkretną ofertą
-  var hideEls = ['mstat','mtitle','mloc','mpricebox','mchips','mlabel','mdesc','mfeats','mgallery','gprev','gnext','gcnt','gdots','mgalph'];
-  var mpricebox = document.querySelector('.mpricebox');
-  var mlabel    = document.querySelector('.mlabel');
-  var mfeats    = document.getElementById('mfeats');
-  var mchips    = document.getElementById('mchips');
-  var mgallery  = document.querySelector('.mgallery');
-
-  document.getElementById('mstat').textContent  = '';
-  document.getElementById('mstat').className    = 'mstat';
-  document.getElementById('mtitle').textContent = (window.i18n ? window.i18n.t('modal.ask').replace('📞 ','') : 'Zapytaj o ofertę');
-  document.getElementById('mloc').textContent   = '';
-  document.getElementById('mprice').innerHTML   = '';
-  document.getElementById('mdeposit').textContent = '';
-  document.getElementById('mchips').innerHTML   = '';
-  document.getElementById('mdesc').textContent  = '';
-  document.getElementById('mfeats').innerHTML   = '';
-  if(mgallery) mgallery.style.display = 'none';
-  var gprev = document.getElementById('gprev');
-  var gnext = document.getElementById('gnext');
-  if(gprev) gprev.style.display = 'none';
-  if(gnext) gnext.style.display = 'none';
-  document.getElementById('gcnt').textContent = '';
-
-  // Pokaż wybór typu
-  document.getElementById('mcontact-type-row').style.display = 'flex';
-
-  // Ustaw domyślną wiadomość
-  document.getElementById('mfmsg').value = '';
-  document.getElementById('mfname').value  = '';
-  document.getElementById('mfphone').value = '';
-  document.getElementById('mfemail').value = '';
-
-  document.getElementById('moverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-// ── FORMULARZ W MODALU — EmailJS ───────────────────────────────
-(function(){
-  var btn = document.getElementById('msend');
-  // Dynamiczny feedback pod przyciskiem
-  var feedbackEl = document.createElement('div');
-  feedbackEl.id = 'msendFeedback';
-  feedbackEl.style.cssText = 'display:none;margin-top:.6rem;padding:.6rem 1rem;border-radius:8px;font-size:.85rem;text-align:center;grid-column:1/-1';
-  btn.parentNode.appendChild(feedbackEl);
-
-  function showFeedback(text, ok){
-    feedbackEl.textContent = text;
-    feedbackEl.style.display = 'block';
-    feedbackEl.style.background = ok ? '#d4edda' : '#f8d7da';
-    feedbackEl.style.color       = ok ? '#155724' : '#721c24';
-    feedbackEl.style.border      = '1px solid ' + (ok ? '#c3e6cb' : '#f5c6cb');
-  }
-
-  btn.addEventListener('click', function(){
-    var name  = document.getElementById('mfname').value.trim();
-    var phone = document.getElementById('mfphone').value.trim();
-    var msg   = document.getElementById('mfmsg').value.trim();
-
-    // Pobierz tytuł aktualnej oferty z modalu
-    var offerTitle = (document.getElementById('mtitle') || {}).textContent || '';
-    var roomTitle  = (document.getElementById('msubtitle') || {}).textContent || '';
-
-    var _i2=window.i18n||{t:function(k){return k;}};
-    if(!name || !phone){
-      showFeedback(_i2.t('modal.valid'), false);
-      return;
-    }
-
-    btn.disabled = true;
-    btn.textContent = (window.i18n ? window.i18n.t('modal.sending') : 'Wysyłam…');
-    feedbackEl.style.display = 'none';
-
-    var params = {
-      from_name:  name,
-      from_phone: phone,
-      from_email: document.getElementById('mfemail').value.trim() || '(brak)',
-      subject:    offerTitle
-        ? 'Zapytanie o: ' + offerTitle + (roomTitle ? ' / ' + roomTitle : '')
-        : 'Zapytanie — ' + (document.querySelector('.mtype-btn.active') ? document.querySelector('.mtype-btn.active').textContent.trim() : 'kontakt ogólny'),
-      message:    msg || '(brak wiadomości)',
-      to_name:    'Kasia',
-      page:       'Strona ofert (najemcy)'
-    };
-
-    emailjs.send(window._EJS.svc, window._EJS.tpl, params)
-      .then(function(){
-        showFeedback((window.i18n ? window.i18n.t('modal.success') : '✅ Wysłano! Odezwę się wkrótce.'), true);
-        document.getElementById('mfname').value  = '';
-        document.getElementById('mfphone').value = '';
-        document.getElementById('mfemail').value = '';
-        document.getElementById('mfmsg').value   = '';
-        btn.textContent = (window.i18n ? window.i18n.t('modal.send') : 'Wyślij zapytanie →');
-        btn.disabled = false;
-      }, function(err){
-        console.error('EmailJS error:', err);
-        showFeedback((window.i18n ? window.i18n.t('modal.error') : '⚠️ Błąd wysyłki. Zadzwoń: 723 168 200'), false);
-        btn.textContent = (window.i18n ? window.i18n.t('modal.send') : 'Wyślij zapytanie →');
-        btn.disabled = false;
-      });
-  });
-})();
+document.getElementById('msend').addEventListener('click',function(){
+  var name=document.getElementById('mfname').value.trim(),phone=document.getElementById('mfphone').value.trim(),msg=document.getElementById('mfmsg').value.trim();
+  if(!name||!phone){alert('Proszę podać imię i telefon.');return;}
+  window.location.href='mailto:kasia@kazemmieszkania.pl?subject='+encodeURIComponent('Zapytanie — KaZem Mieszkania')+'&body='+encodeURIComponent(msg+'\nImię: '+name+'\nTelefon: '+phone);
+});
 
 // ── ADMIN PANEL ────────────────────────────────────────────────
 function openPanel(){
@@ -1525,7 +1340,7 @@ function addRoom(data){
       '<div class="fg"><label>Kaucja (zł)</label><input type="number" class="r-deposit" value="'+(data.deposit||'')+'" placeholder="1800"></div>'+
     '</div>'+
     '<div class="fg"><label>Opis pokoju</label><textarea class="r-desc" placeholder="Opis tego pokoju...">'+(data.desc||'')+'</textarea></div>'+
-    '<div class="fg"><label>Zdjęcia (max 30) — ★ = główne — przeciągnij aby zmienić kolejność</label>'+
+    '<div class="fg"><label>Zdjęcia (max 10) — ★ = główne — przeciągnij aby zmienić kolejność</label>'+
       '<div class="pgrid" id="pg-'+rid+'"></div>'+
       '<div class="fg-row" style="margin-top:.4rem">'+
         '<input type="url" class="purl" placeholder="Wklej URL + Enter" onkeydown="if(event.key===\'Enter\'){addUrl(\''+rid+'\',this.value);this.value=\'\';}">'+
@@ -1572,19 +1387,19 @@ function renderPhotos(rid){
        (i!==d.mainImg?'<button class="ppsetmain" onclick="setMain(\''+rid+'\','+i+')" title="Ustaw główne">★</button>':'')+
        '</div>';
   }
-  if(d.imgs.length<30) h+='<div class="photo-add-tile" onclick="document.getElementById(\'pfile-'+rid+'\').click()"><span style="font-size:1.4rem">+</span><small>Dodaj</small></div>';
+  if(d.imgs.length<10) h+='<div class="photo-add-tile" onclick="document.getElementById(\'pfile-'+rid+'\').click()"><span style="font-size:1.4rem">+</span><small>Dodaj</small></div>';
   grid.innerHTML=h; initDrag(rid);
 }
 function delPhoto(rid,idx){var d=imgs_data[rid];d.imgs.splice(idx,1);if(d.mainImg>=d.imgs.length)d.mainImg=Math.max(0,d.imgs.length-1);else if(d.mainImg>idx)d.mainImg--;renderPhotos(rid);}
 function setMain(rid,idx){imgs_data[rid].mainImg=idx;renderPhotos(rid);}
 function addUrl(rid,url){
   if(!url||!url.startsWith('http')){toast('Podaj poprawny URL','err');return;}
-  var d=imgs_data[rid]; if(d.imgs.length>=30){toast('Maksymalnie 30 zdjęć','err');return;}
+  var d=imgs_data[rid]; if(d.imgs.length>=10){toast('Maksymalnie 10 zdjęć','err');return;}
   d.imgs.push(url); renderPhotos(rid);
 }
 function uploadFiles(rid,input){
-  var files=Array.from(input.files),d=imgs_data[rid],rem=30-d.imgs.length;
-  if(!rem){toast('Maksymalnie 30 zdjęć','err');return;} files=files.slice(0,rem);
+  var files=Array.from(input.files),d=imgs_data[rid],rem=10-d.imgs.length;
+  if(!rem){toast('Maksymalnie 10 zdjęć','err');return;} files=files.slice(0,rem);
   var prog=document.getElementById('pprog-'+rid); prog.style.display='block'; var done=0;
   files.forEach(function(file){
     var fd=new FormData(); fd.append('file',file); fd.append('upload_preset',PRESET);
@@ -1682,17 +1497,6 @@ loadOffers(function(){
   checkAuth();
   renderGrid();
 });
-// Przerenderuj przy zmianie języka
-document.addEventListener('kazem:langchange', function(){
-  renderGrid();
-  // Odśwież też legendę mapową (statyczne etykiety)
-  if(document.querySelector('.maplegend')) {
-    document.querySelectorAll('[data-i18n]').forEach(function(el){
-      var key = el.getAttribute('data-i18n');
-      if(window.i18n) el.innerHTML = window.i18n.t(key);
-    });
-  }
-});
 setTimeout(function(){
   var valid=OFFERS.filter(function(o){return !isNaN(parseFloat(o.lat));});
   if(valid.length>1){
@@ -1700,10 +1504,11 @@ setTimeout(function(){
     map.fitBounds([[Math.min.apply(null,lats)-.012,Math.min.apply(null,lngs)-.02],[Math.max.apply(null,lats)+.012,Math.max.apply(null,lngs)+.02]],{animate:false,padding:[30,30]});
   }
 },150);
+// Przerysuj UI po zmianie języka (opisy ofert z Supabase pozostają w oryginale — celowo)
+document.addEventListener('kazem:langchange', function(){
+  try { mapMarkersBuilt = false; } catch(e){}
+  try { renderGrid(); } catch(e){}
+});
 </script>
-<div style="text-align:center;padding:1.2rem;background:var(--dark);border-top:1px solid rgba(196,151,90,.15)">
-  <button id="kz-cookie-settings-btn" onclick="KZCookie.showSettings()">🍪 Zmień ustawienia cookie</button>
-</div>
-<script src="cookie-consent.js"></script>
 </body>
 </html>

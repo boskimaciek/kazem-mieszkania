@@ -29,6 +29,46 @@
     'footer.copy':     { pl: 'Katarzyna Zemlik · Warszawa · © 2025', en: 'Katarzyna Zemlik · Warsaw · © 2025', ua: 'Катажина Землік · Варшава · © 2025' },
 
     // ════════════════════════════════════════════════════════════════════════
+    // REDESIGN 2.0 — galeria + dostępność (dodane v2026-07-02)
+    // ════════════════════════════════════════════════════════════════════════
+
+    'gallery.title':   { pl: 'Mieszkania pod opieką',        en: 'Properties under care',      ua: 'Квартири під опікою' },
+    'gallery.btn':     { pl: 'Zobacz oferty →',              en: 'See listings →',             ua: 'Дивитися оголошення →' },
+    'gallery.l1':      { pl: 'Mokotów · pokój studencki',    en: 'Mokotów · student room',     ua: 'Мокотув · студентська кімната' },
+    'gallery.l2':      { pl: 'Wola · mieszkanie 2-pok.',     en: 'Wola · 2-room apartment',    ua: 'Воля · 2-кімнатна квартира' },
+    'gallery.l3':      { pl: 'Śródmieście · studio',         en: 'Śródmieście · studio',       ua: 'Середмістя · студія' },
+    'gallery.l4':      { pl: 'Żoliborz · sypialnia',         en: 'Żoliborz · bedroom',          ua: 'Жолібож · спальня' },
+    'gallery.l5':      { pl: 'Ursynów · salon',              en: 'Ursynów · living room',      ua: 'Урсинув · вітальня' },
+    'a11y.skip':       { pl: 'Przejdź do treści',            en: 'Skip to content',            ua: 'Перейти до вмісту' },
+
+    // ════════════════════════════════════════════════════════════════════════
+    // OFERTY.HTML v2.0 — hero, mapa, filtry (dodane v2026-07-03)
+    // ════════════════════════════════════════════════════════════════════════
+
+    'of.hlabel':    { pl: 'Aktualne oferty · Warszawa', en: 'Current listings · Warsaw', ua: 'Актуальні пропозиції · Варшава' },
+    'of.h1':        { pl: 'Pokoje i mieszkania<br>do wynajęcia w <em>Warszawie</em>', en: 'Rooms and apartments<br>for rent in <em>Warsaw</em>', ua: 'Кімнати та квартири<br>в оренду у <em>Варшаві</em>' },
+    'of.sub':       { pl: 'Pokoje studenckie i mieszkania na wynajem w Warszawie — Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Wszystkie lokale zarządzane przez KaZem Mieszkania.', en: 'Student rooms and apartments for rent in Warsaw — Mokotów, Wola, Śródmieście, Żoliborz and other districts. All properties managed by KaZem Mieszkania.', ua: 'Студентські кімнати та квартири в оренду у Варшаві — Мокотув, Воля, Середмістя, Жолібож та інші райони. Усі приміщення під управлінням KaZem Mieszkania.' },
+    'of.stat.av':   { pl: 'Dostępne',    en: 'Available',   ua: 'Доступні' },
+    'of.stat.so':   { pl: 'Wkrótce',     en: 'Soon',        ua: 'Незабаром' },
+    'of.stat.all':  { pl: 'Wszystkich',  en: 'Total',       ua: 'Усього' },
+    'of.map.label': { pl: 'Mapa ofert',  en: 'Listings map', ua: 'Карта пропозицій' },
+    'of.map.h2':    { pl: 'Znajdź ofertę na mapie', en: 'Find a listing on the map', ua: 'Знайдіть пропозицію на карті' },
+    'of.map.p':     { pl: 'Najedź na kropkę aby zobaczyć szczegóły.<br>Kliknij aby przejść do oferty.', en: 'Hover over a dot to see details.<br>Click to open the listing.', ua: 'Наведіть на крапку, щоб побачити деталі.<br>Натисніть, щоб відкрити пропозицію.' },
+    'of.f.type':    { pl: 'Typ:',        en: 'Type:',       ua: 'Тип:' },
+    'of.f.status':  { pl: 'Status:',     en: 'Status:',     ua: 'Статус:' },
+    'of.f.all':     { pl: 'Wszystkie',   en: 'All',         ua: 'Усі' },
+    'of.f.room':    { pl: '🛏 Pokój',    en: '🛏 Room',     ua: '🛏 Кімната' },
+    'of.f.apt':     { pl: '🏠 Mieszkanie', en: '🏠 Apartment', ua: '🏠 Квартира' },
+    'of.f.av':      { pl: 'Dostępne',    en: 'Available',   ua: 'Доступні' },
+    'of.f.soon':    { pl: 'Wkrótce',     en: 'Soon',        ua: 'Незабаром' },
+    'of.f.taken':   { pl: 'Zajęte',      en: 'Taken',       ua: 'Зайняті' },
+    'of.details':   { pl: 'Szczegóły',   en: 'Details',     ua: 'Деталі' },
+    'of.noresults': { pl: 'Brak ofert',  en: 'No listings', ua: 'Немає пропозицій' },
+    'of.results':   { pl: 'Wyników:',    en: 'Results:',    ua: 'Результатів:' },
+    'of.type.room': { pl: 'Pokój',       en: 'Room',        ua: 'Кімната' },
+    'of.type.apt':  { pl: 'Mieszkanie',  en: 'Apartment',   ua: 'Квартира' },
+
+    // ════════════════════════════════════════════════════════════════════════
     // INDEX.HTML — strona główna (właściciele)
     // ════════════════════════════════════════════════════════════════════════
 
@@ -280,9 +320,10 @@
   }
 
   function applyLang(lang) {
-    // Atrybuty text
+    // Atrybuty text — brakujący klucz NIGDY nie nadpisuje treści (zostaje polski tekst z HTML)
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       var key = el.getAttribute('data-i18n');
+      if (!TRANSLATIONS[key]) { console.warn('i18n: missing key', key); return; }
       var val = t(key, lang);
       if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
         el.value = val;
@@ -292,11 +333,13 @@
     });
     // Placeholder
     document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
-      el.placeholder = t(el.getAttribute('data-i18n-ph'), lang);
+      var pk = el.getAttribute('data-i18n-ph');
+      if (TRANSLATIONS[pk]) el.placeholder = t(pk, lang);
     });
     // data-i18n-title (dla przycisków/ikon)
     document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
-      el.title = t(el.getAttribute('data-i18n-title'), lang);
+      var tk = el.getAttribute('data-i18n-title');
+      if (TRANSLATIONS[tk]) el.title = t(tk, lang);
     });
     // <html lang>
     document.documentElement.lang = lang === 'ua' ? 'uk' : lang;
