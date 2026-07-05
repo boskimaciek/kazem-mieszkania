@@ -167,6 +167,8 @@ body.is-admin .card-admin-btns{display:flex}
 .gprev{left:.9rem}.gnext{right:.9rem}
 .gdots{position:absolute;bottom:.65rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem}
 .gdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);border:none;cursor:pointer;transition:all .2s;padding:0}
+.gdots.mini .gdot{width:4px;height:4px;gap:2px}
+.gdots.mini .gdot.active{transform:scale(1.4)}
 .gdot.active{background:#fff;transform:scale(1.3)}
 .gcnt{position:absolute;top:.65rem;left:.65rem;background:rgba(26,26,24,.55);color:#fff;font-size:.73rem;padding:.22rem .65rem;border-radius:100px;backdrop-filter:blur(4px)}
 .mcontent{padding:1.6rem 2rem 2rem}
@@ -322,6 +324,17 @@ body.is-admin .card-admin-btns{display:flex}
   .mfg.full{grid-column:1}
 }
 @keyframes pulsering{0%,100%{transform:scale(1);opacity:.25}50%{transform:scale(1.7);opacity:0}}
+/* ── FOOTER ── */
+footer{background:var(--dark);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;margin-top:1rem}
+.flogo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.2rem;color:#fff;letter-spacing:-.02em;text-decoration:none}
+.flogo em{color:#E08D6F;font-style:normal}
+.fmid{display:flex;flex-direction:column;gap:.35rem;align-items:center}
+footer p{font-size:.74rem;color:rgba(255,255,255,.45)}
+#kz-cookie-settings-btn{background:none;border:none;color:rgba(255,255,255,.4);font-size:.72rem;font-family:'Instrument Sans',sans-serif;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px;transition:color .2s}
+#kz-cookie-settings-btn:hover{color:#E08D6F}
+.fback{font-size:.78rem;font-weight:500;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s}
+.fback:hover{color:#fff}
+@media(max-width:700px){footer{flex-direction:column;align-items:flex-start;padding:1.6rem 1.2rem}.fmid{align-items:flex-start}}
 </style>
 
 <script type="application/ld+json">
@@ -411,6 +424,16 @@ body.is-admin .card-admin-btns{display:flex}
 
 <div class="listings"><div class="grid" id="grid"></div></div>
 <div id="pagination"></div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="flogo">Ka<em>Zem</em> Mieszkania</a>
+  <div class="fmid">
+    <p data-i18n="footer.copy">Katarzyna Zemlik · Warszawa · © 2025</p>
+    <button id="kz-cookie-settings-btn" onclick="KZCookie.showSettings()">🍪 Zmień ustawienia cookie</button>
+  </div>
+  <a href="index.html" class="fback" data-i18n="nav.back">← Strona główna</a>
+</footer>
 
 <!-- OFFER DETAIL MODAL -->
 <div class="moverlay" id="moverlay">
@@ -898,9 +921,24 @@ function renderGrid(){
     if(activeStatus!=='all'&&mainStatus(o)!==activeStatus) return false;
     return true;
   });
-  document.getElementById('cntAv').textContent =OFFERS.filter(function(o){return mainStatus(o)==='available';}).length;
-  document.getElementById('cntSo').textContent =OFFERS.filter(function(o){return mainStatus(o)==='soon';}).length;
-  document.getElementById('cntAll').textContent=OFFERS.length;
+  // countUnits: pokój = liczba pokoi w tablicy, mieszkanie = 1
+  function countUnits(list, statusFilter) {
+    var n = 0;
+    list.forEach(function(o) {
+      var pp = o.pokoje || [];
+      if (o.type === 'pokoj') {
+        pp.forEach(function(p) {
+          if (!statusFilter || effectiveStatus(p) === statusFilter) n++;
+        });
+      } else {
+        if (!statusFilter || mainStatus(o) === statusFilter) n++;
+      }
+    });
+    return n;
+  }
+  document.getElementById('cntAv').textContent  = countUnits(OFFERS, 'available');
+  document.getElementById('cntSo').textContent  = countUnits(OFFERS, 'soon');
+  document.getElementById('cntAll').textContent = countUnits(OFFERS, null);
 
   var expanded=[];
   filtered.forEach(function(o){(o.pokoje||[]).forEach(function(p){expanded.push({o:o,p:p});});});
@@ -1072,6 +1110,28 @@ document.getElementById('gprev').addEventListener('click',function(){showImg(gId
 document.getElementById('gnext').addEventListener('click',function(){showImg(gIdx+1);});
 document.getElementById('gdots').addEventListener('click',function(e){var d=e.target.closest('.gdot');if(d)showImg(parseInt(d.getAttribute('data-i')));});
 
+// ── Touch/swipe nawigacja galerii (mobile) ───────────────────────
+(function(){
+  var galEl=document.querySelector('.mgal');
+  if(!galEl) return;
+  var sx=0, sy=0, dx=0, locked=false;
+  galEl.addEventListener('touchstart',function(e){
+    sx=e.touches[0].clientX; sy=e.touches[0].clientY; dx=0; locked=false;
+  },{passive:true});
+  galEl.addEventListener('touchmove',function(e){
+    if(locked) return;
+    dx=e.touches[0].clientX-sx;
+    var dy=Math.abs(e.touches[0].clientY-sy);
+    if(dy>Math.abs(dx)){locked=true; return;}
+    if(Math.abs(dx)>10) e.preventDefault();
+  },{passive:false});
+  galEl.addEventListener('touchend',function(){
+    if(locked) return;
+    if(dx<-40) showImg(gIdx+1);
+    else if(dx>40) showImg(gIdx-1);
+  },{passive:true});
+})();
+
 function openById(oid,pid){
   var offer=null; for(var i=0;i<OFFERS.length;i++){if(OFFERS[i].id==oid){offer=OFFERS[i];break;}} if(!offer) return;
   var pp=offer.pokoje||[], pokoj=null;
@@ -1141,7 +1201,9 @@ function openModal(offer,p){
   document.getElementById('gprev').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gnext').style.display=gImgs.length>1?'flex':'none';
   document.getElementById('gcnt').textContent=gImgs.length>1?'1 / '+gImgs.length:'';
-  document.getElementById('gdots').innerHTML=gImgs.map(function(_,i){return '<button class="gdot'+(i===0?' active':'')+'" data-i="'+i+'"></button>';}).join('');
+  var dotsEl=document.getElementById('gdots');
+  dotsEl.className='gdots'+(gImgs.length>10?' mini':'');
+  dotsEl.innerHTML=gImgs.map(function(_,i){return '<button class="gdot'+(i===0?' active':'')+'" data-i="'+i+'"></button>';}).join('');
   document.getElementById('moverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
@@ -1398,8 +1460,8 @@ function addUrl(rid,url){
   d.imgs.push(url); renderPhotos(rid);
 }
 function uploadFiles(rid,input){
-  var files=Array.from(input.files),d=imgs_data[rid],rem=10-d.imgs.length;
-  if(!rem){toast('Maksymalnie 10 zdjęć','err');return;} files=files.slice(0,rem);
+  var files=Array.from(input.files),d=imgs_data[rid],rem=30-d.imgs.length;
+  if(!rem){toast('Maksymalnie 30 zdjęć','err');return;} files=files.slice(0,rem);
   var prog=document.getElementById('pprog-'+rid); prog.style.display='block'; var done=0;
   files.forEach(function(file){
     var fd=new FormData(); fd.append('file',file); fd.append('upload_preset',PRESET);
