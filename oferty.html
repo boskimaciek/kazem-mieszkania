@@ -470,8 +470,10 @@ footer p{font-size:.74rem;color:rgba(255,255,255,.45)}
           <div class="mform">
             <div class="mfg"><label for="mfname" data-i18n="modal.name">Imię</label><input type="text" id="mfname" name="name" placeholder="Jan Kowalski" required></div>
             <div class="mfg"><label for="mfphone" data-i18n="modal.phone">Telefon</label><input type="tel" id="mfphone" name="phone" placeholder="+48 600 000 000" required></div>
+            <div class="mfg full"><label for="mfemail" data-i18n="modal.email">E-mail</label><input type="email" id="mfemail" name="email" placeholder="jan@example.com" required></div>
             <div class="mfg full"><label for="mfmsg" data-i18n="modal.msg">Wiadomość</label><textarea id="mfmsg" name="message" rows="3"></textarea></div>
             <button class="msend" id="msend" data-i18n="modal.send">Wyślij zapytanie →</button>
+            <div id="mformMsg" style="display:none;grid-column:1/-1;margin-top:.3rem;padding:.7rem 1rem;font-size:.85rem;text-align:center;border-radius:8px"></div>
           </div>
           <div class="mdirect">
             <a href="tel:+48723168200"              class="mdirectbtn">📞 723 168 200</a>
@@ -634,6 +636,17 @@ footer p{font-size:.74rem;color:rgba(255,255,255,.45)}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+// ── EmailJS init ─────────────────────────────────────────────────
+(function(){
+  var EJS_PUBLIC_KEY  = 'eNRb-tv-avrdSLrd3';
+  var EJS_SERVICE_ID  = 'service_xd3yix9';
+  var EJS_TEMPLATE_ID = 'template_tafk6pj';
+  window._EJS = { pub: EJS_PUBLIC_KEY, svc: EJS_SERVICE_ID, tpl: EJS_TEMPLATE_ID };
+  emailjs.init({ publicKey: EJS_PUBLIC_KEY });
+})();
+</script>
 <script>
 // i18n helper — fallback PL gdy i18n.js niezaładowany
 function T(k, fb){ if(!(window.i18n && window.i18n.t)) return fb; var v = window.i18n.t(k); return (v === k) ? fb : v; }
@@ -1225,14 +1238,71 @@ document.addEventListener('keydown',function(e){
     if(e.key==='ArrowRight') showImg(gIdx+1);
   }
 });
-document.getElementById('msend').addEventListener('click',function(){
-  var name=document.getElementById('mfname').value.trim(),phone=document.getElementById('mfphone').value.trim(),msg=document.getElementById('mfmsg').value.trim();
-  if(!name||!phone){alert(window.i18n ? window.i18n.t('modal.valid') : 'Proszę podać imię i telefon.');return;}
-  if (typeof gtag === 'function') {
-    gtag('event', 'form_submit', { form_id: 'zapytanie_oferta', form_destination: 'oferty' });
+(function(){
+  var msendBtn = document.getElementById('msend');
+  var mMsg     = document.getElementById('mformMsg');
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function showMMsg(text, ok){
+    mMsg.textContent = text;
+    mMsg.style.display = 'block';
+    mMsg.style.background = ok ? '#E7F4EC' : '#FBE9E7';
+    mMsg.style.color      = ok ? '#1D6B43' : '#A8432C';
+    mMsg.style.border     = '1px solid ' + (ok ? '#BFE3CC' : '#F0C4B8');
   }
-  window.location.href='mailto:kasia@kazemmieszkania.pl?subject='+encodeURIComponent('Zapytanie — KaZem Mieszkania')+'&body='+encodeURIComponent(msg+'\nImię: '+name+'\nTelefon: '+phone);
-});
+
+  msendBtn.addEventListener('click', function(){
+    var name  = document.getElementById('mfname').value.trim();
+    var phone = document.getElementById('mfphone').value.trim();
+    var email = document.getElementById('mfemail').value.trim();
+    var msg   = document.getElementById('mfmsg').value.trim();
+    var offerTitle = document.getElementById('mtitle').textContent || 'Zapytanie o ofertę';
+    var offerLoc   = document.getElementById('mloc').textContent || '';
+
+    if(!name||!phone||!email){
+      showMMsg(window.i18n ? window.i18n.t('modal.valid') : 'Proszę podać imię, telefon i e-mail.', false);
+      return;
+    }
+
+    if(!EMAIL_RE.test(email)){
+      showMMsg(window.i18n ? window.i18n.t('contact.f.email.invalid') : 'Proszę podać poprawny adres e-mail.', false);
+      return;
+    }
+
+    msendBtn.disabled = true;
+    msendBtn.textContent = window.i18n ? window.i18n.t('modal.sending') : 'Wysyłam…';
+
+    var params = {
+      from_name:  name,
+      from_phone: phone,
+      from_email: email,
+      subject:    offerTitle,
+      message:    (msg || '—') + '\n\nOferta: ' + offerTitle + ' (' + offerLoc + ')',
+      to_name:    'Kasia',
+      page:       'Oferty najmu (najemcy)',
+      lang:       window.KAZEM_LANG || 'pl'
+    };
+
+    emailjs.send(window._EJS.svc, window._EJS.tpl, params)
+      .then(function(){
+        showMMsg(window.i18n ? window.i18n.t('modal.success') : '✅ Wysłano! Odezwę się wkrótce.', true);
+        msendBtn.textContent = window.i18n ? window.i18n.t('modal.send') : 'Wyślij zapytanie →';
+        msendBtn.disabled = false;
+        document.getElementById('mfname').value  = '';
+        document.getElementById('mfphone').value = '';
+        document.getElementById('mfemail').value = '';
+        document.getElementById('mfmsg').value    = '';
+        if (typeof gtag === 'function') {
+          gtag('event', 'form_submit', { form_id: 'zapytanie_oferta', form_destination: 'oferty' });
+        }
+      }, function(err){
+        console.error('EmailJS error:', err);
+        showMMsg(window.i18n ? window.i18n.t('modal.error') : '⚠️ Błąd wysyłki. Zadzwoń: 723 168 200', false);
+        msendBtn.textContent = window.i18n ? window.i18n.t('modal.send') : 'Wyślij zapytanie →';
+        msendBtn.disabled = false;
+      });
+  });
+})();
 
 // ── ADMIN PANEL ────────────────────────────────────────────────
 function openPanel(){

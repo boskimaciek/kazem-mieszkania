@@ -265,7 +265,7 @@
     'modal.sending':    { pl: 'Wysyłam…',                en: 'Sending…',                    ua: 'Надсилаю…' },
     'modal.success':    { pl: '✅ Wysłano! Odezwę się wkrótce.', en: '✅ Sent! I’ll be in touch shortly.', ua: '✅ Надіслано! Зв’яжуся найближчим часом.' },
     'modal.error':      { pl: '⚠️ Błąd wysyłki. Zadzwoń: 723 168 200', en: '⚠️ Something went wrong. Call me: 723 168 200', ua: '⚠️ Щось пішло не так. Телефонуйте: 723 168 200' },
-    'modal.valid':      { pl: 'Proszę podać imię i telefon.', en: 'Please provide name and phone.', ua: 'Будь ласка, вкажіть ім\'я та телефон.' },
+    'modal.valid':      { pl: 'Proszę podać imię, telefon i e-mail.', en: 'Please provide name, phone and email.', ua: 'Будь ласка, вкажіть ім\'я, телефон та email.' },
     'modal.desc':       { pl: 'Opis', en: 'Description', ua: 'Опис' },
     'modal.ph.name':    { pl: 'Jan Kowalski', en: 'John Smith', ua: 'Іван Петренко' },
 
