@@ -224,6 +224,7 @@
     'contact.f.success': { pl: '✅ Wiadomość wysłana! Odezwę się w ciągu 24h.', en: '✅ Message sent! I’ll be in touch within 24 h.', ua: '✅ Надіслано! Зв’яжуся протягом 24 год.' },
     'contact.f.error':   { pl: '⚠️ Coś poszło nie tak. Napisz bezpośrednio na kasia@kazemmieszkania.pl', en: '⚠️ Something went wrong. Write directly to kasia@kazemmieszkania.pl', ua: '⚠️ Щось пішло не так. Напишіть безпосередньо на kasia@kazemmieszkania.pl' },
     'contact.f.valid':   { pl: 'Proszę wypełnić imię, telefon i e-mail.', en: 'Please fill in your name, phone and email.', ua: 'Будь ласка, заповніть ім’я, телефон та email.' },
+    'contact.f.email.invalid': { pl: 'Proszę podać poprawny adres e-mail.', en: 'Please enter a valid email address.', ua: 'Будь ласка, вкажіть правильну адресу e-mail.' },
 
     // ════════════════════════════════════════════════════════════════════════
     // OFERTY.HTML — strona ofert (najemcy)

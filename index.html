@@ -710,12 +710,12 @@ studencki</small></div>
     </div>
     <div class="cform reveal-up">
       <div class="fg-row">
-        <div class="fg"><label data-i18n="contact.f.name">Imię i nazwisko</label><input type="text" data-i18n-ph="contact.f.ph.name" placeholder="Jan Kowalski" autocomplete="name"></div>
-        <div class="fg"><label data-i18n="contact.f.tel">Telefon</label><input type="tel" placeholder="+48 600 000 000" autocomplete="tel"></div>
+        <div class="fg"><label for="cfName" data-i18n="contact.f.name">Imię i nazwisko</label><input type="text" id="cfName" name="name" data-i18n-ph="contact.f.ph.name" placeholder="Jan Kowalski" autocomplete="name" required></div>
+        <div class="fg"><label for="cfPhone" data-i18n="contact.f.tel">Telefon</label><input type="tel" id="cfPhone" name="phone" placeholder="+48 600 000 000" autocomplete="tel" required></div>
       </div>
-      <div class="fg"><label data-i18n="contact.f.email">E-mail</label><input type="email" placeholder="jan@example.com" autocomplete="email"></div>
-      <div class="fg"><label data-i18n="contact.f.what">Czego szukasz?</label>
-        <select>
+      <div class="fg"><label for="cfEmail" data-i18n="contact.f.email">E-mail</label><input type="email" id="cfEmail" name="email" placeholder="jan@example.com" autocomplete="email" required></div>
+      <div class="fg"><label for="cfSubject" data-i18n="contact.f.what">Czego szukasz?</label>
+        <select id="cfSubject" name="subject">
           <option data-i18n="contact.f.opt1">Zarządzanie najmem</option>
           <option data-i18n="contact.f.opt2">Najem studencki / pokoje</option>
           <option data-i18n="contact.f.opt3">Homestaging</option>
@@ -723,7 +723,7 @@ studencki</small></div>
           <option data-i18n="contact.f.opt5">Inne</option>
         </select>
       </div>
-      <div class="fg"><label data-i18n="contact.f.msg">Wiadomość</label><textarea data-i18n-ph="contact.f.ph.msg" placeholder="Opisz krótko swoje mieszkanie i czego potrzebujesz..."></textarea></div>
+      <div class="fg"><label for="cfMsg" data-i18n="contact.f.msg">Wiadomość</label><textarea id="cfMsg" name="message" data-i18n-ph="contact.f.ph.msg" placeholder="Opisz krótko swoje mieszkanie i czego potrzebujesz..."></textarea></div>
       <button class="sbtn" id="indexSendBtn" data-i18n="contact.f.send">Wyślij wiadomość — odezwę się w ciągu 24h</button>
       <div id="indexFormMsg" style="display:none;margin-top:.5rem;padding:.75rem 1.2rem;font-size:.9rem;text-align:center;border-radius:3px"></div>
     </div>
@@ -949,16 +949,22 @@ document.addEventListener('kazem:langchange', function(){
     msg.style.border     = '1px solid ' + (ok ? '#BFE3CC' : '#F0C4B8');
   }
 
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   btn.addEventListener('click', function(){
-    var inputs    = form.querySelectorAll('input, select, textarea');
-    var imie      = inputs[0].value.trim();
-    var telefon   = inputs[1].value.trim();
-    var email     = inputs[2].value.trim();
-    var temat     = inputs[3].value;
-    var wiadomosc = inputs[4].value.trim();
+    var imie      = document.getElementById('cfName').value.trim();
+    var telefon   = document.getElementById('cfPhone').value.trim();
+    var email     = document.getElementById('cfEmail').value.trim();
+    var temat     = document.getElementById('cfSubject').value;
+    var wiadomosc = document.getElementById('cfMsg').value.trim();
 
     if(!imie || !telefon || !email){
       showMsg(window.i18n ? window.i18n.t('contact.f.valid') : 'Proszę wypełnić imię, telefon i e-mail.', false);
+      return;
+    }
+
+    if(!EMAIL_RE.test(email)){
+      showMsg(window.i18n ? window.i18n.t('contact.f.email.invalid') : 'Proszę podać poprawny adres e-mail.', false);
       return;
     }
 
@@ -972,15 +978,19 @@ document.addEventListener('kazem:langchange', function(){
       subject:    temat,
       message:    wiadomosc || '—',
       to_name:    'Kasia',
-      page:       'Strona główna (właściciele)'
+      page:       'Strona główna (właściciele)',
+      lang:       window.KAZEM_LANG || 'pl'
     };
 
     emailjs.send(window._EJS.svc, window._EJS.tpl, params)
       .then(function(){
         showMsg(window.i18n ? window.i18n.t('contact.f.success') : '✅ Wiadomość wysłana! Odezwę się w ciągu 24h.', true);
-        inputs.forEach(function(el){ el.value = ''; });
+        form.querySelectorAll('input, select, textarea').forEach(function(el){ el.value = ''; });
         btn.textContent = window.i18n ? window.i18n.t('contact.f.send') : 'Wyślij wiadomość — odezwę się w ciągu 24h';
         btn.disabled = false;
+        if (typeof gtag === 'function') {
+          gtag('event', 'form_submit', { form_id: 'kontakt_wlasciciele', form_destination: 'index' });
+        }
       }, function(err){
         console.error('EmailJS error:', err);
         showMsg(window.i18n ? window.i18n.t('contact.f.error') : '⚠️ Coś poszło nie tak. Napisz bezpośrednio na kasia@kazemmieszkania.pl', false);

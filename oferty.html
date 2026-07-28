@@ -468,9 +468,9 @@ footer p{font-size:.74rem;color:rgba(255,255,255,.45)}
         <div class="mcontact">
           <h3 data-i18n="modal.ask">📞 Zapytaj o tę ofertę</h3>
           <div class="mform">
-            <div class="mfg"><label data-i18n="modal.name">Imię</label><input type="text" id="mfname"  placeholder="Jan Kowalski"></div>
-            <div class="mfg"><label data-i18n="modal.phone">Telefon</label><input type="tel" id="mfphone" placeholder="+48 600 000 000"></div>
-            <div class="mfg full"><label data-i18n="modal.msg">Wiadomość</label><textarea id="mfmsg" rows="3"></textarea></div>
+            <div class="mfg"><label for="mfname" data-i18n="modal.name">Imię</label><input type="text" id="mfname" name="name" placeholder="Jan Kowalski" required></div>
+            <div class="mfg"><label for="mfphone" data-i18n="modal.phone">Telefon</label><input type="tel" id="mfphone" name="phone" placeholder="+48 600 000 000" required></div>
+            <div class="mfg full"><label for="mfmsg" data-i18n="modal.msg">Wiadomość</label><textarea id="mfmsg" name="message" rows="3"></textarea></div>
             <button class="msend" id="msend" data-i18n="modal.send">Wyślij zapytanie →</button>
           </div>
           <div class="mdirect">
@@ -1227,7 +1227,10 @@ document.addEventListener('keydown',function(e){
 });
 document.getElementById('msend').addEventListener('click',function(){
   var name=document.getElementById('mfname').value.trim(),phone=document.getElementById('mfphone').value.trim(),msg=document.getElementById('mfmsg').value.trim();
-  if(!name||!phone){alert('Proszę podać imię i telefon.');return;}
+  if(!name||!phone){alert(window.i18n ? window.i18n.t('modal.valid') : 'Proszę podać imię i telefon.');return;}
+  if (typeof gtag === 'function') {
+    gtag('event', 'form_submit', { form_id: 'zapytanie_oferta', form_destination: 'oferty' });
+  }
   window.location.href='mailto:kasia@kazemmieszkania.pl?subject='+encodeURIComponent('Zapytanie — KaZem Mieszkania')+'&body='+encodeURIComponent(msg+'\nImię: '+name+'\nTelefon: '+phone);
 });
 
