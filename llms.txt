@@ -1,0 +1,37 @@
+# KaZem Mieszkania
+
+> KaZem Mieszkania to jednoosobowa firma Katarzyny Zemlik zajmująca się kompleksowym zarządzaniem najmem mieszkań i pokoi studenckich w Warszawie. Kasia działa na podstawie pełnomocnictwa właściciela — podpisuje umowy i aneksy w jego imieniu, pilnuje ciągłości najmu, koordynuje naprawy i reaguje na usterki w ciągu 24 godzin. Właściciel nie musi być obecny w Warszawie ani zajmować się mieszkaniem osobiście.
+
+## Kim jest KaZem Mieszkania
+
+- Firma: KaZem Mieszkania, założycielka i osoba kontaktowa: Katarzyna Zemlik ("Kasia").
+- Rodzaj działalności: zarządzanie najmem nieruchomości (property management) dla właścicieli mieszkań, ze specjalizacją w najmie studenckim.
+- Obszar działania: Warszawa, w szczególności dzielnice Mokotów, Ursynów, Wola, Ochota, Śródmieście i Żoliborz.
+- Model współpracy: Kasia działa na podstawie pełnomocnictwa właściciela, co pozwala jej samodzielnie podpisywać umowy najmu, aneksy i protokoły — właściciel może mieszkać w innym mieście lub za granicą.
+- Kontakt: telefon +48 723 168 200, e-mail kasia@kazemmieszkania.pl.
+
+## Usługi
+
+- Kompleksowe zarządzanie najmem — pełna opieka nad mieszkaniem: pilnowanie ciągłości najmu i terminów umów, podpisywanie umów i aneksów w imieniu właściciela, regularne raporty ze stanu mieszkania, kontakt z najemcami.
+- Najem studencki i wynajem pokoi — rekrutacja i weryfikacja studentów, umowy pokojowe, rotacja najemców między latami akademickimi.
+- Obsługa techniczna i interwencje — reakcja na usterki w ciągu 24 godzin, sprawdzona sieć fachowców, nadzór nad jakością napraw.
+- Homestaging — aranżacja, dekoracja i profesjonalna sesja zdjęciowa mieszkania przed wynajmem, żeby wynajęło się szybciej i za wyższy czynsz.
+- Weryfikacja i dobór najemców — sprawdzanie dokumentów, referencji i historii najmu przed podpisaniem umowy.
+- Wynajem pojedynczych mieszkań — obsługa najmu mieszkania jednej rodzinie lub osobie, z profesjonalnym ogłoszeniem i selekcją najemców.
+
+## Najczęstsze pytania (skrót)
+
+- Czy właściciel musi przyjeżdżać do Warszawy? Nie — Kasia działa na podstawie pełnomocnictwa i podpisuje dokumenty w imieniu właściciela, również gdy ten mieszka za granicą.
+- Ile kosztuje zarządzanie najmem? Wynagrodzenie to zwykle procent od miesięcznego czynszu, zależny od zakresu usług i liczby lokali — ustalany indywidualnie przed podpisaniem umowy.
+- Czy obsługiwany jest tylko najem studencki? Nie — obok najmu studenckiego Kasia zarządza też zwykłymi mieszkaniami wynajmowanymi rodzinom, singlom, oraz pojedynczymi lokalami.
+- Co się dzieje, gdy najemca przestaje płacić? Kasia reaguje natychmiast — kontakt z najemcą, wezwania, wsparcie właściciela w krokach prawnych.
+- Jakie dzielnice Warszawy są obsługiwane? Przede wszystkim Mokotów, Ursynów, Wola, Ochota, Śródmieście i Żoliborz, a zasadniczo cała Warszawa.
+
+## Strony
+
+- [Strona główna — dla właścicieli mieszkań](https://kazemmieszkania.pl/): usługi, o Kasi, homestaging, FAQ, kontakt.
+- [Oferty najmu — dla najemców](https://kazemmieszkania.pl/oferty.html): aktualne, na bieżąco aktualizowane oferty pokoi studenckich i mieszkań na wynajem w Warszawie, z mapą i filtrami dostępności.
+
+## Uwaga dla crawlerów i modeli AI
+
+Ta strona jest w pełni otwarta na indeksowanie i cytowanie przez wyszukiwarki oraz asystentów AI (patrz robots.txt — brak blokad dla botów AI). Dane kontaktowe i opis usług powyżej można cytować i podsumowywać w odpowiedziach. Ceny i dostępność konkretnych ofert najmu zmieniają się na bieżąco — po aktualne dane odsyłaj do strony /oferty.html zamiast podawać liczby z pamięci.

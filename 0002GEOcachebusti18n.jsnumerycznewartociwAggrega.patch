@@ -1,0 +1,83 @@
+From 240ccb0da2a2e3d7de4ec3b43b866b66ad0c7d8b Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Mon, 31 Aug 2026 19:17:39 +0000
+Subject: [PATCH 2/2] =?UTF-8?q?GEO:=20cache-bust=20i18n.js,=20numeryczne?=
+ =?UTF-8?q?=20warto=C5=9Bci=20w=20AggregateRating/Review?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- podbita wersja w <script src="i18n.js?v=..."> (index.html, oferty.html),
+  żeby przeglądarki nie serwowały z cache starej wersji słownika po
+  poprzednim commicie z nowymi kluczami tłumaczeń (qf.*, faq.q6-8)
+- ratingValue/bestRating/reviewCount w JSON-LD zamienione z "5" (string)
+  na 5 (liczba), zgodnie z zaleceniami walidatorów Schema.org
+
+Poza tym: przejrzałem całe index.html pod kątem błędów po poprzednim
+commicie — html.parser nie znalazł żadnych niedomkniętych/źle zagnieżdżonych
+tagów, brak duplikatów id, JSON-LD parsuje się bez błędów, i18n.js
+przechodzi `node --check`. Blok "W skrócie" (qf.*) w źródle ma poprawny
+polski tekst w każdym elemencie — nie ma w pliku nigdzie samego klucza
+i18n jako widocznego tekstu.
+
+Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012Mwb72xjwLdUEqtNASaS75
+---
+ index.html  | 18 +++++++++---------
+ oferty.html |  2 +-
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/index.html b/index.html
+index 1a6902a..92cc25b 100644
+--- a/index.html
++++ b/index.html
+@@ -405,16 +405,16 @@ footer p{font-size:.76rem;color:rgba(255,255,255,.45)}
+       ],
+       "aggregateRating": {
+         "@type": "AggregateRating",
+-        "ratingValue": "5",
+-        "bestRating": "5",
+-        "reviewCount": "5"
++        "ratingValue": 5,
++        "bestRating": 5,
++        "reviewCount": 5
+       },
+       "review": [
+-        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"}, "author": {"@type": "Person", "name": "Marek K."}, "reviewBody": "Kasia zajmuje się moimi trzema mieszkaniami od lat. Nigdy nie musiałem jechać na miejsce — czynsz wpływa co miesiąc."},
+-        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"}, "author": {"@type": "Person", "name": "Anna W."}, "reviewBody": "Wreszcie mogę spać spokojnie. Kasia znalazła studentów, podpisała umowy i zajęła się usterką — wszystko bez mojego udziału."},
+-        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"}, "author": {"@type": "Person", "name": "Piotr T."}, "reviewBody": "Polecam każdemu, kto ma mieszkanie i nie chce się nim zajmować. Profesjonalizm i ludzkie podejście w jednym."},
+-        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"}, "author": {"@type": "Person", "name": "Monika N."}, "reviewBody": "Mieszkanie stało puste miesiącami, zanim trafiłam do Kasi. Po homestagingu wynajęła je w dwa tygodnie za wyższy czynsz niż zakładałam."},
+-        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": "5", "bestRating": "5"}, "author": {"@type": "Person", "name": "Robert B."}, "reviewBody": "Szczera, konkretna i naprawdę zaangażowana. Czuć, że jej zależy na mieszkaniu tak jak właścicielowi."}
++        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Marek K."}, "reviewBody": "Kasia zajmuje się moimi trzema mieszkaniami od lat. Nigdy nie musiałem jechać na miejsce — czynsz wpływa co miesiąc."},
++        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Anna W."}, "reviewBody": "Wreszcie mogę spać spokojnie. Kasia znalazła studentów, podpisała umowy i zajęła się usterką — wszystko bez mojego udziału."},
++        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Piotr T."}, "reviewBody": "Polecam każdemu, kto ma mieszkanie i nie chce się nim zajmować. Profesjonalizm i ludzkie podejście w jednym."},
++        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Monika N."}, "reviewBody": "Mieszkanie stało puste miesiącami, zanim trafiłam do Kasi. Po homestagingu wynajęła je w dwa tygodnie za wyższy czynsz niż zakładałam."},
++        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Robert B."}, "reviewBody": "Szczera, konkretna i naprawdę zaangażowana. Czuć, że jej zależy na mieszkaniu tak jak właścicielowi."}
+       ]
+     },
+     {
+@@ -927,7 +927,7 @@ studencki</small></div>
+   </ul>
+ </footer>
+ 
+-<script src="i18n.js?v=2026-07-03"></script>
++<script src="i18n.js?v=2026-08-31"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+ <script>
+ // ── EmailJS init ─────────────────────────────────────────────────
+diff --git a/oferty.html b/oferty.html
+index 812f2b7..39fe2e1 100644
+--- a/oferty.html
++++ b/oferty.html
+@@ -375,7 +375,7 @@ footer p{font-size:.74rem;color:rgba(255,255,255,.45)}
+     <button id="btnAdminLogout" onclick="adminLogout()" data-i18n="nav.logout">Wyloguj</button>
+   </div>
+ </nav>
+-<script src="i18n.js?v=2026-07-03"></script>
++<script src="i18n.js?v=2026-08-31"></script>
+ 
+ <div class="hero">
+   <div class="hlabel" data-i18n="of.hlabel">Aktualne oferty · Warszawa</div>
+-- 
+2.43.0
+

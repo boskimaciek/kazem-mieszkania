@@ -9,7 +9,7 @@
 <title>KaZem Mieszkania – Zarządzanie najmem Warszawa | Pokoje i mieszkania studenckie</title>
 <meta name="robots" content="index, follow">
 <meta name="description" content="KaZem Mieszkania – profesjonalne zarządzanie wynajmem w Warszawie. Specjalizujemy się w pokojach studenckich i mieszkaniach na wynajem: Mokotów, Wola, Śródmieście, Żoliborz, Ursynów. Obsługa najmu bez Twojej obecności.">
-<meta name="keywords" content="zarządzanie najmem Warszawa, najem studencki Warszawa, wynajem pokoi studenci Warszawa, zarządzanie mieszkaniem Mokotów, wynajem pokoi Wola, obsługa najmu Śródmieście, homestaging Warszawa, zarządca najmu Warszawa">
+<meta name="keywords" content="zarządzanie najmem Warszawa, najem studencki Warszawa, wynajem pokoi studenci Warszawa, zarządzanie mieszkaniem Mokotów, wynajem pokoi Wola, obsługa najmu Śródmieście, homestaging Warszawa, zarządca najmu Warszawa, zarządzanie najmem dla właścicieli mieszkających za granicą, ile kosztuje zarządzanie najmem mieszkania w Warszawie, pełnomocnictwo do wynajmu mieszkania Warszawa, obsługa najmu mieszkania bez Twojej obecności, zarządca nieruchomości dla inwestorów Warszawa, wynajem mieszkania zdalnie Warszawa, weryfikacja najemców Warszawa, zarządzanie wynajmem jednego mieszkania Warszawa">
 <meta name="author" content="Katarzyna Zemlik, KaZem Mieszkania">
 <meta property="og:title" content="KaZem Mieszkania – Zarządzanie najmem Warszawa">
 <meta property="og:description" content="Kompleksowa obsługa mieszkań na wynajem w Warszawie. Specjalizacja: najem studencki, pokoje dla studentów. Podpisuję umowy w imieniu właściciela.">
@@ -136,6 +136,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,240,
 .ticker span::after{content:'✦';padding-left:2.1rem;opacity:.45}
 @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
+/* ── QUICK FACTS (GEO — zwięzłe fakty czytelne dla ludzi i AI) ── */
+.quickfacts-section{background:var(--paper);padding:3rem 3.4rem;border-bottom:1px solid var(--line)}
+.qf-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:1.3rem;letter-spacing:-.01em;color:var(--ink);margin-bottom:1.2rem;max-width:1160px;margin-left:auto;margin-right:auto}
+.qf-list{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem 2rem;list-style:none}
+.qf-list li{font-size:.92rem;line-height:1.6;color:var(--stone);padding-left:1.1rem;position:relative}
+.qf-list li::before{content:'';position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--ox)}
+.qf-list strong{color:var(--ink);font-weight:600}
+
 /* ── SECTIONS ── */
 section{padding:5.2rem 3.4rem}
 .section-label{font-size:.74rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ox);margin-bottom:1.1rem;display:flex;align-items:center;gap:.7rem}
@@ -254,7 +262,7 @@ section{padding:5.2rem 3.4rem}
 .faq-item.open .faq-icon::before{transform:rotate(90deg);opacity:0}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .42s cubic-bezier(.16,1,.3,1)}
 .faq-a-inner{padding:.1rem 0 1.15rem;font-size:.94rem;color:var(--stone);line-height:1.75}
-.faq-item.open .faq-a{max-height:340px}
+.faq-item.open .faq-a{max-height:460px}
 
 /* ── CONTACT ── */
 .contact-section{background:var(--sand);border-top:1px solid var(--line)}
@@ -353,30 +361,163 @@ footer p{font-size:.76rem;color:rgba(255,255,255,.45)}
   .staging-photos{grid-template-columns:1fr}
   .staging-photos img:first-child{aspect-ratio:16/9}
 }
+@media(max-width:900px){
+  .quickfacts-section{padding:2.2rem 1.6rem}
+  .qf-list{grid-template-columns:1fr}
+}
 </style>
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "KaZem Mieszkania",
-  "description": "Profesjonalne zarządzanie wynajmem mieszkań i pokoi studenckich w Warszawie. Pełnomocnictwo, ciągłość najmu, homestaging, obsługa techniczna 24h.",
-  "url": "https://kazemmieszkania.pl",
-  "telephone": "+48723168200",
-  "email": "kasia@kazemmieszkania.pl",
-  "founder": {"@type": "Person", "name": "Katarzyna Zemlik"},
-  "address": {"@type": "PostalAddress", "addressLocality": "Warszawa", "addressRegion": "Mazowieckie", "addressCountry": "PL"},
-  "areaServed": [
-    {"@type": "City", "name": "Warszawa"},
-    {"@type": "Place", "name": "Mokotów"},
-    {"@type": "Place", "name": "Wola"},
-    {"@type": "Place", "name": "Śródmieście"},
-    {"@type": "Place", "name": "Żoliborz"},
-    {"@type": "Place", "name": "Ursynów"},
-    {"@type": "Place", "name": "Ochota"}
-  ],
-  "serviceType": ["Zarządzanie najmem", "Wynajem pokoi studenckich", "Wynajem mieszkań", "Homestaging"],
-  "priceRange": "$$"
+  "@graph": [
+    {
+      "@type": ["RealEstateAgent", "LocalBusiness"],
+      "@id": "https://kazemmieszkania.pl/#business",
+      "name": "KaZem Mieszkania",
+      "description": "Profesjonalne zarządzanie wynajmem mieszkań i pokoi studenckich w Warszawie. Pełnomocnictwo, ciągłość najmu, homestaging, obsługa techniczna 24h.",
+      "slogan": "Twoje mieszkanie zarabia. Ja jestem na miejscu.",
+      "url": "https://kazemmieszkania.pl/",
+      "telephone": "+48723168200",
+      "email": "kasia@kazemmieszkania.pl",
+      "image": "https://kazemmieszkania.pl/og-image.jpg",
+      "founder": {"@id": "https://kazemmieszkania.pl/#kasia"},
+      "employee": {"@id": "https://kazemmieszkania.pl/#kasia"},
+      "address": {"@type": "PostalAddress", "addressLocality": "Warszawa", "addressRegion": "Mazowieckie", "addressCountry": "PL"},
+      "areaServed": [
+        {"@type": "City", "name": "Warszawa"},
+        {"@type": "Place", "name": "Mokotów"},
+        {"@type": "Place", "name": "Wola"},
+        {"@type": "Place", "name": "Śródmieście"},
+        {"@type": "Place", "name": "Żoliborz"},
+        {"@type": "Place", "name": "Ursynów"},
+        {"@type": "Place", "name": "Ochota"}
+      ],
+      "serviceType": ["Zarządzanie najmem", "Wynajem pokoi studenckich", "Wynajem mieszkań", "Homestaging", "Weryfikacja najemców"],
+      "priceRange": "$$",
+      "makesOffer": [
+        {"@id": "https://kazemmieszkania.pl/#service-zarzadzanie"},
+        {"@id": "https://kazemmieszkania.pl/#service-studencki"},
+        {"@id": "https://kazemmieszkania.pl/#service-techniczna"},
+        {"@id": "https://kazemmieszkania.pl/#service-homestaging"},
+        {"@id": "https://kazemmieszkania.pl/#service-weryfikacja"},
+        {"@id": "https://kazemmieszkania.pl/#service-pojedyncze"}
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 5,
+        "bestRating": 5,
+        "reviewCount": 5
+      },
+      "review": [
+        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Marek K."}, "reviewBody": "Kasia zajmuje się moimi trzema mieszkaniami od lat. Nigdy nie musiałem jechać na miejsce — czynsz wpływa co miesiąc."},
+        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Anna W."}, "reviewBody": "Wreszcie mogę spać spokojnie. Kasia znalazła studentów, podpisała umowy i zajęła się usterką — wszystko bez mojego udziału."},
+        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Piotr T."}, "reviewBody": "Polecam każdemu, kto ma mieszkanie i nie chce się nim zajmować. Profesjonalizm i ludzkie podejście w jednym."},
+        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Monika N."}, "reviewBody": "Mieszkanie stało puste miesiącami, zanim trafiłam do Kasi. Po homestagingu wynajęła je w dwa tygodnie za wyższy czynsz niż zakładałam."},
+        {"@type": "Review", "reviewRating": {"@type": "Rating", "ratingValue": 5, "bestRating": 5}, "author": {"@type": "Person", "name": "Robert B."}, "reviewBody": "Szczera, konkretna i naprawdę zaangażowana. Czuć, że jej zależy na mieszkaniu tak jak właścicielowi."}
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://kazemmieszkania.pl/#kasia",
+      "name": "Katarzyna Zemlik",
+      "alternateName": "Kasia",
+      "jobTitle": "Zarządczyni najmu / właścicielka KaZem Mieszkania",
+      "worksFor": {"@id": "https://kazemmieszkania.pl/#business"},
+      "telephone": "+48723168200",
+      "email": "kasia@kazemmieszkania.pl",
+      "knowsAbout": ["Zarządzanie najmem", "Najem studencki", "Homestaging", "Rynek nieruchomości w Warszawie"],
+      "areaServed": {"@type": "City", "name": "Warszawa"}
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://kazemmieszkania.pl/#website",
+      "url": "https://kazemmieszkania.pl/",
+      "name": "KaZem Mieszkania",
+      "inLanguage": ["pl-PL", "en", "uk"],
+      "publisher": {"@id": "https://kazemmieszkania.pl/#business"}
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://kazemmieszkania.pl/#webpage",
+      "url": "https://kazemmieszkania.pl/",
+      "name": "KaZem Mieszkania – Zarządzanie najmem Warszawa | Pokoje i mieszkania studenckie",
+      "description": "KaZem Mieszkania – profesjonalne zarządzanie wynajmem w Warszawie. Specjalizujemy się w pokojach studenckich i mieszkaniach na wynajem: Mokotów, Wola, Śródmieście, Żoliborz, Ursynów. Obsługa najmu bez Twojej obecności.",
+      "isPartOf": {"@id": "https://kazemmieszkania.pl/#website"},
+      "about": {"@id": "https://kazemmieszkania.pl/#business"},
+      "primaryImageOfPage": "https://kazemmieszkania.pl/og-image.jpg",
+      "inLanguage": "pl-PL",
+      "audience": {"@type": "Audience", "audienceType": "Właściciele mieszkań na wynajem w Warszawie"}
+    },
+    {
+      "@type": "Service",
+      "@id": "https://kazemmieszkania.pl/#service-zarzadzanie",
+      "name": "Kompleksowe zarządzanie najmem",
+      "description": "Pełna opieka nad mieszkaniem na wynajem: pilnowanie ciągłości najmu i terminów umów, podpisywanie umów i aneksów w imieniu właściciela na podstawie pełnomocnictwa, regularne raporty ze stanu mieszkania, kontakt z najemcami.",
+      "provider": {"@id": "https://kazemmieszkania.pl/#business"},
+      "areaServed": {"@type": "City", "name": "Warszawa"},
+      "serviceType": "Zarządzanie najmem nieruchomości"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://kazemmieszkania.pl/#service-studencki",
+      "name": "Najem studencki i wynajem pokoi",
+      "description": "Rekrutacja i weryfikacja studentów, umowy pokojowe i regulaminy mieszkania, rotacja najemców dopasowana do roku akademickiego.",
+      "provider": {"@id": "https://kazemmieszkania.pl/#business"},
+      "areaServed": {"@type": "City", "name": "Warszawa"},
+      "serviceType": "Wynajem pokoi studenckich"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://kazemmieszkania.pl/#service-techniczna",
+      "name": "Obsługa techniczna i interwencje",
+      "description": "Interwencje przy usterkach w ciągu 24 godzin, sprawdzona sieć fachowców, nadzór i kontrola jakości napraw.",
+      "provider": {"@id": "https://kazemmieszkania.pl/#business"},
+      "areaServed": {"@type": "City", "name": "Warszawa"},
+      "serviceType": "Obsługa techniczna nieruchomości"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://kazemmieszkania.pl/#service-homestaging",
+      "name": "Homestaging",
+      "description": "Aranżacja, dekoracja i profesjonalna sesja zdjęciowa mieszkania przed wynajmem, żeby wynajęło się szybciej i za wyższy czynsz.",
+      "provider": {"@id": "https://kazemmieszkania.pl/#business"},
+      "areaServed": {"@type": "City", "name": "Warszawa"},
+      "serviceType": "Home staging"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://kazemmieszkania.pl/#service-weryfikacja",
+      "name": "Weryfikacja i dobór najemców",
+      "description": "Weryfikacja dokumentów, referencji i historii najmu potencjalnych najemców przed podpisaniem umowy.",
+      "provider": {"@id": "https://kazemmieszkania.pl/#business"},
+      "areaServed": {"@type": "City", "name": "Warszawa"},
+      "serviceType": "Weryfikacja najemców"
+    },
+    {
+      "@type": "Service",
+      "@id": "https://kazemmieszkania.pl/#service-pojedyncze",
+      "name": "Wynajem pojedynczych mieszkań",
+      "description": "Obsługa najmu mieszkania jednej rodzinie lub osobie — pełna obsługa formalna, profesjonalne ogłoszenie i selekcja najemców.",
+      "provider": {"@id": "https://kazemmieszkania.pl/#business"},
+      "areaServed": {"@type": "City", "name": "Warszawa"},
+      "serviceType": "Wynajem mieszkań"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://kazemmieszkania.pl/#faq",
+      "mainEntity": [
+        {"@type": "Question", "name": "Czy muszę przyjeżdżać do Warszawy przy podpisywaniu umów?", "acceptedAnswer": {"@type": "Answer", "text": "Nie — działam na podstawie pełnomocnictwa, więc mogę podpisywać umowy, aneksy i wszelkie dokumenty związane z najmem w Twoim imieniu. Możesz mieszkać po drugiej stronie świata."}},
+        {"@type": "Question", "name": "Ile kosztuje zarządzanie najmem w Warszawie?", "acceptedAnswer": {"@type": "Answer", "text": "Moje wynagrodzenie to zazwyczaj procent od miesięcznego czynszu — dokładna stawka zależy od zakresu usług i liczby lokali. Nie ma ukrytych kosztów. Wszystko ustalamy jasno na początku, zanim cokolwiek podpiszemy."}},
+        {"@type": "Question", "name": "Czy zajmujesz się wyłącznie mieszkaniami studenckimi?", "acceptedAnswer": {"@type": "Answer", "text": "Nie — specjalizuję się w najmie studenckim, ale zajmuję się też kompleksowym zarządzaniem zwykłymi mieszkaniami wynajmowanymi rodzinom lub singlom, oraz wynajmem pojedynczych lokali."}},
+        {"@type": "Question", "name": "Co się dzieje, gdy najemca przestaje płacić?", "acceptedAnswer": {"@type": "Answer", "text": "Reaguję natychmiast — kontaktuję się z najemcą, wysyłam wezwania i wspieram właściciela w podjęciu kroków prawnych. Kluczem jest prewencja: staram się dobierać najemców tak, żeby do takiej sytuacji nie dochodziło."}},
+        {"@type": "Question", "name": "Na jakich dzielnicach Warszawy działasz?", "acceptedAnswer": {"@type": "Answer", "text": "Działam przede wszystkim na Mokotowie, Ursynowie, Woli, Ochocie, w Śródmieściu i na Żoliborzu — ale zasadniczo obsługuję całą Warszawę."}},
+        {"@type": "Question", "name": "Czy mogę zlecić zarządzanie tylko jednym mieszkaniem, czy trzeba mieć ich kilka?", "acceptedAnswer": {"@type": "Answer", "text": "Nie — zarządzam zarówno pojedynczymi mieszkaniami, jak i portfelami kilku lokali należących do jednego właściciela. Zasady współpracy, pełnomocnictwo i zakres opieki są takie same niezależnie od liczby mieszkań."}},
+        {"@type": "Question", "name": "Jak wygląda pierwszy krok, jeśli chcę zlecić Ci zarządzanie najmem?", "acceptedAnswer": {"@type": "Answer", "text": "Zaczynamy od bezpłatnej i niezobowiązującej konsultacji — opowiadasz mi o mieszkaniu. Potem oceniam lokal i, jeśli to ma sens, proponuję homestaging. Na końcu podpisujemy prostą umowę współpracy wraz z pełnomocnictwem, w której jasno opisany jest zakres usług i wynagrodzenie — dopiero wtedy przekazujesz mi klucze."}},
+        {"@type": "Question", "name": "Czy pomagasz znaleźć najemcę, czy zajmujesz się tylko obsługą już wynajętego mieszkania?", "acceptedAnswer": {"@type": "Answer", "text": "Jedno i drugie. Jeśli mieszkanie stoi puste, przygotowuję je do wynajmu (w razie potrzeby homestaging), tworzę i publikuję ogłoszenie oraz weryfikuję kandydatów na najemców. Jeśli najemca już jest, przejmuję bieżącą obsługę i pilnuję ciągłości najmu, żeby mieszkanie nigdy nie stało bez przychodu."}}
+      ]
+    }
+  ]
 }
 </script>
 </head>
@@ -476,12 +617,25 @@ studencki</small></div>
   </div>
 </div>
 
+<!-- QUICK FACTS — zwięzłe fakty, łatwe do zacytowania przez wyszukiwarki i asystentów AI -->
+<section class="quickfacts-section" aria-labelledby="qf-h2">
+  <h2 id="qf-h2" class="qf-title" data-i18n="qf.title">KaZem Mieszkania w skrócie</h2>
+  <ul class="qf-list">
+    <li><strong data-i18n="qf.li1.b">Co robię:</strong> <span data-i18n="qf.li1.p">kompleksowe zarządzanie najmem mieszkań i pokoi studenckich w Warszawie — od podpisania umowy po obsługę techniczną.</span></li>
+    <li><strong data-i18n="qf.li2.b">Dla kogo:</strong> <span data-i18n="qf.li2.p">właścicieli mieszkań, którzy nie chcą (lub nie mogą) zajmować się najmem osobiście — również mieszkających poza Warszawą lub za granicą.</span></li>
+    <li><strong data-i18n="qf.li3.b">Jak to działa:</strong> <span data-i18n="qf.li3.p">działam na podstawie pełnomocnictwa właściciela — podpisuję umowy i aneksy w jego imieniu.</span></li>
+    <li><strong data-i18n="qf.li4.b">Gdzie:</strong> <span data-i18n="qf.li4.p">Warszawa — głównie Mokotów, Ursynów, Wola, Ochota, Śródmieście i Żoliborz.</span></li>
+    <li><strong data-i18n="qf.li5.b">Reakcja na usterki:</strong> <span data-i18n="qf.li5.p">do 24 godzin.</span></li>
+    <li><strong data-i18n="qf.li6.b">Kontakt:</strong> <span data-i18n="qf.li6.p">telefon +48 723 168 200, e-mail kasia@kazemmieszkania.pl.</span></li>
+  </ul>
+</section>
+
 <!-- MIESZKANIA / OFERTY CTA -->
 <section class="mzk-section" id="mieszkania">
   <div class="mzk-top">
     <div>
       <div class="section-label reveal" data-i18n="mzk.label">Mieszkania pod opieką KaZem</div>
-      <div class="section-title reveal"><span data-i18n="mzk.title">Aktualne oferty</span><br><em data-i18n="mzk.em">w Twoim imieniu.</em></div>
+      <h2 class="section-title reveal"><span data-i18n="mzk.title">Aktualne oferty</span><br><em data-i18n="mzk.em">w Twoim imieniu.</em></h2>
     </div>
     <p class="section-desc reveal" data-i18n="mzk.desc">Każde mieszkanie które mi przekazujesz jest zadbane, wynajęte i pracuje na Twój zysk. Nie przechowuję pustych lokali — pilnuję ciągłości. Poniżej znajdziesz oferty które aktualnie prowadzę w imieniu właścicieli.</p>
   </div>
@@ -500,9 +654,10 @@ studencki</small></div>
   <div class="svc-header">
     <div>
       <div class="section-label reveal" data-i18n="svc.label">Usługi</div>
-      <div class="section-title reveal" data-i18n="svc.title">Co dokładnie robię dla właścicieli?</div>
+      <h2 class="section-title reveal" data-i18n="svc.title">Co dokładnie robię dla właścicieli?</h2>
     </div>
     <p class="section-desc reveal" data-i18n="svc.desc">Nie jestem pośrednikiem, który podpisuje umowę i znika. Jestem stałą opiekunką Twojego mieszkania — od momentu przejęcia kluczy, aż do dnia kiedy zdecydujesz się zakończyć współpracę.</p>
+    <p class="section-desc reveal" style="margin-top:.9rem" data-i18n="svc.desc2">Pracuję zarówno z właścicielami mieszkającymi na co dzień w Warszawie, jak i z tymi, którzy zarządzają najmem zdalnie — z innego miasta albo zza granicy.</p>
   </div>
   <div class="svc-grid">
     <div class="scard featured reveal-up">
@@ -569,7 +724,7 @@ studencki</small></div>
     </div>
     <div class="about-text">
       <div class="section-label reveal" data-i18n="about.label">O mnie</div>
-      <div class="section-title reveal" data-i18n="about.title">Jestem Kasia — nie firma, tylko człowiek</div>
+      <h2 class="section-title reveal" data-i18n="about.title">Jestem Kasia — nie firma, tylko człowiek</h2>
       <p class="section-desc reveal" data-i18n="about.p1">Wiem, jak wiele stresu potrafi dać najem. Zna się na tym każdy właściciel, który choć raz o 22:00 odebrał telefon „bo przestała działać pralka". Dlatego robię to, co robię.</p>
       <p class="section-desc reveal" style="margin-top:1rem" data-i18n="about.p2">Zarządzam mieszkaniami w Warszawie — z prawdziwą troską, nie na autopilocie. Nie jestem anonimową agencją z infolinią. Masz mój numer, moją uwagę i moją odpowiedzialność.</p>
       <div class="about-values">
@@ -586,7 +741,7 @@ studencki</small></div>
   <div class="why-layout">
     <div>
       <div class="section-label" data-i18n="why.label">Dlaczego KaZem</div>
-      <div class="section-title reveal" data-i18n="why.title">Co zyskujesz oddając mi klucze?</div>
+      <h2 class="section-title reveal" data-i18n="why.title">Co zyskujesz oddając mi klucze?</h2>
       <p class="section-desc reveal" data-i18n="why.desc">Spokojna głowa, regularny czynsz i pewność, że ktoś naprawdę patrzy na Twoje mieszkanie.</p>
       <div class="why-list">
         <div class="wi reveal-up"><div class="wcheck">✓</div><p><strong data-i18n="why.1.strong">Zero przestojów.</strong> <span data-i18n="why.1.p">Pilnuję terminów umów i zaczynam szukać nowych najemców z wyprzedzeniem, zanim poprzedni wyjdzie.</span></p></div>
@@ -613,7 +768,7 @@ studencki</small></div>
 <!-- GALLERY -->
 <section class="gallery-section" id="galeria">
   <div class="gallery-header">
-    <div class="section-title reveal" data-i18n="gallery.title">Mieszkania pod opieką</div>
+    <h2 class="section-title reveal" data-i18n="gallery.title">Mieszkania pod opieką</h2>
     <a href="oferty.html" target="_blank" class="btn-main reveal-up"><span data-i18n="gallery.btn">Zobacz oferty →</span></a>
   </div>
   <div class="gallery-grid">
@@ -635,7 +790,7 @@ studencki</small></div>
     </div>
     <div>
       <div class="section-label reveal" data-i18n="staging.label">Homestaging</div>
-      <div class="section-title reveal" data-i18n="staging.title">Pierwsze zdjęcie to pierwsze wrażenie</div>
+      <h2 class="section-title reveal" data-i18n="staging.title">Pierwsze zdjęcie to pierwsze wrażenie</h2>
       <p class="section-desc reveal" data-i18n="staging.desc">Właściciele, którzy inwestują w homestaging, wynajmują mieszkanie szybciej i często uzyskują wyższy czynsz niż zakładali. To nie magia — to dobre przygotowanie.</p>
       <div class="staging-list">
         <div class="sli reveal-up" data-i18n="staging.li1">Wizyta w mieszkaniu i analiza potencjału</div>
@@ -655,7 +810,7 @@ studencki</small></div>
   <div class="faq-layout">
     <div>
       <div class="section-label" data-i18n="faq.label">FAQ</div>
-      <div class="section-title reveal" data-i18n="faq.title">Pytania, które słyszę najczęściej</div>
+      <h2 class="section-title reveal" data-i18n="faq.title">Pytania, które słyszę najczęściej</h2>
       <p class="section-desc reveal" data-i18n="faq.desc">Zebrałam odpowiedzi na pytania, które zadają właściciele zanim zdecydują się powierzyć mi swoje mieszkanie.</p>
       <div style="margin-top:2.2rem" class="reveal-up">
         <a href="#kontakt" class="btn-main"><span data-i18n="faq.cta">Masz inne pytanie? Napisz →</span></a>
@@ -663,24 +818,36 @@ studencki</small></div>
     </div>
     <div class="faq-list">
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span data-i18n="faq.q1">Czy muszę przyjeżdżać do Warszawy przy podpisywaniu umów?</span><span class="faq-icon" aria-hidden="true"></span></button>
+        <h3 class="faq-q-h"><button class="faq-q" aria-expanded="false"><span data-i18n="faq.q1">Czy muszę przyjeżdżać do Warszawy przy podpisywaniu umów?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
         <div class="faq-a"><div class="faq-a-inner" data-i18n="faq.a1">Nie — działam na podstawie pełnomocnictwa, więc mogę podpisywać umowy, aneksy i wszelkie dokumenty związane z najmem w Twoim imieniu. Możesz mieszkać po drugiej stronie świata.</div></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span data-i18n="faq.q2">Ile kosztuje zarządzanie najmem w Warszawie?</span><span class="faq-icon" aria-hidden="true"></span></button>
+        <h3 class="faq-q-h"><button class="faq-q" aria-expanded="false"><span data-i18n="faq.q2">Ile kosztuje zarządzanie najmem w Warszawie?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
         <div class="faq-a"><div class="faq-a-inner" data-i18n="faq.a2">Moje wynagrodzenie to zazwyczaj procent od miesięcznego czynszu — dokładna stawka zależy od zakresu usług i liczby lokali. Nie ma ukrytych kosztów. Wszystko ustalamy jasno na początku, zanim cokolwiek podpiszemy.</div></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span data-i18n="faq.q3">Czy zajmujesz się wyłącznie mieszkaniami studenckimi?</span><span class="faq-icon" aria-hidden="true"></span></button>
+        <h3 class="faq-q-h"><button class="faq-q" aria-expanded="false"><span data-i18n="faq.q3">Czy zajmujesz się wyłącznie mieszkaniami studenckimi?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
         <div class="faq-a"><div class="faq-a-inner" data-i18n="faq.a3">Nie — specjalizuję się w najmie studenckim, ale zajmuję się też kompleksowym zarządzaniem zwykłymi mieszkaniami wynajmowanymi rodzinom lub singlom, oraz wynajmem pojedynczych lokali.</div></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span data-i18n="faq.q4">Co się dzieje, gdy najemca przestaje płacić?</span><span class="faq-icon" aria-hidden="true"></span></button>
+        <h3 class="faq-q-h"><button class="faq-q" aria-expanded="false"><span data-i18n="faq.q4">Co się dzieje, gdy najemca przestaje płacić?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
         <div class="faq-a"><div class="faq-a-inner" data-i18n="faq.a4">Reaguję natychmiast — kontaktuję się z najemcą, wysyłam wezwania i wspieram właściciela w podjęciu kroków prawnych. Kluczem jest prewencja: staram się dobierać najemców tak, żeby do takiej sytuacji nie dochodziło.</div></div>
       </div>
       <div class="faq-item">
-        <button class="faq-q" aria-expanded="false"><span data-i18n="faq.q5">Na jakich dzielnicach Warszawy działasz?</span><span class="faq-icon" aria-hidden="true"></span></button>
+        <h3 class="faq-q-h"><button class="faq-q" aria-expanded="false"><span data-i18n="faq.q5">Na jakich dzielnicach Warszawy działasz?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
         <div class="faq-a"><div class="faq-a-inner" data-i18n="faq.a5">Działam przede wszystkim na Mokotowie, Ursynowie, Woli, Ochocie, w Śródmieściu i na Żoliborzu — ale zasadniczo obsługuję całą Warszawę.</div></div>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q-h"><button class="faq-q" aria-expanded="false"><span data-i18n="faq.q6">Czy mogę zlecić zarządzanie tylko jednym mieszkaniem, czy trzeba mieć ich kilka?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+        <div class="faq-a"><div class="faq-a-inner" data-i18n="faq.a6">Nie — zarządzam zarówno pojedynczymi mieszkaniami, jak i portfelami kilku lokali należących do jednego właściciela. Zasady współpracy, pełnomocnictwo i zakres opieki są takie same niezależnie od liczby mieszkań.</div></div>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q-h"><button class="faq-q" aria-expanded="false"><span data-i18n="faq.q7">Jak wygląda pierwszy krok, jeśli chcę zlecić Ci zarządzanie najmem?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+        <div class="faq-a"><div class="faq-a-inner" data-i18n="faq.a7">Zaczynamy od bezpłatnej i niezobowiązującej konsultacji — opowiadasz mi o mieszkaniu. Potem oceniam lokal i, jeśli to ma sens, proponuję homestaging. Na końcu podpisujemy prostą umowę współpracy wraz z pełnomocnictwem, w której jasno opisany jest zakres usług i wynagrodzenie — dopiero wtedy przekazujesz mi klucze.</div></div>
+      </div>
+      <div class="faq-item">
+        <h3 class="faq-q-h"><button class="faq-q" aria-expanded="false"><span data-i18n="faq.q8">Czy pomagasz znaleźć najemcę, czy zajmujesz się tylko obsługą już wynajętego mieszkania?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+        <div class="faq-a"><div class="faq-a-inner" data-i18n="faq.a8">Jedno i drugie. Jeśli mieszkanie stoi puste, przygotowuję je do wynajmu (w razie potrzeby homestaging), tworzę i publikuję ogłoszenie oraz weryfikuję kandydatów na najemców. Jeśli najemca już jest, przejmuję bieżącą obsługę i pilnuję ciągłości najmu, żeby mieszkanie nigdy nie stało bez przychodu.</div></div>
       </div>
     </div>
   </div>
@@ -691,7 +858,7 @@ studencki</small></div>
   <div class="contact-layout">
     <div>
       <div class="section-label reveal" data-i18n="contact.label">Kontakt</div>
-      <div class="section-title reveal" data-i18n="contact.title">Porozmawiajmy o Twoim mieszkaniu</div>
+      <h2 class="section-title reveal" data-i18n="contact.title">Porozmawiajmy o Twoim mieszkaniu</h2>
       <p class="section-desc reveal" data-i18n="contact.desc">Bezpłatna konsultacja — bez zobowiązań. Opowiedz mi o swoim mieszkaniu, a ja powiem Ci szczerze, co mogę zrobić i ile to kosztuje.</p>
       <div class="ccards">
         <div class="ccard reveal-up">
@@ -760,7 +927,7 @@ studencki</small></div>
   </ul>
 </footer>
 
-<script src="i18n.js?v=2026-07-03"></script>
+<script src="i18n.js?v=2026-08-31"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 // ── EmailJS init ─────────────────────────────────────────────────
