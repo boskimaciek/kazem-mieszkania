@@ -68,6 +68,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .maphdr p{font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.6}
 .mapwrap{max-width:1100px;margin:0 auto;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.1);height:440px;position:relative}
 #map{height:100%;width:100%}
+#map .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.9) saturate(.35)}
+#map .leaflet-control-attribution{background:rgba(23,21,18,.55)!important;color:rgba(255,255,255,.55)!important;font-size:.62rem!important}
+#map .leaflet-control-attribution a{color:rgba(255,255,255,.75)!important}
 .maplegend{position:absolute;bottom:.75rem;left:.75rem;z-index:500;background:rgba(253,252,249,.95);border-radius:8px;padding:.55rem .9rem;border:1px solid var(--border);display:flex;gap:.85rem;font-size:.73rem}
 .legitem{display:flex;align-items:center;gap:.35rem;color:var(--dark);font-weight:500}
 .legdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
@@ -790,8 +793,17 @@ function getImg(p, o) {
 }
 
 // ── MAP ────────────────────────────────────────────────────────
-var map = L.map('map',{center:[52.225,21.010],zoom:12,zoomControl:true,attributionControl:false,zoomSnap:.5});
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{maxZoom:19,subdomains:'abcd'}).addTo(map);
+// Uwaga: poprzednio używane kafelki CARTO (basemaps.cartocdn.com) od pewnego czasu
+// wymagają płatnego/rejestrowanego klucza API — bez niego serwują kafelki z napisem
+// "API KEY REQUIRED" zamiast mapy. Zamiast tego korzystamy z oficjalnych, bezpłatnych
+// kafelków OpenStreetMap (bez klucza, bez limitu rejestracji) i przyciemniamy je CSS-em
+// (.leaflet-tile-pane filter), żeby zachować ciemny wygląd mapy zgodny z resztą strony.
+var map = L.map('map',{center:[52.225,21.010],zoom:12,zoomControl:true,attributionControl:true,zoomSnap:.5});
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:19,
+  subdomains:'abc',
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
+}).addTo(map);
 
 function dotIcon(status) {
   var c = {available:'#22c55e',soon:'#f59e0b',taken:'#9ca3af'}[status]||'#9ca3af';
