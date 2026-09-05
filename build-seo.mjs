@@ -595,10 +595,21 @@ ${jsonLd({ '@context': 'https://schema.org', '@graph': graph })}
 
 /* ═════════════════════════════════════════════════════════════ SITEMAP / LLMS */
 
+/** Strony landingowe dla właścicieli (build-landing.mjs). Wykrywamy je z dysku,
+ *  a nie z listy na sztywno — dzięki temu dodanie nowej dzielnicy nie wymaga
+ *  ruszania tego pliku, a przeliczenie sitemapy nigdy ich nie zgubi. */
+function findLandingPages() {
+  return readdirSync(ROOT)
+    .filter(f => /^(zarzadzanie-najmem-|ile-kosztuje-).+\.html$/.test(f))
+    .sort()
+    .map(f => ({ loc: `${SITE}/${f}`, changefreq: 'monthly', priority: '0.8' }));
+}
+
 function buildSitemap(units) {
   const staticPages = [
     { loc: `${SITE}/`, changefreq: 'weekly', priority: '1.0' },
     { loc: `${SITE}/oferty.html`, changefreq: 'daily', priority: '0.9' },
+    ...findLandingPages(),
   ];
   const offerPages = units.filter(u => u.indexable).map(u => ({
     loc: u.url, changefreq: 'weekly', priority: u.status === 'available' ? '0.8' : '0.6',

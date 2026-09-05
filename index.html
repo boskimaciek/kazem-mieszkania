@@ -365,6 +365,17 @@ footer p{font-size:.76rem;color:rgba(255,255,255,.45)}
   .quickfacts-section{padding:2.2rem 1.6rem}
   .qf-list{grid-template-columns:1fr}
 }
+/* DZIELNICE — linki do stron zarządzania najmem wg dzielnic (SEO: odkrywalność + link wewnętrzny) */
+.dzielnice-section{background:#F3EDE2;padding:3rem 2rem;border-top:1px solid #DDD5C7}
+.dzielnice-inner{max-width:900px;margin:0 auto}
+.dzielnice-inner h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.5rem;margin-bottom:.5rem}
+.dzielnice-inner p{font-size:.92rem;color:#5C564D;margin-bottom:1.1rem;max-width:640px;line-height:1.7}
+.dzielnice-list{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;margin:0;padding:0}
+.dzielnice-list a{display:inline-block;padding:.45rem 1.1rem;border:1px solid #DDD5C7;border-radius:100px;background:#fff;font-size:.88rem;text-decoration:none;color:#171512;transition:all .2s}
+.dzielnice-list a:hover{border-color:#A8432C;color:#A8432C}
+.dzielnice-list a.wyroz{background:#171512;color:#fff;border-color:#171512}
+.dzielnice-list a.wyroz:hover{background:#A8432C;border-color:#A8432C;color:#fff}
+@media(max-width:700px){.dzielnice-section{padding:2.2rem 1.2rem}}
 </style>
 
 <script type="application/ld+json">
@@ -905,6 +916,23 @@ studencki</small></div>
       <button class="sbtn" id="indexSendBtn" data-i18n="contact.f.send">Wyślij wiadomość — odezwę się w ciągu 24h</button>
       <div id="indexFormMsg" style="display:none;margin-top:.5rem;padding:.75rem 1.2rem;font-size:.9rem;text-align:center;border-radius:3px"></div>
     </div>
+  </div>
+</section>
+
+<!-- DZIELNICE -->
+<section class="dzielnice-section">
+  <div class="dzielnice-inner">
+    <h2>Zarządzanie najmem według dzielnic</h2>
+    <p>Każda dzielnica Warszawy rządzi się własnym rytmem najmu — inni najemcy, inne stawki, inne ryzyka. Zobacz, jak wygląda obsługa mieszkania na wynajem tam, gdzie masz lokal.</p>
+    <ul class="dzielnice-list">
+      <li><a href="zarzadzanie-najmem-mokotow.html">Mokotów</a></li>
+      <li><a href="zarzadzanie-najmem-ochota.html">Ochota</a></li>
+      <li><a href="zarzadzanie-najmem-zoliborz.html">Żoliborz</a></li>
+      <li><a href="zarzadzanie-najmem-ursynow.html">Ursynów</a></li>
+      <li><a href="zarzadzanie-najmem-wola.html">Wola</a></li>
+      <li><a href="zarzadzanie-najmem-srodmiescie.html">Śródmieście</a></li>
+      <li><a href="ile-kosztuje-zarzadzanie-najmem-warszawa.html" class="wyroz">Ile to kosztuje?</a></li>
+    </ul>
   </div>
 </section>
 
