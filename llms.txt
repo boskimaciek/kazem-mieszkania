@@ -36,6 +36,21 @@
 - [Oferty najmu — dla najemców](https://kazemmieszkania.pl/oferty.html): aktualne, na bieżąco aktualizowane oferty pokoi studenckich i mieszkań na wynajem w Warszawie, z mapą i filtrami dostępności.
 
 <!-- KZ-SEO:OFFERS:START -->
+## Aktualne oferty (stan na 2026-09-05)
+
+Liczba wolnych i wkrótce wolnych jednostek: 6.
+Dzielnice: Wola (1), Mokotów (5).
+
+- [Przestronne 3 pokoje z garażem — Wola, Warszawa](https://kazemmieszkania.pl/oferta/mieszkanie-wola-jana-kazimierza-53a.html): 7300 zł/mies.; 63 m²; Jana Kazimierza 53a; dostępne od zaraz; kaucja 7300 zł; Umeblowany, Internet, Pralka, Suszarka.
+- [Pokój przy ul. Puławskiej/Galeria Mokotów ul. Blacharska — Pokój nr 3 — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/pokoj-mokotow-blacharska-1-pokoj-nr-3.html): 1400 zł/mies.; 7 m²; Blacharska 1; dostępne od zaraz; kaucja 1400 zł; 1 łazienka, kuchnia, meble Ikea.
+- [Klimatyczna kawalerka w kamienicy, Stary Mokotów — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/mieszkanie-mokotow-pulawska-69.html): 3000 zł/mies.; 27 m²; Puławska 69; dostępne od 1 października 2026; kaucja 3000 zł; Umeblowany, Internet, pralka.
+- [Pokój przy Al. Niepodległości/SGH ul. Madalińskiego — Pokój nr 2 — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/pokoj-mokotow-madalinskiego-49-51-pokoj-nr-2.html): 1300 zł/mies.; 6 m²; Madalińskiego 49/51; dostępne od 1 października 2026; kaucja 1300 zł; 2 łazienki, kuchnia, meble Ikea.
+- [Pokój przy Al. Niepodległości/SGH ul. Madalińskiego — Pokój nr 5 — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/pokoj-mokotow-madalinskiego-49-51-pokoj-nr-5.html): 1700 zł/mies.; Madalińskiego 49/51; dostępne od 1 października 2026; kaucja 1700 zł; 2 łazienki, kuchnia, meble Ikea.
+- [Pokój przy Westfield Mokotów/Galeria Mokotów ul. Rzymowskiego — Pokój nr 5 — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/pokoj-mokotow-rzymowskiego-39-pokoj-nr-5.html): 1400 zł/mies.; 8 m²; Rzymowskiego 39; dostępne od 1 października 2026; kaucja 1400 zł; 2 łazienki, kuchnia, meble Ikea.
+
+Pełna lista z filtrami i mapą: https://kazemmieszkania.pl/oferty.html
+Kontakt w sprawie wynajmu: +48 723 168 200, kasia@kazemmieszkania.pl. Odpowiedź w ciągu 24 godzin.
+Najemca nie płaci prowizji — mieszkaniami zarządza bezpośrednio KaZem Mieszkania.
 <!-- KZ-SEO:OFFERS:END -->
 
 ## Uwaga dla crawlerów i modeli AI
