@@ -1,0 +1,61 @@
+name: Generowanie warstwy SEO/GEO
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'oferta/**'
+      - 'sitemap.xml'
+      - 'seo-slugs.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: seo-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pobierz repozytorium
+        uses: actions/checkout@v4
+
+      - name: Zainstaluj Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Wygeneruj statyczną warstwę SEO
+        env:
+          SB_URL: ${{ secrets.SB_URL }}
+          SB_KEY: ${{ secrets.SB_KEY }}
+        run: node build-seo.mjs
+
+      - name: Zapisz zmiany
+        run: |
+          git config user.name  "KaZem SEO bot"
+          git config user.email "actions@github.com"
+          git add oferty.html sitemap.xml llms.txt seo-slugs.json oferta
+          if git diff --staged --quiet; then
+            echo "Brak zmian — oferty się nie zmieniły."
+          else
+            git commit -m "SEO: odswiezenie statycznej listy ofert"
+            git push
+            echo "Zmiany wypchniete."
+          fi
+
+      - name: Zgłoś zmienione adresy przez IndexNow
+        continue-on-error: true
+        run: |
+          KEY=324e34f6d1707395e099564a1c6734c2
+          URLS=$(grep -o '<loc>[^<]*</loc>' sitemap.xml | sed 's|</\?loc>||g' \
+                 | head -200 | sed 's/.*/"&"/' | paste -sd, -)
+          curl -sS -X POST https://api.indexnow.org/indexnow \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -o /dev/null -w "IndexNow: %{http_code}\n" \
+            -d "{\"host\":\"kazemmieszkania.pl\",\"key\":\"$KEY\",\"keyLocation\":\"https://kazemmieszkania.pl/$KEY.txt\",\"urlList\":[$URLS]}" || true
