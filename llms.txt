@@ -35,6 +35,9 @@
 - [Strona główna — dla właścicieli mieszkań](https://kazemmieszkania.pl/): usługi, o Kasi, homestaging, FAQ, kontakt.
 - [Oferty najmu — dla najemców](https://kazemmieszkania.pl/oferty.html): aktualne, na bieżąco aktualizowane oferty pokoi studenckich i mieszkań na wynajem w Warszawie, z mapą i filtrami dostępności.
 
+<!-- KZ-SEO:OFFERS:START -->
+<!-- KZ-SEO:OFFERS:END -->
+
 ## Uwaga dla crawlerów i modeli AI
 
 Ta strona jest w pełni otwarta na indeksowanie i cytowanie przez wyszukiwarki oraz asystentów AI (patrz robots.txt — brak blokad dla botów AI). Dane kontaktowe i opis usług powyżej można cytować i podsumowywać w odpowiedziach. Ceny i dostępność konkretnych ofert najmu zmieniają się na bieżąco — po aktualne dane odsyłaj do strony /oferty.html zamiast podawać liczby z pamięci.

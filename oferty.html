@@ -9,12 +9,18 @@
 <title>Pokoje studenckie i mieszkania do wynajęcia Warszawa | KaZem Mieszkania</title>
 <meta property="og:title" content="Pokoje studenckie i mieszkania do wynajęcia Warszawa | KaZem">
 <meta property="og:description" content="Aktualne oferty pokoi studenckich i mieszkań w Warszawie. Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice. Sprawdź dostępność i ceny.">
-<meta property="og:image" content="https://kazemmieszkania.github.io/og-image.jpg">
+<meta property="og:image" content="https://kazemmieszkania.pl/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:url" content="https://kazemmieszkania.github.io/oferty.html">
+<meta property="og:url" content="https://kazemmieszkania.pl/oferty.html">
 <meta property="og:type" content="website">
-<meta name="robots" content="index, follow">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="KaZem Mieszkania">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pokoje studenckie i mieszkania do wynajęcia Warszawa | KaZem">
+<meta name="twitter:description" content="Aktualne oferty pokoi studenckich i mieszkań w Warszawie. Mokotów, Wola, Śródmieście, Żoliborz i inne dzielnice.">
+<meta name="twitter:image" content="https://kazemmieszkania.pl/og-image.jpg">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <meta name="keywords" content="pokój studencki Warszawa, wynajem pokoju Warszawa, mieszkanie studenckie Warszawa, wynajem mieszkania Warszawa, pokoje do wynajęcia Warszawa, najem studencki Mokotów Wola Śródmieście Żoliborz Ursynów">
 <link rel="canonical" href="https://kazemmieszkania.pl/oferty.html">
 <meta name="description" content="Aktualne oferty pokoi studenckich i mieszkań na wynajem w Warszawie. Dostępne lokale w Mokotowie, Woli, Śródmieściu, Żoliborzu i innych dzielnicach. Sprawdź dostępność i ceny – odpowiedź w 24h.">
@@ -338,33 +344,27 @@ footer p{font-size:.74rem;color:rgba(255,255,255,.45)}
 .fback{font-size:.78rem;font-weight:500;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s}
 .fback:hover{color:#fff}
 @media(max-width:700px){footer{flex-direction:column;align-items:flex-start;padding:1.6rem 1.2rem}.fmid{align-items:flex-start}}
+
+/* SEO — statyczne karty renderowane przed startem JS (progressive enhancement) */
+a.card{display:block;text-decoration:none;color:inherit}
+
+/* SEO — sekcja tekstowa pod listą ofert */
+.seotext{max-width:900px;margin:0 auto;padding:0 2.5rem 4.5rem;color:var(--dark)}
+.seotext h2{font-family:'Bricolage Grotesque',sans-serif;font-size:1.75rem;font-weight:700;margin:2.4rem 0 .9rem;line-height:1.2}
+.seotext h3{font-family:'Bricolage Grotesque',sans-serif;font-size:1.08rem;font-weight:700;margin:1.5rem 0 .4rem}
+.seotext p{font-size:.95rem;line-height:1.8;color:var(--muted);margin-bottom:.9rem}
+.seotext ul{margin:0 0 1rem 1.1rem}
+.seotext li{font-size:.95rem;line-height:1.8;color:var(--muted);margin-bottom:.25rem}
+.seotext a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.seotext .dzielnice{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.2rem;list-style:none;margin-left:0}
+.seotext .dzielnice li{margin:0}
+.seotext .dzielnice a{display:inline-block;padding:.35rem .9rem;border:1px solid var(--border);border-radius:100px;background:var(--white);font-size:.83rem;text-decoration:none;color:var(--dark)}
+.seotext .dzielnice a:hover{border-color:var(--accent);color:var(--accent)}
+@media(max-width:700px){.seotext{padding:0 1.2rem 3rem}.seotext h2{font-size:1.4rem}}
 </style>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "RealEstateAgent",
-  "name": "KaZem Mieszkania",
-  "description": "Aktualne oferty pokoi studenckich i mieszkań na wynajem w Warszawie. Obsługa najmu bez stresu dla właściciela i najemcy.",
-  "url": "https://kazemmieszkania.pl/oferty.html",
-  "telephone": "+48723168200",
-  "email": "kasia@kazemmieszkania.pl",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Warszawa",
-    "addressCountry": "PL"
-  },
-  "areaServed": {"@type": "City", "name": "Warszawa"},
-  "hasOfferCatalog": {
-    "@type": "OfferCatalog",
-    "name": "Pokoje studenckie i mieszkania do wynajęcia Warszawa",
-    "itemListElement": [
-      {"@type": "Offer", "itemOffered": {"@type": "Accommodation", "name": "Pokój studencki do wynajęcia Warszawa", "address": {"@type": "PostalAddress", "addressLocality": "Warszawa", "addressCountry": "PL"}}},
-      {"@type": "Offer", "itemOffered": {"@type": "Accommodation", "name": "Mieszkanie do wynajęcia Warszawa", "address": {"@type": "PostalAddress", "addressLocality": "Warszawa", "addressCountry": "PL"}}}
-    ]
-  }
-}
-</script>
+<!-- KZ-SEO:JSONLD:START — blok generowany automatycznie przez build-seo.mjs, nie edytuj ręcznie -->
+<!-- KZ-SEO:JSONLD:END -->
 </head>
 <body>
 
@@ -425,8 +425,13 @@ footer p{font-size:.74rem;color:rgba(255,255,255,.45)}
   </div>
 </div>
 
-<div class="listings"><div class="grid" id="grid"></div></div>
+<div class="listings"><div class="grid" id="grid">
+<!-- KZ-SEO:GRID:START — statyczna lista ofert dla robotów; JS podmienia ją na wersję interaktywną -->
+<!-- KZ-SEO:GRID:END --></div></div>
 <div id="pagination"></div>
+
+<!-- KZ-SEO:TEXT:START — sekcja tekstowa generowana automatycznie -->
+<!-- KZ-SEO:TEXT:END -->
 
 <!-- FOOTER -->
 <footer>
