@@ -36,7 +36,7 @@
 - [Oferty najmu — dla najemców](https://kazemmieszkania.pl/oferty.html): aktualne, na bieżąco aktualizowane oferty pokoi studenckich i mieszkań na wynajem w Warszawie, z mapą i filtrami dostępności.
 
 <!-- KZ-SEO:OFFERS:START -->
-## Aktualne oferty (stan na 2026-09-05)
+## Aktualne oferty (stan na 2026-09-06)
 
 Liczba wolnych i wkrótce wolnych jednostek: 6.
 Dzielnice: Wola (1), Mokotów (5).
