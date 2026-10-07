@@ -36,14 +36,13 @@
 - [Oferty najmu — dla najemców](https://kazemmieszkania.pl/oferty.html): aktualne, na bieżąco aktualizowane oferty pokoi studenckich i mieszkań na wynajem w Warszawie, z mapą i filtrami dostępności.
 
 <!-- KZ-SEO:OFFERS:START -->
-## Aktualne oferty (stan na 2026-10-06)
+## Aktualne oferty (stan na 2026-10-07)
 
-Liczba wolnych i wkrótce wolnych jednostek: 3.
-Dzielnice: Wola (1), Mokotów (2).
+Liczba wolnych i wkrótce wolnych jednostek: 2.
+Dzielnice: Wola (1), Mokotów (1).
 
-- [Przestronne 3 pokoje z garażem — Wola, Warszawa](https://kazemmieszkania.pl/oferta/mieszkanie-wola-jana-kazimierza-53a.html): 7300 zł/mies.; 63 m²; Jana Kazimierza 53a; dostępne od zaraz; kaucja 7300 zł; Umeblowany, Internet, Pralka, Suszarka.
-- [Klimatyczna kawalerka w kamienicy, Stary Mokotów — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/mieszkanie-mokotow-pulawska-69.html): 3300 zł/mies.; 27 m²; Puławska 69; dostępne od 1 października 2026; kaucja 3300 zł; Umeblowany, Internet, pralka.
-- [Pokój przy Al. Niepodległości/SGH ul. Madalińskiego — Pokój nr 2 — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/pokoj-mokotow-madalinskiego-49-51-pokoj-nr-2.html): 1300 zł/mies.; 6 m²; Madalińskiego 49/51; dostępne od 1 października 2026; kaucja 1300 zł; 2 łazienki, kuchnia, meble Ikea.
+- [Przestronne 3 pokoje z garażem — Wola, Warszawa](https://kazemmieszkania.pl/oferta/mieszkanie-wola-jana-kazimierza-53a.html): 7000 zł/mies.; 63 m²; Jana Kazimierza 53a; dostępne od zaraz; kaucja 7000 zł; Umeblowany, Internet, Pralka, Suszarka.
+- [Pokój przy Al. Niepodległości/SGH ul. Madalińskiego — Pokój nr 2 — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/pokoj-mokotow-madalinskiego-49-51-pokoj-nr-2.html): 1300 zł/mies.; 6 m²; Madalińskiego 49/51; dostępne od 15 października 2026; kaucja 1300 zł; 2 łazienki, kuchnia, meble Ikea.
 
 Pełna lista z filtrami i mapą: https://kazemmieszkania.pl/oferty.html
 Kontakt w sprawie wynajmu: +48 723 168 200, kasia@kazemmieszkania.pl. Odpowiedź w ciągu 24 godzin.
