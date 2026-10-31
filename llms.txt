@@ -36,15 +36,13 @@
 - [Oferty najmu — dla najemców](https://kazemmieszkania.pl/oferty.html): aktualne, na bieżąco aktualizowane oferty pokoi studenckich i mieszkań na wynajem w Warszawie, z mapą i filtrami dostępności.
 
 <!-- KZ-SEO:OFFERS:START -->
-## Aktualne oferty (stan na 2026-10-30)
+## Aktualne oferty (stan na 2026-10-31)
 
-Liczba wolnych i wkrótce wolnych jednostek: 4.
-Dzielnice: Wola (1), Mokotów (3).
+Liczba wolnych i wkrótce wolnych jednostek: 2.
+Dzielnice: Wola (1), Mokotów (1).
 
 - [Przestronne 3 pokoje z garażem — Wola, Warszawa](https://kazemmieszkania.pl/oferta/mieszkanie-wola-jana-kazimierza-53a.html): 7000 zł/mies.; 63 m²; Jana Kazimierza 53a; dostępne od zaraz; kaucja 7000 zł; Umeblowany, Internet, Pralka, Suszarka.
 - [Pokój przy Al. Niepodległości/SGH ul. Madalińskiego — Pokój nr 2 — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/pokoj-mokotow-madalinskiego-49-51-pokoj-nr-2.html): 1300 zł/mies.; 6 m²; Madalińskiego 49/51; dostępne od zaraz; kaucja 1300 zł; 2 łazienki, kuchnia, meble Ikea.
-- [Pokój przy Westfield Mokotów/Galeria Mokotów ul. Rzymowskiego — Pokój nr 2 — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/pokoj-mokotow-rzymowskiego-39-pokoj-nr-2.html): 1300 zł/mies.; 8 m²; Rzymowskiego 39; dostępne od 1 listopada 2026; kaucja 1300 zł; 2 łazienki, kuchnia, meble Ikea.
-- [Pokój przy Westfield Mokotów/Galeria Mokotów ul. Rzymowskiego — Pokój nr 3 — Mokotów, Warszawa](https://kazemmieszkania.pl/oferta/pokoj-mokotow-rzymowskiego-39-pokoj-nr-3.html): 1350 zł/mies.; 8 m²; Rzymowskiego 39; dostępne od 1 listopada 2026; kaucja 1350 zł; 2 łazienki, kuchnia, meble Ikea.
 
 Pełna lista z filtrami i mapą: https://kazemmieszkania.pl/oferty.html
 Kontakt w sprawie wynajmu: +48 723 168 200, kasia@kazemmieszkania.pl. Odpowiedź w ciągu 24 godzin.
